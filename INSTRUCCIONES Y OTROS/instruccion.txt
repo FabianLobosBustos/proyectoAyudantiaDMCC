@@ -7,6 +7,7 @@ INSTRUCCIONS:
 5. php artisan key:generate
 6. php artisan migrate
 7. php artisan serve (corre el back-end)
+npm install --save axios
 8. npm run watch (corre el front-end)
 
 Luego dirigerse a la direccion de localhost

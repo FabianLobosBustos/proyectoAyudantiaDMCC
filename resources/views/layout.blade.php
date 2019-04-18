@@ -12,29 +12,24 @@
 
     <title>HOME</title>
   </head>
-  <body>
+  <body >
+  <div id="app">
   <div class="header row indigo darken-4">
-    <div class="col s6 m6 l6  valign-wrapper white-text">
-      <p>Postulacion de Ayudantías</p>
-    </div>
-    <div class="col s6 l6 ">
-       <img class="responsive-img" src="https://www.metalurgia.usach.cl/sites/metalurgica/files/uds_hcolor.png">
+    <div class="col s3 l2 offset-l9">
+       <img  class="responsive-img" src="https://www.metalurgia.usach.cl/sites/metalurgica/files/uds_hcolor.png">
     </div>
   </div>
   
-  offset-l6
     @yield('content')
+  </div>
 
+  <script src="{{asset('js/app.js')}}"></script>
   </body>
 </html>
 
 <style>
     div, .header{
-      height: 29vh;
-      font-size: 30px;
-    }
-    div, .insignia{
-      height:20vh;
+      height: 13vh;
     }
 </style>
 
