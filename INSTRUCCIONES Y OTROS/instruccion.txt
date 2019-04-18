@@ -1,0 +1,13 @@
+INSTRUCCIONS:
+1. composer install
+2. npm install
+3. cp .env.example .env
+4. ajustar parametros de .env (archivo de configuracion)
+    -> Se necesita conectar a la base de datos
+5. php artisan key:generate
+6. php artisan migrate
+7. php artisan serve (corre el back-end)
+8. npm run watch (corre el front-end)
+
+Luego dirigerse a la direccion de localhost
+
