@@ -10,5 +10,10 @@ class Career extends Model
     {
         return $this->belongsToMany(Student::class);
     }
-}
+
+    public function faculty()
+    {
+    	return $this->belongsTo(Faculty::class);
+    }
+    
 }
