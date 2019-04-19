@@ -33,7 +33,11 @@
         },
         methods:{
             ingresar(){
-              this.rut = "chupa la corneta";
+              const params = {
+                rut: this.rut
+              };
+              //aqui debemos hacer el axios que envie el rut, debo reibir al estudiante
+              this.$emit('botonIngresar', params);
             }
         }
     }
