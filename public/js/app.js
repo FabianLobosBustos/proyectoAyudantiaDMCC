@@ -1819,8 +1819,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1831,7 +1829,9 @@ __webpack_require__.r(__webpack_exports__);
     console.log('Component mounted.');
   },
   methods: {
-    ingresar: function ingresar() {}
+    ingresar: function ingresar() {
+      this.rut = "chupa la corneta";
+    }
   }
 });
 
@@ -37843,11 +37843,20 @@ var render = function() {
           }
         }),
         _vm._v(" "),
-        _c("label", { attrs: { for: "rutt" } }, [_vm._v("Rut")]),
+        _c("label", { attrs: { for: "rutt" } }, [_vm._v("Rut:")]),
         _vm._v(" "),
-        _c("a", { staticClass: "waves-effect orange btn" }, [
-          _vm._v("Ingresar")
-        ])
+        _c(
+          "a",
+          {
+            staticClass: "waves-effect orange btn",
+            on: {
+              click: function($event) {
+                return _vm.ingresar()
+              }
+            }
+          },
+          [_vm._v("Ingresar")]
+        )
       ])
     ])
   ])

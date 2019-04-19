@@ -4,13 +4,11 @@
       <div class="container">      
         <div class="input-field col s6 ">
           <input id="rutt" type="text" class="validate " placeholder= "12.345.678-9" v-model= "rut">
-          <label for="rutt">Rut</label>
-          <a class="waves-effect orange btn">Ingresar</a>
+          <label for="rutt">Rut:</label>
+          <a class="waves-effect orange btn" v-on:click= "ingresar()">Ingresar</a>
         </div>
       </div>
     </div>
-
-
 
 </template>
 
@@ -35,7 +33,7 @@
         },
         methods:{
             ingresar(){
-
+              this.rut = "chupa la corneta";
             }
         }
     }
