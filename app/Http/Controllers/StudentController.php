@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Student;
+use App\Career;
 
 class StudentController extends Controller
 {
@@ -15,7 +16,23 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return Student::all(); 
+        error_log('Some message here.');
+        return Student::all();
+    }
+
+    
+    //Funcion que retorna el alumno, en el caso de que este exista en la bd
+    public function checkByRut(Request $request)
+    {
+        //rut entra como integer!
+        $student = Student::where('rut',$request->rut)->get();
+        
+        if($student->isEmpty()){
+           return 'NOT_FOUND'; 
+        }
+        
+        return $student;
+        
     }
 
     /**
@@ -26,16 +43,20 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $student = new Student();
+        error_log('Guardando alumno en BD!');
+        $student = new Student;
+        
         $student->name = $request->name;
-        $student->lastname = $requestlastname;
+        $student->lastName = $request->lastName;
         $student->level = $request->level;
         $student->fone =$request->fone;
         $student->rut = $request->rut;
         $student->verificatorDigit = $request->verificatorDigit;
         $student->address = $request->address;
         $student->save();
-
+        
+        return $student;
+        
     }
 
     /**
@@ -46,7 +67,8 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        return Student::where('student_id', $id)->get(); 
+        error_log('mostrando1!!');
+        return Student::where('id',$id)->get();
     }
 
     /**

@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class CarrerController extends Controller
+use App\Career;
+class CareerController extends Controller
 {
     /**
+     * 
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+       //
     }
 
     /**

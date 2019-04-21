@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Subject;
 class SubjectController extends Controller
 {
     /**
@@ -13,7 +13,7 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        return Subject::all();
     }
 
     /**

@@ -8,7 +8,7 @@ class Career extends Model
 {
     public function students()
     {
-        return $this->belongsToMany(Student::class);
+        return $this->belongsToMany(Student::class,'student_career');
     }
 
     public function faculty()
