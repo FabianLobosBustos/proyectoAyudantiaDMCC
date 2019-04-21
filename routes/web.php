@@ -18,4 +18,5 @@ Route::get('/', function () {
 
 Route::post('students/checkByRut', 'StudentController@checkByRut');
 Route::apiResource('students', 'StudentController');
+Route::apiResource('subjects', 'SubjectController');
 Route::apiResource('postulations', 'PostulationController');

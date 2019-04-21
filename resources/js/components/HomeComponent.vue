@@ -3,7 +3,9 @@
     <div v-if="login">
         <formulario-component v-if="proceso"
             :estudiante = "student"
-            :asignatura = "asignaturaActual">
+            :asignatura = "asignaturaActual"
+            :faculty = "facultad"
+            :career = "carrera">
         </formulario-component>   
 
         <div v-else class="container ">
@@ -54,30 +56,41 @@
                 student:[],
                 asignaturaActual: [],
                 login: false,
-                proceso: false
+                proceso: false,
+                facultad: "Facultad de Ingeniería",
+                carrera: "Ingenieria civil en informática"
             }
         },
         mounted() {
             console.log('Component mounted.');
-           // axios.get('/asignatura').then((response)=>{
-            //    this.asignaturas = response.data; 
-            // });
+            axios.get('/subjects').then((response)=>{
+                this.asignaturas = response.data; 
+             });
         },
         methods:{
-            logear(params){
+            logear(res){
                 //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
-                let student = {
+                /*let student = {
                     id:1,
                     rut: params.rut,
-                    nombre: "cristian",
-                    apellidoP: "sepúlveda",
-                    apellidoM: "córdova",
-                    correo: "cristian@usach.cl",
-                    direccion: "suPutamadre 123, calle la pulgas 69",
-                    telefono: "12345678"
+                    name: "cristian",
+                    lastNameP: "sepúlveda",
+                    lastNameM: "córdova",
+                    email: "cristian@usach.cl",
+                    address: "suPutamadre 123, calle la pulgas 69",
+                    fone: "12345678"
                 };
                 this.student = student;
                 this.login = true;
+            }, */
+                axios.post('students/checkByRut', {params:{ 
+                        rut: res.rut
+                        }
+                }).then((response)=>{
+                this.student = response.data;
+                console.log(this.student); 
+                this.login = true;
+                });
             },
             seleccionAsignatura(index){
                 this.asignaturaActual = this.asignaturas[index];

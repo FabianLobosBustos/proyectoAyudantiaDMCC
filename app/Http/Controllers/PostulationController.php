@@ -54,7 +54,7 @@ class PostulationController extends Controller
             $student->address = $request->student_address;
             error_log('a punto de guardar');
             $student->save();
-            
+            //falta el cooreo 
             //asumiendo que nos llega el nombre de la carrera
             //Buscamos la carrera especifica y la atamos al alumno
             $career = Career::where('name',$request->carrer_name)->first();

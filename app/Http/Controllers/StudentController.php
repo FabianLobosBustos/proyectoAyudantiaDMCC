@@ -25,13 +25,13 @@ class StudentController extends Controller
     public function checkByRut(Request $request)
     {
         //rut entra como integer!
-        $student = Student::where('rut',$request->rut)->get();
-        
+        error_log('asdasdsa');
+        $student = Student::where('rut',(int)$request->rut)->get();
         if($student->isEmpty()){
            return 'NOT_FOUND'; 
         }
         
-        return $student;
+        return "pene" ;//$student;
         
     }
 
