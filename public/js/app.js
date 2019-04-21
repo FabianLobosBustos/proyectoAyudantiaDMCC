@@ -1955,6 +1955,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['estudiante', 'asignatura'],
   data: function data() {
@@ -1975,7 +1980,24 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    console.log('Component mounted.'); //axios.get('/pensamientos').then((response)=>{
+    //  this.pensamientos = response.data; 
+    //}); aqui se obtiene al alumno y se guarda en el data student
+
+    this.student = estudiante;
+  },
+  methods: {
+    enviar: function enviar() {
+      var params = {
+        studentSend: [{
+          id: this.student.id,
+          rut: this.student.rut,
+          name: this.student.nombre
+        }]
+      }; //aqui debemos hacer el axios que envie el rut, debo reibir al estudiante
+
+      this.$emit('botonIngresar', params);
+    }
   }
 });
 
@@ -38276,11 +38298,28 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container " }, [
     _c("div", { staticClass: "row card" }, [
+      _c("h5", { staticClass: "center-align" }, [
+        _vm._v(
+          "Postulación de ayudante para asignatura " +
+            _vm._s(_vm.asignatura.name)
+        )
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
       _c("form", { staticClass: "col s12  " }, [
         _c("div", { staticClass: "col s6" }, [
           _c("label", { attrs: { for: "nombre" } }, [_vm._v("Nombre:")]),
           _vm._v(" "),
           _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.estudiante.nombre,
+                expression: "estudiante.nombre"
+              }
+            ],
             staticClass: "validate",
             attrs: {
               required: "",
@@ -38288,7 +38327,15 @@ var render = function() {
               placeholder: "Ingresa tu nombre",
               id: "nombre"
             },
-            domProps: { value: _vm.estudiante.nombre }
+            domProps: { value: _vm.estudiante.nombre },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.estudiante, "nombre", $event.target.value)
+              }
+            }
           })
         ]),
         _vm._v(" "),
@@ -38447,7 +38494,29 @@ var render = function() {
         _vm._v(" "),
         _vm._m(6),
         _vm._v(" "),
-        _vm._m(7)
+        _c("div", { staticClass: "col s6 right-align" }, [
+          _c(
+            "button",
+            {
+              staticClass: "waves-effect orange btn",
+              attrs: { type: "submit" },
+              on: {
+                click: function($event) {
+                  return _vm.enviar()
+                }
+              }
+            },
+            [_vm._v("Enviar")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col s12" }, [
+          _vm._v(
+            "\n                    " +
+              _vm._s(_vm.estudiante.nombre) +
+              "\n                "
+          )
+        ])
       ])
     ])
   ])
@@ -38551,18 +38620,6 @@ var staticRenderFns = [
         "button",
         { staticClass: "waves-effect orange btn", attrs: { type: "submit" } },
         [_vm._v("Atrás")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s6 right-align" }, [
-      _c(
-        "button",
-        { staticClass: "waves-effect orange btn", attrs: { type: "submit" } },
-        [_vm._v("Enviar")]
       )
     ])
   }

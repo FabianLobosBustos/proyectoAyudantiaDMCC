@@ -1,10 +1,12 @@
 <template v-if="bool">
     <div class="container ">
         <div class="row card">
+            <h5 class="center-align">Postulación de ayudante para asignatura {{asignatura.name}}</h5>
+            <br>
             <form class="col s12  ">
                     <div class="col s6">
                         <label for="nombre">Nombre:</label>
-                        <input class ="validate" required type="text"  placeholder="Ingresa tu nombre" id="nombre" v-bind:value ="estudiante.nombre">    
+                        <input class ="validate" required type="text"  placeholder="Ingresa tu nombre" id="nombre" v-model="estudiante.nombre" >    
                     </div>
                     <div class="col s6">
                         <label for="correo">Correo:</label>
@@ -78,8 +80,11 @@
                         <button class="waves-effect orange btn" type="submit">Atrás</button>    
                     </div>
                     <div class="col s6 right-align">
-                        <button class="waves-effect orange btn" type="submit">Enviar</button>    
+                        <button class="waves-effect orange btn" type="submit" v-on:click= "enviar()">Enviar</button>    
                     </div> 
+                    <div class="col s12">
+                        {{estudiante.nombre}}
+                    </div>
                     
             </form>
         </div>
@@ -126,7 +131,25 @@
             }
         },
         mounted() {
-            console.log('Component mounted.')
+            console.log('Component mounted.');
+            //axios.get('/pensamientos').then((response)=>{
+              //  this.pensamientos = response.data; 
+            //}); aqui se obtiene al alumno y se guarda en el data student
+            this.student = estudiante;
+           
+        },
+        methods:{
+            enviar(){
+              const params = {
+                studentSend:[{
+                    id: this.student.id,
+                    rut: this.student.rut,
+                    name: this.student.nombre
+                }]
+              };
+              //aqui debemos hacer el axios que envie el rut, debo reibir al estudiante
+              this.$emit('botonIngresar', params);
+            }
         }
     }
 </script>
