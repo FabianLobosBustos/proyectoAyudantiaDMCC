@@ -1,28 +1,33 @@
 <template>
-<div>   
-        <div v-if= "login">
+
+    <div v-if="login">
+        <formulario-component v-if="proceso"
+            :estudiante = "student"
+            :asignatura = "asignaturaActual">
+        </formulario-component>   
+
+        <div v-else class="container ">
             <p class= "center-align">
-                Formulatio único para concursar al cargo de ayudante alumno para
-                el periodo que comprende los meses de Inserte Meses:
+                    Formulatio único para concursar al cargo de ayudante alumno para
+                    el periodo que comprende los meses de Inserte Meses:
             <p>
             <br>
-                <div class="container ">
-                    <div class= "row">
-                            <asignatura-component class ="col l3" v-for = "(asignatura) in asignaturas"
-                                :key="asignatura.id"
-                                :asignatura = "asignatura"> 
-                            </asignatura-component>
-                    </div>
-
-                </div>
-        </div>
-        <div v-else>
-            <mensaje-component ></mensaje-component>
-            <div class="container">
-                <ingreso-component @botonIngresar= "logear"></ingreso-component>
+            <div class= "row">
+                <asignatura-component class ="col l3" v-for = "(asignatura,index) in asignaturas"
+                    :key="asignatura.id"
+                    :asignatura = "asignatura"
+                    @asignaturaBoton= "seleccionAsignatura(index)"> 
+                </asignatura-component>
             </div>
         </div>
-</div>
+    </div>                    
+
+    <div v-else>
+        <mensaje-component ></mensaje-component>
+        <div class="container">
+            <ingreso-component @botonIngresar="logear"></ingreso-component>
+        </div>
+    </div>
 
 </template>
 
@@ -30,7 +35,7 @@
     export default {
         data(){
             return {
-                asignaturas:[{
+                asignaturas:[{   //aqui deberia un un arreglo vacio para el axios
                     id: 1,
                     name: "Algebra 1"
                 },{
@@ -47,7 +52,9 @@
                     name: "Ecuaciones diferenciales"
                 }],
                 student:[],
-                login: true
+                asignaturaActual: [],
+                login: false,
+                proceso: false
             }
         },
         mounted() {
@@ -58,14 +65,23 @@
         },
         methods:{
             logear(params){
+                //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
                 let student = {
                     id:1,
                     rut: params.rut,
-                    name: "cristian",
-                    apellido: "sepúlveda"
+                    nombre: "cristian",
+                    apellidoP: "sepúlveda",
+                    apellidoM: "córdova",
+                    correo: "cristian@usach.cl",
+                    direccion: "suPutamadre 123, calle la pulgas 69",
+                    telefono: "12345678"
                 };
                 this.student = student;
                 this.login = true;
+            },
+            seleccionAsignatura(index){
+                this.asignaturaActual = this.asignaturas[index];
+                this.proceso = true;
             }
         }
     }

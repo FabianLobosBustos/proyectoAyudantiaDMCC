@@ -1,23 +1,23 @@
 <template>
 
     <div class="container z-depth-3">
-      <div class="container">      
+      <form class="container " v-on:submit.prevent="ingresar()">      
         <div class="input-field col s6 ">
           <input id="rutt" type="text" class="validate " placeholder= "12.345.678-9" v-model= "rut">
           <label for="rutt">Rut:</label>
-          <a class="waves-effect orange btn" v-on:click= "ingresar()">Ingresar</a>
+          <a class="waves-effect orange btn"  v-on:click= "ingresar()">Ingresar</a>
         </div>
-      </div>
+      </form>
     </div>
 
 </template>
 
-<style>
+<style scoped>
     .container{
       height: 150px;
     }
     .input-field{
-      top: 17px;
+      top: 30px;
     }
 </style>
 

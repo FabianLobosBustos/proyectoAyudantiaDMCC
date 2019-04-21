@@ -19,6 +19,7 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+Vue.component('formulario-component', require('./components/FormularioComponent.vue').default);
 Vue.component('home-component', require('./components/HomeComponent.vue').default);
 Vue.component('mensaje-component', require('./components/MensajeComponent.vue').default);
 Vue.component('ingreso-component', require('./components/IngresoComponent.vue').default);
