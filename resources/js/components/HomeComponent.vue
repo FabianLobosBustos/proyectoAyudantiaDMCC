@@ -54,7 +54,7 @@
             console.log('Component mounted.');
            // axios.get('/asignatura').then((response)=>{
             //    this.asignaturas = response.data; 
-            //});
+            // });
         },
         methods:{
             logear(params){
