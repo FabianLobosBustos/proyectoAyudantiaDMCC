@@ -24,19 +24,14 @@ class StudentController extends Controller
     //Funcion que retorna el alumno, en el caso de que este exista en la bd
     public function checkByRut(Request $request)
     {
-        //rut entra como integer!
 
-       /* if(is_int((int)$request->rut)){
-            return "es entero";
-        }
-        else{
-            return "no es entero";
-        }
-*/
-        $rut = (int)$request->rut;
-        $student = Student::where('rut',$rut)->get();
+
+        
+        
+        $student = Student::where('rut',(int)$request->rut)->get();
+
         if($student->isEmpty()){
-           return []; 
+           return 'NOT_FOUND'; 
         }
         
         return $student;
