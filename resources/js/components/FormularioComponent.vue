@@ -1,12 +1,13 @@
 <template v-if="bool">
     <div class="container ">
+        <p>pene: {{estudiante.name}}</p>   
         <div class="row card">
             <h5 class="center-align">Postulación de ayudante para asignatura {{asignatura.name}}</h5>
             <br>
             <form class="col s12"  v-on:submit.prevent=enviar() >
                     <div class="col s6">
                         <label for="nombre">Nombre:</label>
-                        <input class ="validate" required type="text"  placeholder="Ingresa tu nombre" id="nombre" v-model="estudiante.name" >    
+                        <input class ="validate" required type="text"  placeholder="Ingresa tu nombre" id="nombre" v-bind:value ="estudiante.name">    
                     </div>
                     <div class="col s6">
                         <label for="correo">Correo:</label>
@@ -80,7 +81,7 @@
                         <button class="waves-effect orange btn" type="submit">Atrás</button>    
                     </div>
                     <div class="col s6 right-align">
-                        <button class="waves-effect orange btn" type="submit" v-on:click.prevent= "enviar()">Enviar</button>    
+                        <button class="waves-effect orange btn" type="submit" v-on:click= "enviar()">Enviar</button>    
                     </div> 
                  {{notaAlumno}}
                     
@@ -115,7 +116,6 @@
         data(){
             return {
                 asignaturas: 1,
-                student:[],
                 requisitos: [{   //esto deberia cargar solo con axios en el mounted()
                     id: 1,
                     name: "Calculo 1"
@@ -160,7 +160,7 @@
                 postulationSend:[{
                     numberTimes: this.postulacion.numberTimes,
                     reference: this.postulacion.reference,
-                    subjectName: this.asignatura.name
+                    subjectId: this.asignatura.id
                 }],
                 requirement: this.requisitos,
                 studentScore: this.notaAlumno

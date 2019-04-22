@@ -1958,12 +1958,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['estudiante', 'asignatura', 'faculty', 'career'],
   data: function data() {
     return {
       asignaturas: 1,
-      student: [],
       requisitos: [{
         //esto deberia cargar solo con axios en el mounted()
         id: 1,
@@ -2005,7 +2005,7 @@ __webpack_require__.r(__webpack_exports__);
         postulationSend: [{
           numberTimes: this.postulacion.numberTimes,
           reference: this.postulacion.reference,
-          subjectName: this.asignatura.name
+          subjectId: this.asignatura.id
         }],
         requirement: this.requisitos,
         studentScore: this.notaAlumno
@@ -2104,26 +2104,21 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
-
-      /*let student = {
-          id:1,
-          rut: params.rut,
-          name: "cristian",
-          lastNameP: "sepúlveda",
-          lastNameM: "córdova",
-          email: "cristian@usach.cl",
-          address: "suPutamadre 123, calle la pulgas 69",
-          fone: "12345678"
+      var studentX = {
+        id: 1,
+        rut: res.rut,
+        name: "cristian",
+        lastNameP: "sepúlveda",
+        lastNameM: "córdova",
+        email: "cristian@usach.cl",
+        address: "suPutamadre 123, calle la pulgas 69",
+        fone: "12345678"
       };
-      this.student = student;
-      this.login = true;
-      }, */
+      console.log(studentX);
       axios.post('students/checkByRut', {
-        params: {
-          rut: res.rut
-        }
+        rut: res.rut
       }).then(function (response) {
-        _this2.student = response.data;
+        _this2.student = response.data[0];
         console.log(_this2.student);
         _this2.login = true;
       });
@@ -2131,6 +2126,7 @@ __webpack_require__.r(__webpack_exports__);
     seleccionAsignatura: function seleccionAsignatura(index) {
       this.asignaturaActual = this.asignaturas[index];
       this.proceso = true;
+      console.log(this.student);
     }
   }
 });
@@ -38334,6 +38330,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container " }, [
+    _c("p", [_vm._v("pene: " + _vm._s(_vm.estudiante.name))]),
+    _vm._v(" "),
     _c("div", { staticClass: "row card" }, [
       _c("h5", { staticClass: "center-align" }, [
         _vm._v(
@@ -38360,14 +38358,6 @@ var render = function() {
             _c("label", { attrs: { for: "nombre" } }, [_vm._v("Nombre:")]),
             _vm._v(" "),
             _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.estudiante.name,
-                  expression: "estudiante.name"
-                }
-              ],
               staticClass: "validate",
               attrs: {
                 required: "",
@@ -38375,15 +38365,7 @@ var render = function() {
                 placeholder: "Ingresa tu nombre",
                 id: "nombre"
               },
-              domProps: { value: _vm.estudiante.name },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.estudiante, "name", $event.target.value)
-                }
-              }
+              domProps: { value: _vm.estudiante.name }
             })
           ]),
           _vm._v(" "),
@@ -38785,7 +38767,6 @@ var render = function() {
                 attrs: { type: "submit" },
                 on: {
                   click: function($event) {
-                    $event.preventDefault()
                     return _vm.enviar()
                   }
                 }

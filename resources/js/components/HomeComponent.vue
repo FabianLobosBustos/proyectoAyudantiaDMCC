@@ -70,9 +70,9 @@
         methods:{
             logear(res){
                 //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
-                /*let student = {
+                let studentX = {
                     id:1,
-                    rut: params.rut,
+                    rut: res.rut,
                     name: "cristian",
                     lastNameP: "sepúlveda",
                     lastNameM: "córdova",
@@ -80,14 +80,12 @@
                     address: "suPutamadre 123, calle la pulgas 69",
                     fone: "12345678"
                 };
-                this.student = student;
-                this.login = true;
-            }, */
-                axios.post('students/checkByRut', {params:{ 
-                        rut: res.rut
+                console.log(studentX);
+             
+                axios.post('students/checkByRut', {rut: res.rut
                         }
-                }).then((response)=>{
-                this.student = response.data;
+                ).then((response)=>{
+                this.student = response.data[0];
                 console.log(this.student); 
                 this.login = true;
                 });
@@ -95,6 +93,7 @@
             seleccionAsignatura(index){
                 this.asignaturaActual = this.asignaturas[index];
                 this.proceso = true;
+                console.log(this.student);
             }
         }
     }
