@@ -33,6 +33,7 @@
         },
         methods:{
             ingresar(){
+              this.rut = parseInt(this.rut);
               const params = {
                 rut: this.rut
               };

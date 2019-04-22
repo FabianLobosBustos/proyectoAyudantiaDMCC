@@ -159,7 +159,8 @@
                 }],
                 postulationSend:[{
                     numberTimes: this.postulacion.numberTimes,
-                    reference: this.postulacion.reference
+                    reference: this.postulacion.reference,
+                    subjectName: this.asignatura.name
                 }],
                 requirement: this.requisitos,
                 studentScore: this.notaAlumno

@@ -2004,7 +2004,8 @@ __webpack_require__.r(__webpack_exports__);
         }],
         postulationSend: [{
           numberTimes: this.postulacion.numberTimes,
-          reference: this.postulacion.reference
+          reference: this.postulacion.reference,
+          subjectName: this.asignatura.name
         }],
         requirement: this.requisitos,
         studentScore: this.notaAlumno
@@ -2179,6 +2180,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     ingresar: function ingresar() {
+      this.rut = parseInt(this.rut);
       var params = {
         rut: this.rut
       }; //aqui debemos hacer el axios que envie el rut, debo reibir al estudiante
