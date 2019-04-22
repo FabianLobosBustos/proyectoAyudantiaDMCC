@@ -2105,21 +2105,25 @@ __webpack_require__.r(__webpack_exports__);
 
       //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
       var studentX = {
-        id: 1,
         rut: res.rut,
-        name: "cristian",
-        lastNameP: "sepúlveda",
-        lastNameM: "córdova",
-        email: "cristian@usach.cl",
-        address: "suPutamadre 123, calle la pulgas 69",
-        fone: "12345678"
+        name: "",
+        lastName: "",
+        email: "",
+        address: "",
+        fone: "",
+        level: ""
       };
-      console.log(studentX);
       axios.post('students/checkByRut', {
         rut: res.rut
       }).then(function (response) {
-        _this2.student = response.data[0];
-        console.log(_this2.student);
+        if (response.data == 0) {
+          _this2.student = studentX;
+          console.log(_this2.student);
+        } else {
+          _this2.student = response.data[0];
+          console.log(_this2.student);
+        }
+
         _this2.login = true;
       });
     },
@@ -38798,7 +38802,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col s6" }, [
-      _vm._v("\n                    Level:\n                    "),
+      _vm._v("\n                    Nivel:\n                    "),
       _c("input", {
         staticClass: "validate",
         attrs: { id: "email_inline", type: "number", max: "12", min: "1" }

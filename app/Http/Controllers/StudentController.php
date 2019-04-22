@@ -31,7 +31,7 @@ class StudentController extends Controller
         $student = Student::where('rut',(int)$request->rut)->get();
 
         if($student->isEmpty()){
-           return []; 
+           return 0; 
         }
         
         return $student;

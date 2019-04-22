@@ -67,7 +67,7 @@
                         </div>
                     </div>
                     <div class="col s6">
-                        Level:
+                        Nivel:
                         <input id="email_inline" type="number" class="validate" max="12" min="1">
                         
                         <span class="helper-text" data-error="wrong" data-success="right"> Correspode al nivel de la asignatura más baja</span>

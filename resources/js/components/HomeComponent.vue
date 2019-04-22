@@ -71,22 +71,25 @@
             logear(res){
                 //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
                 let studentX = {
-                    id:1,
                     rut: res.rut,
-                    name: "cristian",
-                    lastNameP: "sepúlveda",
-                    lastNameM: "córdova",
-                    email: "cristian@usach.cl",
-                    address: "suPutamadre 123, calle la pulgas 69",
-                    fone: "12345678"
-                };
-                console.log(studentX);
-             
+                    name: "",
+                    lastName: "",
+                    email: "",
+                    address: "",
+                    fone: "",
+                    level: ""
+                };             
                 axios.post('students/checkByRut', {rut: res.rut
                         }
                 ).then((response)=>{
-                this.student = response.data[0];
-                console.log(this.student); 
+                if(response.data == 0){
+                    this.student = studentX;
+                    console.log(this.student);
+                }
+                else{
+                    this.student = response.data[0];
+                console.log(this.student);
+                } 
                 this.login = true;
                 });
             },
