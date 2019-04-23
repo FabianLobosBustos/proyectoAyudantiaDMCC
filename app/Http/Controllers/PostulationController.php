@@ -37,9 +37,6 @@ class PostulationController extends Controller
     public function store(Request $request)
     {
 
-        error_log((string)$request);
-        //Parseamos el JSON entrante
-        $phpArray = json_decode($request,true);
      
         //obtenemos todos los datos
         $studentSend_rut = $request->input('studentSend.rut');
@@ -88,22 +85,18 @@ class PostulationController extends Controller
         $student->address = $studentSend_address;
         $student->email = $studentSend_email;
         $student->verificatorDigit = $studentSend_verificatorDigit;
-        error_log('a punto de guardar');
-        error_log((string)$student);
         $student->save();
         
         //Completo la carrera del estudiante
 
         $career = Career::where('name', $studentSend_careerName)->first();
         $student->careers()->attach($career);
-        error_log((string)$career);
+        
         //ATENCION! LA CARRERA SE DEBE ASOCIAR A LA FACULTAD EN CUESTION
         //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
         $faculty = Faculty::where('name', $studentSend_facultyName)->first();
-        error_log((string)$faculty);
-        error_log("asdasd");
         $career->faculty_id = $faculty->id;
-        error_log("punto 2");
+        
         //Asigamos la asignatura
         $postulation->subject_id = $postulationSend_subject_id;
 
@@ -124,8 +117,6 @@ class PostulationController extends Controller
         //como se enviaran del frontEnd
 
         //guardamos la postulacion
-        error_log("punto 3");
-        error_log((string)$postulation);
         $postulation->save();
         return 'CORRECTO';
 
