@@ -1989,30 +1989,33 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     enviar: function enviar() {
+      var _this = this;
+
       var params = {
-        studentSend: [{
-          id: this.estudiante.id,
+        studentSend: {
           rut: this.estudiante.rut,
           name: this.estudiante.name,
           email: this.estudiante.email,
-          lastNameP: this.estudiante.lastNameP,
-          lastNameM: this.estudiante.lastNameM,
+          lastNameDad: this.estudiante.lastNameDad,
+          lastNameMom: this.estudiante.lastNameMom,
           fone: this.estudiante.fone,
           address: this.estudiante.address,
+          level: this.estudiante.level,
           career: this.career,
           faculty: this.faculty
-        }],
-        postulationSend: [{
-          numberTimes: this.postulacion.numberTimes,
-          reference: this.postulacion.reference,
-          subjectId: this.asignatura.id
-        }],
+        },
+        postulationSend: {
+          numberTime: this.postulacion.numberTimes,
+          referenceTeacher_id: this.postulacion.reference,
+          subject_id: this.asignatura.id
+        },
         requirement: this.requisitos,
         studentScore: this.notaAlumno
       };
-      console.log(params); //aqui debemos hacer el axios que envie el rut, debo reibir al estudiante
-
-      this.$emit('botonIngresar', params);
+      console.log(params);
+      axios.post('students/postulations', params).then(function (response) {
+        _this.$emit('botonEnviar');
+      });
     }
   }
 });
@@ -2028,6 +2031,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -2106,12 +2110,13 @@ __webpack_require__.r(__webpack_exports__);
       //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
       var studentX = {
         rut: res.rut,
-        name: "",
-        lastName: "",
-        email: "",
-        address: "",
-        fone: "",
-        level: ""
+        name: null,
+        lastNameMom: null,
+        lastNameDad: null,
+        email: null,
+        address: null,
+        fone: null,
+        level: null
       };
       axios.post('students/checkByRut', {
         rut: res.rut
@@ -2120,7 +2125,7 @@ __webpack_require__.r(__webpack_exports__);
           _this2.student = studentX;
           console.log(_this2.student);
         } else {
-          _this2.student = response.data[0];
+          _this2.student = response.data;
           console.log(_this2.student);
         }
 
@@ -2130,7 +2135,17 @@ __webpack_require__.r(__webpack_exports__);
     seleccionAsignatura: function seleccionAsignatura(index) {
       this.asignaturaActual = this.asignaturas[index];
       this.proceso = true;
-      console.log(this.student);
+      console.log(this.student); //AQUI SE PIDEN LOS REQUISITOS DE LA ASIGNATURA EN CUESTIÓN
+    },
+    cambioProceso: function cambioProceso() {
+      var _this3 = this;
+
+      this.proceso = false;
+      axios.post('students/checkByRut', {
+        rut: res.rut
+      }).then(function (response) {
+        _this3.student = response.data;
+      });
     }
   }
 });
@@ -38863,7 +38878,8 @@ var render = function() {
                   asignatura: _vm.asignaturaActual,
                   faculty: _vm.facultad,
                   career: _vm.carrera
-                }
+                },
+                on: { botonEnviar: _vm.cambioProceso }
               })
             : _c("div", { staticClass: "container " }, [
                 _c("p", { staticClass: "center-align" }, [
@@ -51430,14 +51446,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*********************************************************!*\
   !*** ./resources/js/components/FormularioComponent.vue ***!
   \*********************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _FormularioComponent_vue_vue_type_template_id_753110e0_scoped_true_v_if_bool___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormularioComponent.vue?vue&type=template&id=753110e0&scoped=true&v-if=bool& */ "./resources/js/components/FormularioComponent.vue?vue&type=template&id=753110e0&scoped=true&v-if=bool&");
 /* harmony import */ var _FormularioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormularioComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/FormularioComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _FormularioComponent_vue_vue_type_style_index_0_id_753110e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FormularioComponent.vue?vue&type=style&index=0&id=753110e0&scoped=true&lang=css& */ "./resources/js/components/FormularioComponent.vue?vue&type=style&index=0&id=753110e0&scoped=true&lang=css&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _FormularioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _FormularioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _FormularioComponent_vue_vue_type_style_index_0_id_753110e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FormularioComponent.vue?vue&type=style&index=0&id=753110e0&scoped=true&lang=css& */ "./resources/js/components/FormularioComponent.vue?vue&type=style&index=0&id=753110e0&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -51469,7 +51486,7 @@ component.options.__file = "resources/js/components/FormularioComponent.vue"
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/FormularioComponent.vue?vue&type=script&lang=js& ***!
   \**********************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

@@ -131,7 +131,6 @@
                     numberTimes:"",
                     reference: ""
                     }]
-
             }
         },
         mounted() {
@@ -145,30 +144,31 @@
         methods:{
             enviar(){
               const params = {
-                studentSend:[{
-                    id: this.estudiante.id,
+                studentSend:{
                     rut: this.estudiante.rut,
                     name: this.estudiante.name,
                     email: this.estudiante.email,
-                    lastNameP: this.estudiante.lastNameP,
-                    lastNameM: this.estudiante.lastNameM,
+                    lastNameDad: this.estudiante.lastNameDad,
+                    lastNameMom: this.estudiante.lastNameMom,
                     fone: this.estudiante.fone,
                     address: this.estudiante.address,
+                    level: this.estudiante.level,
                     career: this.career,
                     faculty: this.faculty
-                }],
-                postulationSend:[{
-                    numberTimes: this.postulacion.numberTimes,
-                    reference: this.postulacion.reference,
-                    subjectId: this.asignatura.id
-                }],
+                },
+                postulationSend:{
+                    numberTime: this.postulacion.numberTimes,
+                    referenceTeacher_id: this.postulacion.reference,
+                    subject_id: this.asignatura.id
+                },
                 requirement: this.requisitos,
                 studentScore: this.notaAlumno
 
               };
               console.log(params);
-              //aqui debemos hacer el axios que envie el rut, debo reibir al estudiante
-              this.$emit('botonIngresar', params);
+              axios.post('students/postulations', params).then((response)=>{
+                this.$emit('botonEnviar');
+                });
             }
         }
     }

@@ -5,7 +5,8 @@
             :estudiante = "student"
             :asignatura = "asignaturaActual"
             :faculty = "facultad"
-            :career = "carrera">
+            :career = "carrera"
+            @botonEnviar="cambioProceso">
         </formulario-component>   
 
         <div v-else class="container ">
@@ -72,12 +73,13 @@
                 //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
                 let studentX = {
                     rut: res.rut,
-                    name: "",
-                    lastName: "",
-                    email: "",
-                    address: "",
-                    fone: "",
-                    level: ""
+                    name: null,
+                    lastNameMom: null,
+                    lastNameDad:null,
+                    email: null,
+                    address: null,
+                    fone: null,
+                    level: null
                 };             
                 axios.post('students/checkByRut', {rut: res.rut
                         }
@@ -87,7 +89,7 @@
                     console.log(this.student);
                 }
                 else{
-                    this.student = response.data[0];
+                    this.student = response.data;
                 console.log(this.student);
                 } 
                 this.login = true;
@@ -97,6 +99,15 @@
                 this.asignaturaActual = this.asignaturas[index];
                 this.proceso = true;
                 console.log(this.student);
+                //AQUI SE PIDEN LOS REQUISITOS DE LA ASIGNATURA EN CUESTIÓN
+            },
+            cambioProceso(){
+                this.proceso = false;
+                axios.post('students/checkByRut', {rut: res.rut
+                        }
+                ).then((response)=>{
+                this.student = response.data;
+                }); 
             }
         }
     }
