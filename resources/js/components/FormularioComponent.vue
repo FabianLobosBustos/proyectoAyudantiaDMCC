@@ -7,7 +7,7 @@
             <form class="col s12"  v-on:submit.prevent=enviar() >
                     <div class="col s6">
                         <label for="nombre">Nombre:</label>
-                        <input class ="validate" required type="text"  placeholder="Ingresa tu nombre" id="nombre" v-bind:value ="estudiante.name">    
+                        <input class ="validate" required type="text"  placeholder="Ingresa tu nombre" id="nombre" v-model ="estudiante.name">    
                     </div>
                     <div class="col s6">
                         <label for="correo">Correo:</label>
@@ -16,11 +16,11 @@
                     </div>
                     <div class=" col s6">
                         <label for="apellidoPaterno">Apellido Paterno:</label>
-                        <input class="validate" required type="text" placeholder="Ingresa tu Apellido Paterno" id="apellidoPaterno" v-model="estudiante.lastNameP">    
+                        <input class="validate" required type="text" placeholder="Ingresa tu Apellido Paterno" id="apellidoPaterno" v-model="estudiante.lastNameDad">    
                     </div>
                     <div class="col s6">
                         <label for="apellidoMaterno">Apellido Materno:</label>
-                        <input class="validate" required type="text" placeholder="Ingresa tu Apellido Materno" id="apellidoMaterno" v-model="estudiante.lastNameM">
+                        <input class="validate" required type="text" placeholder="Ingresa tu Apellido Materno" id="apellidoMaterno" v-model="estudiante.lastNameMom">
                     </div>
                     <div class="col s6">
                         <label for="telefono">Teléfono:</label>
@@ -68,7 +68,7 @@
                     </div>
                     <div class="col s6">
                         Nivel:
-                        <input id="email_inline" type="number" class="validate" max="12" min="1">
+                        <input id="email_inline" type="number" class="validate" max="12" min="1" v-model="estudiante.level">
                         
                         <span class="helper-text" data-error="wrong" data-success="right"> Correspode al nivel de la asignatura más baja</span>
                     </div>
@@ -83,7 +83,9 @@
                     <div class="col s6 right-align">
                         <button class="waves-effect orange btn" type="submit" v-on:click= "enviar()">Enviar</button>    
                     </div> 
+                    {{postulacion.numberTimes}}
                  {{notaAlumno}}
+                 
                     
             </form>
         </div>
@@ -166,9 +168,10 @@
 
               };
               console.log(params);
-              axios.post('students/postulations', params).then((response)=>{
-                this.$emit('botonEnviar');
-                });
+              axios.post('postulations', params).then((response)=>{
+                  this.$emit('botonEnviar');
+              });
+              
             }
         }
     }

@@ -58,8 +58,8 @@
                 asignaturaActual: [],
                 login: false,
                 proceso: false,
-                facultad: "Facultad de Ingeniería",
-                carrera: "Ingenieria civil en informática"
+                facultad: "facultad",
+                carrera: "carrera"
             }
         },
         mounted() {
@@ -73,13 +73,13 @@
                 //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
                 let studentX = {
                     rut: res.rut,
-                    name: null,
-                    lastNameMom: null,
-                    lastNameDad:null,
-                    email: null,
-                    address: null,
-                    fone: null,
-                    level: null
+                    name: "",
+                    lastNameMom: "",
+                    lastNameDad:"",
+                    email: "",
+                    address: "",
+                    fone: "",
+                    level: ""
                 };             
                 axios.post('students/checkByRut', {rut: res.rut
                         }
@@ -103,7 +103,8 @@
             },
             cambioProceso(){
                 this.proceso = false;
-                axios.post('students/checkByRut', {rut: res.rut
+                console.log(this.student.rut)
+                axios.post('students/checkByRut', {rut: this.student.rut
                         }
                 ).then((response)=>{
                 this.student = response.data;

@@ -58,7 +58,7 @@ class StudentController extends Controller
         $student->address = $request->address;
         $student->save();
         
-        return $student;
+        return $student->first();
         
     }
 

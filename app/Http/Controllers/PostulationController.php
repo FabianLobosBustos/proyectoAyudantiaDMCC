@@ -36,7 +36,8 @@ class PostulationController extends Controller
     //asi hasta el final de los tiempo
     public function store(Request $request)
     {
-        
+
+        error_log((string)$request);
         //Parseamos el JSON entrante
         $phpArray = json_decode($request,true);
      
@@ -88,18 +89,21 @@ class PostulationController extends Controller
         $student->email = $studentSend_email;
         $student->verificatorDigit = $studentSend_verificatorDigit;
         error_log('a punto de guardar');
+        error_log((string)$student);
         $student->save();
         
         //Completo la carrera del estudiante
 
         $career = Career::where('name', $studentSend_careerName)->first();
         $student->careers()->attach($career);
-
+        error_log((string)$career);
         //ATENCION! LA CARRERA SE DEBE ASOCIAR A LA FACULTAD EN CUESTION
         //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
         $faculty = Faculty::where('name', $studentSend_facultyName)->first();
+        error_log((string)$faculty);
+        error_log("asdasd");
         $career->faculty_id = $faculty->id;
-
+        error_log("punto 2");
         //Asigamos la asignatura
         $postulation->subject_id = $postulationSend_subject_id;
 
@@ -107,11 +111,11 @@ class PostulationController extends Controller
         $postulation->student_id = $student->id;
 
         //y la informacion referente al alumno
-        $postulation->numberTime = $postulationSend_numberTime;
-        $postulation->referenceTeacher_id = $postulationSend_referenceTeacher_id;
+        $postulation->numberTime = (integer)$postulationSend_numberTime;
+        $postulation->referenceTeacher_id = (integer)$postulationSend_referenceTeacher_id;
         
         //El reference text sera 'null' por mientras
-        $postulation->referenceText = 'null';
+        $postulation->referenceText = "null";
         //accepted en 0 (no esta claro si se usara)
         //$postulation->accepted = 0;
 
@@ -120,6 +124,8 @@ class PostulationController extends Controller
         //como se enviaran del frontEnd
 
         //guardamos la postulacion
+        error_log("punto 3");
+        error_log((string)$postulation);
         $postulation->save();
         return 'CORRECTO';
 

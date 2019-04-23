@@ -1959,6 +1959,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['estudiante', 'asignatura', 'faculty', 'career'],
   data: function data() {
@@ -2013,7 +2015,7 @@ __webpack_require__.r(__webpack_exports__);
         studentScore: this.notaAlumno
       };
       console.log(params);
-      axios.post('students/postulations', params).then(function (response) {
+      axios.post('postulations', params).then(function (response) {
         _this.$emit('botonEnviar');
       });
     }
@@ -2091,8 +2093,8 @@ __webpack_require__.r(__webpack_exports__);
       asignaturaActual: [],
       login: false,
       proceso: false,
-      facultad: "Facultad de Ingeniería",
-      carrera: "Ingenieria civil en informática"
+      facultad: "facultad",
+      carrera: "carrera"
     };
   },
   mounted: function mounted() {
@@ -2110,13 +2112,13 @@ __webpack_require__.r(__webpack_exports__);
       //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
       var studentX = {
         rut: res.rut,
-        name: null,
-        lastNameMom: null,
-        lastNameDad: null,
-        email: null,
-        address: null,
-        fone: null,
-        level: null
+        name: "",
+        lastNameMom: "",
+        lastNameDad: "",
+        email: "",
+        address: "",
+        fone: "",
+        level: ""
       };
       axios.post('students/checkByRut', {
         rut: res.rut
@@ -2141,8 +2143,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.proceso = false;
+      console.log(this.student.rut);
       axios.post('students/checkByRut', {
-        rut: res.rut
+        rut: this.student.rut
       }).then(function (response) {
         _this3.student = response.data;
       });
@@ -38377,6 +38380,14 @@ var render = function() {
             _c("label", { attrs: { for: "nombre" } }, [_vm._v("Nombre:")]),
             _vm._v(" "),
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.estudiante.name,
+                  expression: "estudiante.name"
+                }
+              ],
               staticClass: "validate",
               attrs: {
                 required: "",
@@ -38384,7 +38395,15 @@ var render = function() {
                 placeholder: "Ingresa tu nombre",
                 id: "nombre"
               },
-              domProps: { value: _vm.estudiante.name }
+              domProps: { value: _vm.estudiante.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.estudiante, "name", $event.target.value)
+                }
+              }
             })
           ]),
           _vm._v(" "),
@@ -38429,8 +38448,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.estudiante.lastNameP,
-                  expression: "estudiante.lastNameP"
+                  value: _vm.estudiante.lastNameDad,
+                  expression: "estudiante.lastNameDad"
                 }
               ],
               staticClass: "validate",
@@ -38440,13 +38459,13 @@ var render = function() {
                 placeholder: "Ingresa tu Apellido Paterno",
                 id: "apellidoPaterno"
               },
-              domProps: { value: _vm.estudiante.lastNameP },
+              domProps: { value: _vm.estudiante.lastNameDad },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.estudiante, "lastNameP", $event.target.value)
+                  _vm.$set(_vm.estudiante, "lastNameDad", $event.target.value)
                 }
               }
             })
@@ -38462,8 +38481,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.estudiante.lastNameM,
-                  expression: "estudiante.lastNameM"
+                  value: _vm.estudiante.lastNameMom,
+                  expression: "estudiante.lastNameMom"
                 }
               ],
               staticClass: "validate",
@@ -38473,13 +38492,13 @@ var render = function() {
                 placeholder: "Ingresa tu Apellido Materno",
                 id: "apellidoMaterno"
               },
-              domProps: { value: _vm.estudiante.lastNameM },
+              domProps: { value: _vm.estudiante.lastNameMom },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.estudiante, "lastNameM", $event.target.value)
+                  _vm.$set(_vm.estudiante, "lastNameMom", $event.target.value)
                 }
               }
             })
@@ -38739,7 +38758,44 @@ var render = function() {
             0
           ),
           _vm._v(" "),
-          _vm._m(1),
+          _c("div", { staticClass: "col s6" }, [
+            _vm._v("\n                    Nivel:\n                    "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.estudiante.level,
+                  expression: "estudiante.level"
+                }
+              ],
+              staticClass: "validate",
+              attrs: {
+                id: "email_inline",
+                type: "number",
+                max: "12",
+                min: "1"
+              },
+              domProps: { value: _vm.estudiante.level },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.estudiante, "level", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass: "helper-text",
+                attrs: { "data-error": "wrong", "data-success": "right" }
+              },
+              [_vm._v(" Correspode al nivel de la asignatura más baja")]
+            )
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "col s12" }, [
             _c("br"),
@@ -38776,7 +38832,7 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _vm._m(2),
+          _vm._m(1),
           _vm._v(" "),
           _c("div", { staticClass: "col s6 right-align" }, [
             _c(
@@ -38794,9 +38850,11 @@ var render = function() {
             )
           ]),
           _vm._v(
-            " \n             " +
+            " \n                " +
+              _vm._s(_vm.postulacion.numberTimes) +
+              "\n             " +
               _vm._s(_vm.notaAlumno) +
-              "\n                \n        "
+              "\n             \n                \n        "
           )
         ]
       )
@@ -38810,27 +38868,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col s3" }, [
       _c("label", [_vm._v("Cantidad de veces que ha sido ayudante:")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s6" }, [
-      _vm._v("\n                    Nivel:\n                    "),
-      _c("input", {
-        staticClass: "validate",
-        attrs: { id: "email_inline", type: "number", max: "12", min: "1" }
-      }),
-      _vm._v(" "),
-      _c(
-        "span",
-        {
-          staticClass: "helper-text",
-          attrs: { "data-error": "wrong", "data-success": "right" }
-        },
-        [_vm._v(" Correspode al nivel de la asignatura más baja")]
-      )
     ])
   },
   function() {
@@ -51446,15 +51483,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*********************************************************!*\
   !*** ./resources/js/components/FormularioComponent.vue ***!
   \*********************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _FormularioComponent_vue_vue_type_template_id_753110e0_scoped_true_v_if_bool___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormularioComponent.vue?vue&type=template&id=753110e0&scoped=true&v-if=bool& */ "./resources/js/components/FormularioComponent.vue?vue&type=template&id=753110e0&scoped=true&v-if=bool&");
 /* harmony import */ var _FormularioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormularioComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/FormularioComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _FormularioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _FormularioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _FormularioComponent_vue_vue_type_style_index_0_id_753110e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FormularioComponent.vue?vue&type=style&index=0&id=753110e0&scoped=true&lang=css& */ "./resources/js/components/FormularioComponent.vue?vue&type=style&index=0&id=753110e0&scoped=true&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _FormularioComponent_vue_vue_type_style_index_0_id_753110e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FormularioComponent.vue?vue&type=style&index=0&id=753110e0&scoped=true&lang=css& */ "./resources/js/components/FormularioComponent.vue?vue&type=style&index=0&id=753110e0&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -51486,7 +51522,7 @@ component.options.__file = "resources/js/components/FormularioComponent.vue"
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/FormularioComponent.vue?vue&type=script&lang=js& ***!
   \**********************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51773,8 +51809,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/fabi/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/fabi/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
