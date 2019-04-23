@@ -26,7 +26,7 @@ class StudentController extends Controller
     {
 
 
-        
+
         
         $student = Student::where('rut',(int)$request->rut)->get();
 

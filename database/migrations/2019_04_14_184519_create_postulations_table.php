@@ -16,8 +16,8 @@ class CreatePostulationsTable extends Migration
         Schema::create('postulations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('numberTime');
-            $table->integer('referenceTeacher');
-            $table->integer('accepted');
+            $table->integer('referenceTeacher_id');
+            $table->string('referenceText');
             $table->bigInteger('subject_id')->unsigned();
             $table->foreign('subject_id')->references('id')->on('subjects');
             $table->bigInteger('student_id')->unsigned();

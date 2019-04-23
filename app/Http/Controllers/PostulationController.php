@@ -36,57 +36,95 @@ class PostulationController extends Controller
     //asi hasta el final de los tiempo
     public function store(Request $request)
     {
+        
+        //Parseamos el JSON entrante
+        $phpArray = json_decode($request,true);
+     
+        //obtenemos todos los datos
+        $studentSend_rut = $request->input('studentSend.rut');
+        $studentSend_name = $request->input('studentSend.name');
+        $studentSend_lastNameDad = $request->input('studentSend.lastNameDad');
+        $studentSend_lastNameMom = $request->input('studentSend.lastNameMom');
+        $studentSend_address = $request->input('studentSend.address');
+        $studentSend_email = $request->input('studentSend.email');
+        $studentSend_fone = $request->input('studentSend.fone');
+        $studentSend_level = $request->input('studentSend.level');
+        //OJO luego se consumira de request
+        $studentSend_verificatorDigit = 'k';
+
+        //OJO! la carrera nos llega mientras solo su name! => luego actualizar
+        $studentSend_careerName = $request->input('studentSend.career');
+        $studentSend_facultyName = $request->input('studentSend.faculty');
+        
+        $postulationSend_numberTime = $request->input('postulationSend.numberTime');
+        $postulationSend_referenceTeacher_id = $request->input('postulationSend.referenceTeacher_id');
+        $postulationSend_subject_id = $request->input('postulationSend.subject_id');
+
+        //$arrayRequirements = $phpArray['requirement'];
+        //$arrayStudentScores = $phpArray['studentScore'];
+
         //creamos una nueva postulacion!
         $postulation = new Postulation;
-        error_log('ingresando al metodo');
+          //CREAR CODE para acceso de teachers
+        
         //filtramos por rut del alumno
-        $student = Student::where('rut',$request->student_rut)->get();
-        if(!$student->isEmpty()){
-            error_log('Se ha encontrado al alumno');
-            //Recargamos los datos del alumno!
-            $student = $student->first();
-            $student->name = $request->student_name;
-            $student->lastName = $request->student_lastName;
-            $student->level = $request->student_level;
-            $student->fone =$request->student_fone;
-            $student->rut = $request->student_rut;
-            $student->verificatorDigit = $request->student_verificatorDigit;
-            $student->address = $request->student_address;
-            error_log('a punto de guardar');
-            $student->save();
-            //falta el cooreo 
-            //asumiendo que nos llega el nombre de la carrera
-            //Buscamos la carrera especifica y la atamos al alumno
-            $career = Career::where('name',$request->carrer_name)->first();
-            $student->careers()->attach($career);
-
-            //ATENCION! LA CARRERA SE DEBE ASOCIAR A LA FACULTAD EN CUESTION
-            //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
-            $faculty = Faculty::where('name',$request->faculty_name)->first();
-            $career->faculty_id = $faculty->id;
-
-            //asi mismo con la asignatua a la que postula
-            $subject = Subject::where('name',$request->subject_name)->first();
-            $postulation->subject_id = $subject->id;
-
-            //obviamente añadimos al alumno
-            $postulation->student_id = $student->id;
-
-            //y la informacion referente al alumno
-            $postulation->numberTime = $request->postulation_numberTime;
-            $postulation->referenceTeacher = $request->postulation_id_referenceTeacher;
-            $postulation->accepted = 0;
-            //QUEDA PENDIENTE EL TEMA DE LAS NOTAS!!!
-                //basicamente es porque aun no se sabe el
-                //como se enviaran del frontEnd
+        $student = Student::where('rut', $studentSend_rut)->get();
         
-            //guardamos la postulacion
-            $postulation->save();
-            return 'CORRECTO';
-        
+        if ($student->isEmpty()) {
+            $student = new Student;
+        }else{
+            $student =  $student->first();
         }
+    
+        
+        // Cargamos o Recargamos los datos del estudiante
+        $student->name = $studentSend_name;
+        $student->lastNameDad = $studentSend_lastNameDad;
+        $student->lastNameMom = $studentSend_lastNameMom;
+        $student->level = $studentSend_level;
+        $student->fone = $studentSend_fone;
+        $student->rut = $studentSend_rut;
+        $student->address = $studentSend_address;
+        $student->email = $studentSend_email;
+        $student->verificatorDigit = $studentSend_verificatorDigit;
+        error_log('a punto de guardar');
+        $student->save();
+        
+        //Completo la carrera del estudiante
 
-        return 'ALUMNO_NO_REGISTRADO';
+        $career = Career::where('name', $studentSend_careerName)->first();
+        $student->careers()->attach($career);
+
+        //ATENCION! LA CARRERA SE DEBE ASOCIAR A LA FACULTAD EN CUESTION
+        //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
+        $faculty = Faculty::where('name', $studentSend_facultyName)->first();
+        $career->faculty_id = $faculty->id;
+
+        //Asigamos la asignatura
+        $postulation->subject_id = $postulationSend_subject_id;
+
+        //obviamente añadimos al alumno
+        $postulation->student_id = $student->id;
+
+        //y la informacion referente al alumno
+        $postulation->numberTime = $postulationSend_numberTime;
+        $postulation->referenceTeacher_id = $postulationSend_referenceTeacher_id;
+        
+        //El reference text sera 'null' por mientras
+        $postulation->referenceText = 'null';
+        //accepted en 0 (no esta claro si se usara)
+        //$postulation->accepted = 0;
+
+        //QUEDA PENDIENTE EL TEMA DE LAS NOTAS!!!
+        //basicamente es porque aun no se sabe el
+        //como se enviaran del frontEnd
+
+        //guardamos la postulacion
+        $postulation->save();
+        return 'CORRECTO';
+
+
+
         
     }
 
