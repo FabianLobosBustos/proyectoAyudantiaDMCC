@@ -15,8 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+//RUTAS
+//Student
 Route::post('students/checkByRut', 'StudentController@checkByRut');
 Route::apiResource('students', 'StudentController');
+//Subject
+Route::get('subject/{id}/requirements', 'SubjectController@showRequirementsBySubject');
 Route::apiResource('subjects', 'SubjectController');
+//Postulation
 Route::apiResource('postulations', 'PostulationController');

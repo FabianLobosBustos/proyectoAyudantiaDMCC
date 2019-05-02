@@ -38,6 +38,25 @@ class SubjectController extends Controller
         //
     }
 
+
+    public function showRequirementsBySubject($id){
+        //REALIZAR FILTRADO PARA QUE NO SE CAIGA EL METODO!
+        $subject = Subject::where('id', $id)->first();
+        $requirements = $subject->requirements;     
+        //creando json
+        $list_of_requirements = [];
+        foreach($requirements as $requirement){
+            $requirementName = Subject::where('id', $requirement->referenceSubject)->first()->name;
+            
+            $list_of_requirements[] = [
+                $requirement->referenceSubject,
+                $requirementName
+            ];
+        }
+       
+        $list_of_requirements = json_encode($list_of_requirements);
+        return $list_of_requirements;
+    }
     /**
      * Update the specified resource in storage.
      *
