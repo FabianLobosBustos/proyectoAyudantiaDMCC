@@ -30,8 +30,19 @@
                         <input class="validate" required type="text" placeholder="Ingresa tu dirección " id="direccion" v-model="estudiante.address">
                     </div>
                     <div class="col s6">
-                        <label for="facultad">Facultad:</label>
-                        <input class="validate" required type="text" placeholder="Ingrese facultad" id="facultad" v-model="faculty">
+                        <div class="md-layout-item">
+        
+          <label for="country">Country</label>
+          <md-select v-model="country" name="country" id="country" md-dense>
+            <md-option value="australia">Australia</md-option>
+            <md-option value="brazil">Brazil</md-option>
+            <md-option value="japan">Japan</md-option>
+            <md-option value="united-states">United States</md-option>
+          </md-select>
+      
+      </div>
+                         <label for="facultad">Facultad:</label>
+                        <input class="validate" required type="text" placeholder="Ingrese facultad" id="facultad" v-model="faculty"> 
                     </div>
                     <div class="col s6">
                         <label for="Carrera">Carrera:</label>
@@ -125,6 +136,7 @@
                     id: 3,
                     name: "Algebra 2"
                 }],
+                country:null,
                 notaAlumno: [],
                 postulacion: [{
                     numberTimes:"",
@@ -133,8 +145,11 @@
             }
         },
         mounted() {
-            console.log('Component mounted.');         
-           
+           // const url = str.concat('subject/',this.asignatura.id,'/requirements');
+            console.log('Component mounted.');
+           // axios.get(url).then((response)=>{
+             //   this.requisitos = response.data; 
+             //});         
         },
         methods:{
             enviar(){

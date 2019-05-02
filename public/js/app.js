@@ -1958,6 +1958,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['estudiante', 'asignatura', 'faculty', 'career'],
   data: function data() {
@@ -1974,6 +1985,7 @@ __webpack_require__.r(__webpack_exports__);
         id: 3,
         name: "Algebra 2"
       }],
+      country: null,
       notaAlumno: [],
       postulacion: [{
         numberTimes: "",
@@ -1982,7 +1994,10 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    // const url = str.concat('subject/',this.asignatura.id,'/requirements');
+    console.log('Component mounted.'); // axios.get(url).then((response)=>{
+    //   this.requisitos = response.data; 
+    //});         
   },
   methods: {
     enviar: function enviar() {
@@ -38562,6 +38577,47 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col s6" }, [
+            _c(
+              "div",
+              { staticClass: "md-layout-item" },
+              [
+                _c("label", { attrs: { for: "country" } }, [_vm._v("Country")]),
+                _vm._v(" "),
+                _c(
+                  "md-select",
+                  {
+                    attrs: { name: "country", id: "country", "md-dense": "" },
+                    model: {
+                      value: _vm.country,
+                      callback: function($$v) {
+                        _vm.country = $$v
+                      },
+                      expression: "country"
+                    }
+                  },
+                  [
+                    _c("md-option", { attrs: { value: "australia" } }, [
+                      _vm._v("Australia")
+                    ]),
+                    _vm._v(" "),
+                    _c("md-option", { attrs: { value: "brazil" } }, [
+                      _vm._v("Brazil")
+                    ]),
+                    _vm._v(" "),
+                    _c("md-option", { attrs: { value: "japan" } }, [
+                      _vm._v("Japan")
+                    ]),
+                    _vm._v(" "),
+                    _c("md-option", { attrs: { value: "united-states" } }, [
+                      _vm._v("United States")
+                    ])
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
             _c("label", { attrs: { for: "facultad" } }, [_vm._v("Facultad:")]),
             _vm._v(" "),
             _c("input", {

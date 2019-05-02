@@ -116,18 +116,3 @@
 
 
 
-
-data(){
-            return {
-                valores:[{   
-                    femenenino: 1,
-                    masculino: 2,
-                    otro:3
-                }],
-                labels:[{
-                    lavel1: "femenino",
-                    lavel2: "masculino",
-                    label3: "otro"
-                }]
-            }
-}
