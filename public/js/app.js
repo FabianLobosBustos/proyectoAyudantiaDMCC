@@ -1958,9 +1958,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['estudiante', 'asignatura', 'faculty', 'career'],
   data: function data() {
@@ -1985,9 +1982,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log('Component mounted.'); //axios.get('/pensamientos').then((response)=>{
-    //  this.pensamientos = response.data; 
-    //}); aqui se obtiene al alumno y se guarda en el data student
+    console.log('Component mounted.');
   },
   methods: {
     enviar: function enviar() {
@@ -2127,7 +2122,7 @@ __webpack_require__.r(__webpack_exports__);
           _this2.student = studentX;
           console.log(_this2.student);
         } else {
-          _this2.student = response.data;
+          _this2.student = response.data[0];
           console.log(_this2.student);
         }
 
@@ -38352,8 +38347,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container " }, [
-    _c("p", [_vm._v("pene: " + _vm._s(_vm.estudiante.name))]),
-    _vm._v(" "),
     _c("div", { staticClass: "row card" }, [
       _c("h5", { staticClass: "center-align" }, [
         _vm._v(
@@ -38848,14 +38841,7 @@ var render = function() {
               },
               [_vm._v("Enviar")]
             )
-          ]),
-          _vm._v(
-            " \n                " +
-              _vm._s(_vm.postulacion.numberTimes) +
-              "\n             " +
-              _vm._s(_vm.notaAlumno) +
-              "\n             \n                \n        "
-          )
+          ])
         ]
       )
     ])

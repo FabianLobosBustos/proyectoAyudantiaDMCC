@@ -89,7 +89,7 @@
                     console.log(this.student);
                 }
                 else{
-                    this.student = response.data;
+                    this.student = response.data[0];
                 console.log(this.student);
                 } 
                 this.login = true;
@@ -113,3 +113,21 @@
         }
     }
 </script>
+
+
+
+
+data(){
+            return {
+                valores:[{   
+                    femenenino: 1,
+                    masculino: 2,
+                    otro:3
+                }],
+                labels:[{
+                    lavel1: "femenino",
+                    lavel2: "masculino",
+                    label3: "otro"
+                }]
+            }
+}

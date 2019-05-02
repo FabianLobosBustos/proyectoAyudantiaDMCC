@@ -1,6 +1,5 @@
 <template v-if="bool">
-    <div class="container ">
-        <p>pene: {{estudiante.name}}</p>   
+    <div class="container ">  
         <div class="row card">
             <h5 class="center-align">Postulación de ayudante para asignatura {{asignatura.name}}</h5>
             <br>
@@ -83,8 +82,6 @@
                     <div class="col s6 right-align">
                         <button class="waves-effect orange btn" type="submit" v-on:click= "enviar()">Enviar</button>    
                     </div> 
-                    {{postulacion.numberTimes}}
-                 {{notaAlumno}}
                  
                     
             </form>
@@ -136,11 +133,7 @@
             }
         },
         mounted() {
-            console.log('Component mounted.');
-            //axios.get('/pensamientos').then((response)=>{
-              //  this.pensamientos = response.data; 
-            //}); aqui se obtiene al alumno y se guarda en el data student
-         
+            console.log('Component mounted.');         
            
         },
         methods:{
