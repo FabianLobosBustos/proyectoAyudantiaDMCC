@@ -30,19 +30,16 @@
                         <input class="validate" required type="text" placeholder="Ingresa tu dirección " id="direccion" v-model="estudiante.address">
                     </div>
                     <div class="col s6">
-                        <div class="md-layout-item">
-        
-          <label for="country">Country</label>
-          <md-select v-model="country" name="country" id="country" md-dense>
-            <md-option value="australia">Australia</md-option>
-            <md-option value="brazil">Brazil</md-option>
-            <md-option value="japan">Japan</md-option>
-            <md-option value="united-states">United States</md-option>
-          </md-select>
-      
-      </div>
-                         <label for="facultad">Facultad:</label>
-                        <input class="validate" required type="text" placeholder="Ingrese facultad" id="facultad" v-model="faculty"> 
+                        <label>Facultad:</label>
+                            <select class="browser-default validate"  required type="text" v-model="faculty">
+                                <option disabled selected >Seleccione su Facultad</option>
+                                <option v-for = "(facultad,index) in faculties"
+                                    :key="index"
+                                    >{{facultad}}
+                                </option>
+                            </select>
+                        <!-- <label for="facultad">Facultad:</label>
+                        <input class="validate" required type="text" placeholder="Ingrese facultad" id="facultad" v-model="faculty"> -->
                     </div>
                     <div class="col s6">
                         <label for="Carrera">Carrera:</label>
@@ -70,8 +67,8 @@
                         </label>
                     </div>
                     <div class="col s6">
-                        <div class="col s4" v-for= "(requisito, index) in requisitos" :key= requisito.id>
-                                Nota {{requisito.name}}:
+                        <div class="col s4" v-for= "(requisito, index) in requisitos" :key= index>
+                                Nota {{requisito[1]}}:
                                 <input step="0.1" id="email_inline" type="number" required class="validate" placeholder="ej: 4.8" max="7.0" min="4.0" v-model="notaAlumno[index]">
                                 <span class="helper-text" data-error="wrong" data-success="right"></span>
                         </div>
@@ -93,8 +90,6 @@
                     <div class="col s6 right-align">
                         <button class="waves-effect orange btn" type="submit" v-on:click= "enviar()">Enviar</button>    
                     </div> 
-                 
-                    
             </form>
         </div>
             
@@ -122,7 +117,7 @@
 
 <script>
     export default {
-        props: ['estudiante', 'asignatura','faculty','career'],
+        props: ['estudiante', 'asignatura','faculties','career'],
         data(){
             return {
                 asignaturas: 1,
@@ -136,20 +131,22 @@
                     id: 3,
                     name: "Algebra 2"
                 }],
-                country:null,
                 notaAlumno: [],
                 postulacion: [{
                     numberTimes:"",
                     reference: ""
-                    }]
+                    }],
+                faculty: null
             }
         },
         mounted() {
-           // const url = str.concat('subject/',this.asignatura.id,'/requirements');
+            const url = "subject/"+this.asignatura.id+"/requirements";
             console.log('Component mounted.');
-           // axios.get(url).then((response)=>{
-             //   this.requisitos = response.data; 
-             //});         
+            axios.get(url).then((response)=>{
+                this.requisitos = response.data; 
+                console.log(response.data);
+             });   
+                   
         },
         methods:{
             enviar(){

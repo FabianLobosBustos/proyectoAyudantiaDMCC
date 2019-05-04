@@ -8,6 +8,7 @@
           <a class="waves-effect orange btn"  v-on:click= "ingresar()">Ingresar</a>
         </div>
       </form>
+      
     </div>
 
 </template>

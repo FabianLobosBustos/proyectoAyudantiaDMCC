@@ -4,7 +4,7 @@
         <formulario-component v-if="proceso"
             :estudiante = "student"
             :asignatura = "asignaturaActual"
-            :faculty = "facultad"
+            :faculties = "faculties"
             :career = "carrera"
             @botonEnviar="cambioProceso">
         </formulario-component>   
@@ -58,7 +58,7 @@
                 asignaturaActual: [],
                 login: false,
                 proceso: false,
-                facultad: "facultad",
+                faculties:["Facultad Ingenieria", "Facultad de Ciencias"] ,
                 carrera: "carrera"
             }
         },

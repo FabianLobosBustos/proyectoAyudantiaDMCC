@@ -1964,13 +1964,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['estudiante', 'asignatura', 'faculty', 'career'],
+  props: ['estudiante', 'asignatura', 'faculties', 'career'],
   data: function data() {
     return {
       asignaturas: 1,
@@ -1985,23 +1980,27 @@ __webpack_require__.r(__webpack_exports__);
         id: 3,
         name: "Algebra 2"
       }],
-      country: null,
       notaAlumno: [],
       postulacion: [{
         numberTimes: "",
         reference: ""
-      }]
+      }],
+      faculty: null
     };
   },
   mounted: function mounted() {
-    // const url = str.concat('subject/',this.asignatura.id,'/requirements');
-    console.log('Component mounted.'); // axios.get(url).then((response)=>{
-    //   this.requisitos = response.data; 
-    //});         
+    var _this = this;
+
+    var url = "subject/" + this.asignatura.id + "/requirements";
+    console.log('Component mounted.');
+    axios.get(url).then(function (response) {
+      _this.requisitos = response.data;
+      console.log(response.data);
+    });
   },
   methods: {
     enviar: function enviar() {
-      var _this = this;
+      var _this2 = this;
 
       var params = {
         studentSend: {
@@ -2026,7 +2025,7 @@ __webpack_require__.r(__webpack_exports__);
       };
       console.log(params);
       axios.post('postulations', params).then(function (response) {
-        _this.$emit('botonEnviar');
+        _this2.$emit('botonEnviar');
       });
     }
   }
@@ -2103,7 +2102,7 @@ __webpack_require__.r(__webpack_exports__);
       asignaturaActual: [],
       login: false,
       proceso: false,
-      facultad: "facultad",
+      faculties: ["Facultad Ingenieria", "Facultad de Ciencias"],
       carrera: "carrera"
     };
   },
@@ -2174,6 +2173,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -38577,75 +38577,50 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col s6" }, [
+            _c("label", [_vm._v("Facultad:")]),
+            _vm._v(" "),
             _c(
-              "div",
-              { staticClass: "md-layout-item" },
-              [
-                _c("label", { attrs: { for: "country" } }, [_vm._v("Country")]),
-                _vm._v(" "),
-                _c(
-                  "md-select",
+              "select",
+              {
+                directives: [
                   {
-                    attrs: { name: "country", id: "country", "md-dense": "" },
-                    model: {
-                      value: _vm.country,
-                      callback: function($$v) {
-                        _vm.country = $$v
-                      },
-                      expression: "country"
-                    }
-                  },
-                  [
-                    _c("md-option", { attrs: { value: "australia" } }, [
-                      _vm._v("Australia")
-                    ]),
-                    _vm._v(" "),
-                    _c("md-option", { attrs: { value: "brazil" } }, [
-                      _vm._v("Brazil")
-                    ]),
-                    _vm._v(" "),
-                    _c("md-option", { attrs: { value: "japan" } }, [
-                      _vm._v("Japan")
-                    ]),
-                    _vm._v(" "),
-                    _c("md-option", { attrs: { value: "united-states" } }, [
-                      _vm._v("United States")
-                    ])
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "facultad" } }, [_vm._v("Facultad:")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.faculty,
-                  expression: "faculty"
-                }
-              ],
-              staticClass: "validate",
-              attrs: {
-                required: "",
-                type: "text",
-                placeholder: "Ingrese facultad",
-                id: "facultad"
-              },
-              domProps: { value: _vm.faculty },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.faculty,
+                    expression: "faculty"
                   }
-                  _vm.faculty = $event.target.value
+                ],
+                staticClass: "browser-default validate",
+                attrs: { required: "", type: "text" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.faculty = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
                 }
-              }
-            })
+              },
+              [
+                _c("option", { attrs: { disabled: "", selected: "" } }, [
+                  _vm._v("Seleccione su Facultad")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.faculties, function(facultad, index) {
+                  return _c("option", { key: index }, [
+                    _vm._v(_vm._s(facultad) + "\n                            ")
+                  ])
+                })
+              ],
+              2
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col s6" }, [
@@ -38762,10 +38737,10 @@ var render = function() {
             "div",
             { staticClass: "col s6" },
             _vm._l(_vm.requisitos, function(requisito, index) {
-              return _c("div", { key: requisito.id, staticClass: "col s4" }, [
+              return _c("div", { key: index, staticClass: "col s4" }, [
                 _vm._v(
                   "\n                            Nota " +
-                    _vm._s(requisito.name) +
+                    _vm._s(requisito[1]) +
                     ":\n                            "
                 ),
                 _c("input", {
@@ -38955,7 +38930,7 @@ var render = function() {
                 attrs: {
                   estudiante: _vm.student,
                   asignatura: _vm.asignaturaActual,
-                  faculty: _vm.facultad,
+                  faculties: _vm.faculties,
                   career: _vm.carrera
                 },
                 on: { botonEnviar: _vm.cambioProceso }
