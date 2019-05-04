@@ -87,16 +87,14 @@ class PostulationController extends Controller
         $student->verificatorDigit = $studentSend_verificatorDigit;
         $student->save();
         
-        //Completo la carrera del estudiante
 
+        //Completo la carrera del estudiante
         $career = Career::where('name', $studentSend_careerName)->first();
         $student->careers()->attach($career);
-        
         //ATENCION! LA CARRERA SE DEBE ASOCIAR A LA FACULTAD EN CUESTION
         //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
-        $faculty = Faculty::where('name', $studentSend_facultyName)->first();
-        $career->faculty_id = $faculty->id;
-        
+        //$faculty = Faculty::where('name', $studentSend_facultyName)->first();
+        //$career->faculty_id = $faculty->id;
         //Asigamos la asignatura
         $postulation->subject_id = $postulationSend_subject_id;
 

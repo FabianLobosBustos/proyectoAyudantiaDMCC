@@ -31,53 +31,50 @@
                     </div>
                     <div class="col s6">
                         <label>Facultad:</label>
-                            <select class="browser-default validate"  required type="text" v-model="faculty">
+                            <select @change="onChange()"  class="browser-default validate"  required type="text" v-model="faculty">
                                 <option disabled selected >Seleccione su Facultad</option>
                                 <option v-for = "(facultad,index) in faculties"
                                     :key="index"
-                                    >{{facultad}}
+                                    >{{facultad.faculty_name}}
                                 </option>
                             </select>
-                        <!-- <label for="facultad">Facultad:</label>
-                        <input class="validate" required type="text" placeholder="Ingrese facultad" id="facultad" v-model="faculty"> -->
                     </div>
                     <div class="col s6">
-                        <label for="Carrera">Carrera:</label>
-                        <input class="validate" required type="text" placeholder="Ingrese Carrera" id="Carrera" v-model ="career">
-                    </div>
-                    <div class="col s3">
-                        <label>Cantidad de veces que ha sido ayudante:</label>
-                    </div>
-                    <div class="col s3">
-                        <label>
-                            <input checked name="group1" type="radio" value=0 v-model="postulacion.numberTimes"/>
-                            <span>ninguna</span>
-                        </label>
-                    </div>
-                    <div class="col s3">
-                        <label>
-                            <input name="group1" type="radio" value=1 v-model="postulacion.numberTimes"/>
-                            <span>una vez</span>
-                        </label>
-                    </div>
-                    <div class="col s3">
-                        <label>
-                            <input name="group1" type="radio" value =2 v-model="postulacion.numberTimes"/>
-                            <span>dos o más veces</span>
-                        </label>
+                        <label>Carrera:</label>
+                            <select  class="browser-default validate" v-if="facultadSeleccionada" required type="text" v-model="careerStudent">
+                                <option disabled selected >Seleccione su Carrera</option>
+                                <option v-for = "(carrera,index) in careers"
+                                    :key="index"
+                                    >{{carrera.career_name}}
+                                </option>
+                            </select>
+                            <select class="browser-default validate" v-else required type="text" v-model="careerStudent" disabled>
+                                <option disabled selected >Seleccione su Carrera</option>
+                                <option v-for = "(carrera,index) in careers"
+                                    :key="index"
+                                    >{{carrera.career_name}}
+                                </option>
+                            </select>
+
+                        <!--<label for="Carrera">Carrera:</label>
+                        <input class="validate" required type="text" placeholder="Ingrese Carrera" id="Carrera" v-model ="career">-->
                     </div>
                     <div class="col s6">
-                        <div class="col s4" v-for= "(requisito, index) in requisitos" :key= index>
-                                Nota {{requisito[1]}}:
-                                <input step="0.1" id="email_inline" type="number" required class="validate" placeholder="ej: 4.8" max="7.0" min="4.0" v-model="notaAlumno[index]">
-                                <span class="helper-text" data-error="wrong" data-success="right"></span>
-                        </div>
+                        <label>Cantidad de veces que ha sido ayudante de {{asignatura.name}}:</label>
+                        <input id="email_inlin" type="number" class="validate"  min=0 v-model="postulacion.numberTimes">   
                     </div>
                     <div class="col s6">
-                        Nivel:
+                        <label>Nivel:</label>
                         <input id="email_inline" type="number" class="validate" max="12" min="1" v-model="estudiante.level">
                         
                         <span class="helper-text" data-error="wrong" data-success="right"> Correspode al nivel de la asignatura más baja</span>
+                    </div>
+                    <div class="col s12">
+                        <div class="col s4" v-for= "(requisito, index) in requisitos" :key= index>
+                                <label>Nota {{requisito[1]}}:</label>
+                                <input step="0.1" id="email_inline" type="number" required class="validate" placeholder="ej: 4.8" max="7.0" min="4.0" v-model="notaAlumno[index]">
+                                <span class="helper-text" data-error="wrong" data-success="right"></span>
+                        </div>
                     </div>
                     <div class="col s12">
                         <br>
@@ -136,7 +133,10 @@
                     numberTimes:"",
                     reference: ""
                     }],
-                faculty: null
+                faculty: null,
+                careerStudent: null,
+                careers: null,
+                facultadSeleccionada: false
             }
         },
         mounted() {
@@ -149,8 +149,31 @@
                    
         },
         methods:{
+            onChange(){
+                var i;
+                var index = -1;
+                if(this.faculty != null){
+                    for(i=0;i<this.faculties.length;i++){
+                        if(this.faculty == this.faculties[i].faculty_name){
+                        index = i;
+                        }
+                    }
+                    //console.log(event.target.value)
+                    this.careers = this.faculties[index].careers;
+                    console.log(this.careers);
+                    this.facultadSeleccionada = true;
+                }
+            },
             enviar(){
-              const params = {
+                var i;
+                for (i = 0; i < this.notaAlumno.length; i++) {
+                    this.notaAlumno[i] = parseInt(this.notaAlumno[i]);
+                };
+                for (i = 0; i < this.requisitos.length; i++) {
+                    this.requisitos[i] = {id:this.requisitos[i][0],
+                                        name: this.requisitos[i][1]}
+                };
+                const params = {
                 studentSend:{
                     rut: this.estudiante.rut,
                     name: this.estudiante.name,
@@ -160,12 +183,12 @@
                     fone: this.estudiante.fone,
                     address: this.estudiante.address,
                     level: this.estudiante.level,
-                    career: this.career,
-                    faculty: this.faculty
+                    career: this.careerStudent,
+                    faculty: this.faculty.faculty_name
                 },
                 postulationSend:{
-                    numberTime: this.postulacion.numberTimes,
-                    referenceTeacher_id: this.postulacion.reference,
+                    numberTime: parseInt(this.postulacion.numberTimes),
+                    referenceTeacher_id: parseInt(this.postulacion.reference),
                     subject_id: this.asignatura.id
                 },
                 requirement: this.requisitos,

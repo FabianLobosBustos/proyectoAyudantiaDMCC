@@ -58,7 +58,7 @@
                 asignaturaActual: [],
                 login: false,
                 proceso: false,
-                faculties:["Facultad Ingenieria", "Facultad de Ciencias"] ,
+                faculties:null ,
                 carrera: "carrera"
             }
         },
@@ -99,6 +99,9 @@
                 this.asignaturaActual = this.asignaturas[index];
                 this.proceso = true;
                 console.log(this.student);
+                axios.get('/allFacultiesCareers').then((response)=>{
+                this.faculties = response.data; 
+                });
                 //AQUI SE PIDEN LOS REQUISITOS DE LA ASIGNATURA EN CUESTIÓN
             },
             cambioProceso(){

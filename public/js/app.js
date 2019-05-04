@@ -1961,9 +1961,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['estudiante', 'asignatura', 'faculties', 'career'],
   data: function data() {
@@ -1985,7 +1982,10 @@ __webpack_require__.r(__webpack_exports__);
         numberTimes: "",
         reference: ""
       }],
-      faculty: null
+      faculty: null,
+      careerStudent: null,
+      careers: null,
+      facultadSeleccionada: false
     };
   },
   mounted: function mounted() {
@@ -1999,9 +1999,42 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    onChange: function onChange() {
+      var i;
+      var index = -1;
+
+      if (this.faculty != null) {
+        for (i = 0; i < this.faculties.length; i++) {
+          if (this.faculty == this.faculties[i].faculty_name) {
+            index = i;
+          }
+        } //console.log(event.target.value)
+
+
+        this.careers = this.faculties[index].careers;
+        console.log(this.careers);
+        this.facultadSeleccionada = true;
+      }
+    },
     enviar: function enviar() {
       var _this2 = this;
 
+      var i;
+
+      for (i = 0; i < this.notaAlumno.length; i++) {
+        this.notaAlumno[i] = parseInt(this.notaAlumno[i]);
+      }
+
+      ;
+
+      for (i = 0; i < this.requisitos.length; i++) {
+        this.requisitos[i] = {
+          id: this.requisitos[i][0],
+          name: this.requisitos[i][1]
+        };
+      }
+
+      ;
       var params = {
         studentSend: {
           rut: this.estudiante.rut,
@@ -2012,12 +2045,12 @@ __webpack_require__.r(__webpack_exports__);
           fone: this.estudiante.fone,
           address: this.estudiante.address,
           level: this.estudiante.level,
-          career: this.career,
-          faculty: this.faculty
+          career: this.careerStudent,
+          faculty: this.faculty.faculty_name
         },
         postulationSend: {
-          numberTime: this.postulacion.numberTimes,
-          referenceTeacher_id: this.postulacion.reference,
+          numberTime: parseInt(this.postulacion.numberTimes),
+          referenceTeacher_id: parseInt(this.postulacion.reference),
           subject_id: this.asignatura.id
         },
         requirement: this.requisitos,
@@ -2102,7 +2135,7 @@ __webpack_require__.r(__webpack_exports__);
       asignaturaActual: [],
       login: false,
       proceso: false,
-      faculties: ["Facultad Ingenieria", "Facultad de Ciencias"],
+      faculties: null,
       carrera: "carrera"
     };
   },
@@ -2144,19 +2177,24 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     seleccionAsignatura: function seleccionAsignatura(index) {
+      var _this3 = this;
+
       this.asignaturaActual = this.asignaturas[index];
       this.proceso = true;
-      console.log(this.student); //AQUI SE PIDEN LOS REQUISITOS DE LA ASIGNATURA EN CUESTIÓN
+      console.log(this.student);
+      axios.get('/allFacultiesCareers').then(function (response) {
+        _this3.faculties = response.data;
+      }); //AQUI SE PIDEN LOS REQUISITOS DE LA ASIGNATURA EN CUESTIÓN
     },
     cambioProceso: function cambioProceso() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.proceso = false;
       console.log(this.student.rut);
       axios.post('students/checkByRut', {
         rut: this.student.rut
       }).then(function (response) {
-        _this3.student = response.data;
+        _this4.student = response.data;
       });
     }
   }
@@ -38593,19 +38631,24 @@ var render = function() {
                 staticClass: "browser-default validate",
                 attrs: { required: "", type: "text" },
                 on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.faculty = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
-                  }
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.faculty = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      return _vm.onChange()
+                    }
+                  ]
                 }
               },
               [
@@ -38615,7 +38658,10 @@ var render = function() {
                 _vm._v(" "),
                 _vm._l(_vm.faculties, function(facultad, index) {
                   return _c("option", { key: index }, [
-                    _vm._v(_vm._s(facultad) + "\n                            ")
+                    _vm._v(
+                      _vm._s(facultad.faculty_name) +
+                        "\n                            "
+                    )
                   ])
                 })
               ],
@@ -38624,125 +38670,180 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col s6" }, [
-            _c("label", { attrs: { for: "Carrera" } }, [_vm._v("Carrera:")]),
+            _c("label", [_vm._v("Carrera:")]),
+            _vm._v(" "),
+            _vm.facultadSeleccionada
+              ? _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.careerStudent,
+                        expression: "careerStudent"
+                      }
+                    ],
+                    staticClass: "browser-default validate",
+                    attrs: { required: "", type: "text" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.careerStudent = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", selected: "" } }, [
+                      _vm._v("Seleccione su Carrera")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.careers, function(carrera, index) {
+                      return _c("option", { key: index }, [
+                        _vm._v(
+                          _vm._s(carrera.career_name) +
+                            "\n                            "
+                        )
+                      ])
+                    })
+                  ],
+                  2
+                )
+              : _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.careerStudent,
+                        expression: "careerStudent"
+                      }
+                    ],
+                    staticClass: "browser-default validate",
+                    attrs: { required: "", type: "text", disabled: "" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.careerStudent = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", selected: "" } }, [
+                      _vm._v("Seleccione su Carrera")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.careers, function(carrera, index) {
+                      return _c("option", { key: index }, [
+                        _vm._v(
+                          _vm._s(carrera.career_name) +
+                            "\n                            "
+                        )
+                      ])
+                    })
+                  ],
+                  2
+                )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col s6" }, [
+            _c("label", [
+              _vm._v(
+                "Cantidad de veces que ha sido ayudante de " +
+                  _vm._s(_vm.asignatura.name) +
+                  ":"
+              )
+            ]),
             _vm._v(" "),
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.career,
-                  expression: "career"
+                  value: _vm.postulacion.numberTimes,
+                  expression: "postulacion.numberTimes"
                 }
               ],
               staticClass: "validate",
-              attrs: {
-                required: "",
-                type: "text",
-                placeholder: "Ingrese Carrera",
-                id: "Carrera"
-              },
-              domProps: { value: _vm.career },
+              attrs: { id: "email_inlin", type: "number", min: "0" },
+              domProps: { value: _vm.postulacion.numberTimes },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.career = $event.target.value
+                  _vm.$set(_vm.postulacion, "numberTimes", $event.target.value)
                 }
               }
             })
           ]),
           _vm._v(" "),
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "col s3" }, [
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.postulacion.numberTimes,
-                    expression: "postulacion.numberTimes"
-                  }
-                ],
-                attrs: {
-                  checked: "",
-                  name: "group1",
-                  type: "radio",
-                  value: "0"
-                },
-                domProps: { checked: _vm._q(_vm.postulacion.numberTimes, "0") },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(_vm.postulacion, "numberTimes", "0")
-                  }
+          _c("div", { staticClass: "col s6" }, [
+            _c("label", [_vm._v("Nivel:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.estudiante.level,
+                  expression: "estudiante.level"
                 }
-              }),
-              _vm._v(" "),
-              _c("span", [_vm._v("ninguna")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col s3" }, [
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.postulacion.numberTimes,
-                    expression: "postulacion.numberTimes"
+              ],
+              staticClass: "validate",
+              attrs: {
+                id: "email_inline",
+                type: "number",
+                max: "12",
+                min: "1"
+              },
+              domProps: { value: _vm.estudiante.level },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                ],
-                attrs: { name: "group1", type: "radio", value: "1" },
-                domProps: { checked: _vm._q(_vm.postulacion.numberTimes, "1") },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(_vm.postulacion, "numberTimes", "1")
-                  }
+                  _vm.$set(_vm.estudiante, "level", $event.target.value)
                 }
-              }),
-              _vm._v(" "),
-              _c("span", [_vm._v("una vez")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col s3" }, [
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.postulacion.numberTimes,
-                    expression: "postulacion.numberTimes"
-                  }
-                ],
-                attrs: { name: "group1", type: "radio", value: "2" },
-                domProps: { checked: _vm._q(_vm.postulacion.numberTimes, "2") },
-                on: {
-                  change: function($event) {
-                    return _vm.$set(_vm.postulacion, "numberTimes", "2")
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("span", [_vm._v("dos o más veces")])
-            ])
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass: "helper-text",
+                attrs: { "data-error": "wrong", "data-success": "right" }
+              },
+              [_vm._v(" Correspode al nivel de la asignatura más baja")]
+            )
           ]),
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "col s6" },
+            { staticClass: "col s12" },
             _vm._l(_vm.requisitos, function(requisito, index) {
               return _c("div", { key: index, staticClass: "col s4" }, [
-                _vm._v(
-                  "\n                            Nota " +
-                    _vm._s(requisito[1]) +
-                    ":\n                            "
-                ),
+                _c("label", [_vm._v("Nota " + _vm._s(requisito[1]) + ":")]),
+                _vm._v(" "),
                 _c("input", {
                   directives: [
                     {
@@ -38782,45 +38883,6 @@ var render = function() {
             0
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "col s6" }, [
-            _vm._v("\n                    Nivel:\n                    "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.estudiante.level,
-                  expression: "estudiante.level"
-                }
-              ],
-              staticClass: "validate",
-              attrs: {
-                id: "email_inline",
-                type: "number",
-                max: "12",
-                min: "1"
-              },
-              domProps: { value: _vm.estudiante.level },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.estudiante, "level", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "span",
-              {
-                staticClass: "helper-text",
-                attrs: { "data-error": "wrong", "data-success": "right" }
-              },
-              [_vm._v(" Correspode al nivel de la asignatura más baja")]
-            )
-          ]),
-          _vm._v(" "),
           _c("div", { staticClass: "col s12" }, [
             _c("br"),
             _vm._v(" "),
@@ -38856,7 +38918,7 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _vm._m(1),
+          _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "col s6 right-align" }, [
             _c(
@@ -38879,14 +38941,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s3" }, [
-      _c("label", [_vm._v("Cantidad de veces que ha sido ayudante:")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
