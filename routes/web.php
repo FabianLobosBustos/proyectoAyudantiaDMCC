@@ -24,3 +24,6 @@ Route::get('subject/{id}/requirements', 'SubjectController@showRequirementsBySub
 Route::apiResource('subjects', 'SubjectController');
 //Postulation
 Route::apiResource('postulations', 'PostulationController');
+
+//Faculty
+Route::get('allFacultiesCareers', 'FacultyController@allFacultiesCareers');

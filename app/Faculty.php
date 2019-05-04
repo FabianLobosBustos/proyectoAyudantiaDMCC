@@ -8,6 +8,6 @@ class Faculty extends Model
 {
     public function careers()
     {	
-    	return $this->hasMany(Carrer::class);
+    	return $this->hasMany(Career::class);
     }
 }
