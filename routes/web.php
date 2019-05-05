@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 //RUTAS
 //Student
+Route::get('student/{id_student}/subject/{id_subject}', 'StudentController@showScoresBySubject');
 Route::post('students/checkByRut', 'StudentController@checkByRut');
 Route::apiResource('students', 'StudentController');
 //Subject

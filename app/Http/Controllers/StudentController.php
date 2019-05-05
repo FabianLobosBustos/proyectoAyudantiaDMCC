@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Student;
 use App\Career;
+use App\Subject;
+use App\StudentScore;
 
 class StudentController extends Controller
 {
@@ -38,6 +40,42 @@ class StudentController extends Controller
         
     }
 
+    //Funcion que muestra la nota que tuvo el alumno en las asignatura
+    //que son requerimientos de la asignatura dada por parametro.
+    public function showScoresBySubject($id_student,$id_subject){
+        $student = Student::where('id',$id_student)->first();
+        //con el sort_by se logra que se obtengan las ultimas notas registradas primero
+        $studentScores = $student->studentScores->sortBy('created_at',SORT_REGULAR, true);
+        $subject = Subject::where('id',$id_subject)->first();
+        $requirements = $subject->requirements;
+        
+        $listOfRequirementsIds = [];
+        foreach($requirements as $requirement){
+            array_push($listOfRequirementsIds,$requirement->id);
+        }
+
+        $list_of_scores = [];
+        foreach($studentScores as $studentScore){
+            
+            $studentScore = StudentScore::where('id',$studentScore->id)->first();
+            $requirementSubjectId = $studentScore->subject_id;
+    
+            if (in_array($requirementSubjectId,$listOfRequirementsIds)) {
+                $requirementName = Subject::where('id',$requirementSubjectId)->first()->name;
+                $list_of_scores[] = [
+                    'subject_id' => $requirementSubjectId,
+                    'subject_name' => $requirementName,
+                    'score' => $studentScore->score
+                ];
+                //Eliminamos del requirimiento la nota agregada!
+                unset($listOfRequirementsIds[array_search($requirementSubjectId,$listOfRequirementsIds)]);
+            }
+            
+        }
+       
+        $list_of_scores = json_encode($list_of_scores);
+        return $list_of_scores;
+    }
     /**
      * Store a newly created resource in storage.
      *
