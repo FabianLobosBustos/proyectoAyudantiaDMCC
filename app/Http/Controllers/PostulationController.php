@@ -11,6 +11,7 @@ use App\Career;
 use App\Subject;
 use App\StudentScore;
 
+
 class PostulationController extends Controller
 {
     /**
@@ -58,6 +59,8 @@ class PostulationController extends Controller
         $postulationSend_referenceTeacher_id = $request->input('postulationSend.referenceTeacher_id');
         $postulationSend_subject_id = $request->input('postulationSend.subject_id');
 
+        $studentScoreSendArray = $request->input('studentScore');
+        $requirementSendArray = $request->input('requirement');
         //$arrayRequirements = $phpArray['requirement'];
         //$arrayStudentScores = $phpArray['studentScore'];
 
@@ -110,19 +113,25 @@ class PostulationController extends Controller
         //accepted en 0 (no esta claro si se usara)
         //$postulation->accepted = 0;
 
-        //QUEDA PENDIENTE EL TEMA DE LAS NOTAS!!!
-        //basicamente es porque aun no se sabe el
-        //como se enviaran del frontEnd
-
+        
         //guardamos la postulacion
         $postulation->save();
+        $i = 0;
+        foreach($requirementSendArray as $requirement){
+        
+            $studentScore = new StudentScore;
+            $studentScore->score = $studentScoreSendArray[$i];
+            $studentScore->postulation_id = $postulation->id;
+            $studentScore->student_id = $student->id;
+            $studentScore->subject_id = $requirement['id'];
+            $studentScore->save();
+            $i++;
+        }
+        
+        
         return 'CORRECTO';
 
-
-
-        
     }
-
     /**
      * Display the specified resource.
      *

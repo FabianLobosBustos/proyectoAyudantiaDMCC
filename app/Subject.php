@@ -11,4 +11,9 @@ class Subject extends Model
     	return $this->hasMany(Requirement::class);
     }
 
+    public function studentScores()
+    {	
+    	return $this->hasMany(StudentScore::class);
+    }
+
 }

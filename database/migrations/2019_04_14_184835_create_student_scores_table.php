@@ -18,8 +18,10 @@ class CreateStudentScoresTable extends Migration
             $table->integer('score');
             $table->bigInteger('postulation_id')->unsigned();
             $table->foreign('postulation_id')->references('id')->on('postulations');
-             $table->bigInteger('student_id')->unsigned();
+            $table->bigInteger('student_id')->unsigned();
             $table->foreign('student_id')->references('id')->on('students');
+            $table->bigInteger('subject_id')->unsigned();
+            $table->foreign('subject_id')->references('id')->on('subjects');
             $table->timestamps();
         });
     }
