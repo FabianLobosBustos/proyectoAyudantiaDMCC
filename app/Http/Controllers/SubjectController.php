@@ -24,7 +24,7 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -39,6 +39,7 @@ class SubjectController extends Controller
     }
 
 
+    //!!!!! RECORDAR AÑADIR ID DEL REQUIREMENT EN CUESTION (para el posterior destroy)!
     public function showRequirementsBySubject($id){
         //REALIZAR FILTRADO PARA QUE NO SE CAIGA EL METODO!
         $subject = Subject::where('id', $id)->first();

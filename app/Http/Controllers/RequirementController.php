@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Requirement;
 
 class RequirementController extends Controller
 {
@@ -24,7 +25,13 @@ class RequirementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $requirement = new Requirement;
+        
+        $requirement->subject_id = $request->subject_id;
+        $requirement->referenceSubject = $request->referenceSubject;
+        $requirement->save();
+        
+        return $requirement->first();
     }
 
     /**
@@ -58,6 +65,7 @@ class RequirementController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $requirement = Requirement::find($id);
+        $requirement->delete();
     }
 }
