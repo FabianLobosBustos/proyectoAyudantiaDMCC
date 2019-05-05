@@ -144,6 +144,7 @@
             console.log('Component mounted.');
             axios.get(url).then((response)=>{
                 this.requisitos = response.data; 
+                console.log("requisitos");
                 console.log(response.data);
              });   
                    
@@ -171,7 +172,9 @@
                 };
                 for (i = 0; i < this.requisitos.length; i++) {
                     this.requisitos[i] = {id:this.requisitos[i][0],
-                                        name: this.requisitos[i][1]}
+                                        name: this.requisitos[i][1]};
+                    console.log("el requisito sub i : ");
+                    console.log(this.requisitos[i]);
                 };
                 const params = {
                 studentSend:{

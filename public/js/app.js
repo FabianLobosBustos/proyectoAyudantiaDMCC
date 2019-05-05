@@ -1995,6 +1995,7 @@ __webpack_require__.r(__webpack_exports__);
     console.log('Component mounted.');
     axios.get(url).then(function (response) {
       _this.requisitos = response.data;
+      console.log("requisitos");
       console.log(response.data);
     });
   },
@@ -2032,6 +2033,8 @@ __webpack_require__.r(__webpack_exports__);
           id: this.requisitos[i][0],
           name: this.requisitos[i][1]
         };
+        console.log("el requisito sub i : ");
+        console.log(this.requisitos[i]);
       }
 
       ;
