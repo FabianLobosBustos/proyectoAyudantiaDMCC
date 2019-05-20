@@ -6,7 +6,10 @@
             :asignatura = "asignaturaActual"
             :faculties = "faculties"
             :career = "carrera"
-            @botonEnviar="cambioProceso">
+            :notaAlumno = "notaAlumno"
+            :requisitos = "requisitos"
+            @botonEnviar="cambioProceso"
+            @botonAtras="actualizarEstado">
         </formulario-component>   
 
         <div v-else class="container ">
@@ -59,7 +62,9 @@
                 login: false,
                 proceso: false,
                 faculties:null ,
-                carrera: "carrera"
+                carrera: "carrera",
+                requisitos: null,
+                notaAlumno: []
             }
         },
         mounted() {
@@ -97,22 +102,66 @@
             },
             seleccionAsignatura(index){
                 this.asignaturaActual = this.asignaturas[index];
-                this.proceso = true;
                 console.log(this.student);
                 axios.get('/allFacultiesCareers').then((response)=>{
                 this.faculties = response.data; 
                 });
-                //AQUI SE PIDEN LOS REQUISITOS DE LA ASIGNATURA EN CUESTIÓN
+
+                const url = "subject/"+this.asignaturaActual.id+"/requirements";
+                axios.get(url).then((response)=>{
+                    this.requisitos = response.data; 
+                    console.log("requisitos");
+                    console.log(response.data);
+                });
+
+                const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
+                axios.get(urlNotas).then((response)=>{
+                    console.log(response.data);
+                    var i,j;
+                    for(i=0;i<this.requisitos.length;i++){
+                        for(j=0;j<response.data.length;j++){
+                            if(this.requisitos[i][0] == response.data[j].subject_id){
+                                this.notaAlumno[i] = response.data[j].score;
+                                console.log("estamos en el for:"+i + "," +j);
+                                console.log(this.notaAlumno[i]);
+                            }
+                        }
+                    }
+                    console.log("ahora muestro las notas del alumno");
+                    console.log(this.notaAlumno);
+                                    this.proceso = true;
+
+                });
             },
             cambioProceso(){
-                this.proceso = false;
                 console.log(this.student.rut)
                 axios.post('students/checkByRut', {rut: this.student.rut
                         }
                 ).then((response)=>{
-                this.student = response.data;
-                }); 
+                this.student = response.data[0];
+                });
+                const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
+                axios.get(urlNotas).then((response)=>{
+                    console.log(response.data);
+                    var i,j;
+                    for(i=0;i<this.requisitos.length;i++){
+                        for(j=0;j<response.data.length;j++){
+                            if(this.requisitos[i][0] == response.data[j].subject_id){
+                                this.notaAlumno[i] = response.data[j].score;
+                                console.log("estamos en el for:"+i + "," +j);
+                                console.log(this.notaAlumno[i]);
+                            }
+                        }
+                    }
+                    console.log("ahora muestro las notas del alumno");
+                    console.log(this.notaAlumno);
+                });
+                this.proceso = false; 
+            },
+            actualizarEstado(){
+                this.proceso= false; 
             }
+            
         }
     }
 </script>

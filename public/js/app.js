@@ -1961,23 +1961,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['estudiante', 'asignatura', 'faculties', 'career'],
+  props: ['estudiante', 'asignatura', 'faculties', 'career', 'notaAlumno', 'requisitos'],
   data: function data() {
     return {
       asignaturas: 1,
-      requisitos: [{
-        //esto deberia cargar solo con axios en el mounted()
-        id: 1,
-        name: "Calculo 1"
-      }, {
-        id: 2,
-        name: "Algebra 1"
-      }, {
-        id: 3,
-        name: "Algebra 2"
-      }],
-      notaAlumno: [],
       postulacion: [{
         numberTimes: "",
         reference: ""
@@ -1989,15 +1978,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    var _this = this;
-
-    var url = "subject/" + this.asignatura.id + "/requirements";
+    //este par de weas, mandarlas desde el home, por el problema del cargado.
     console.log('Component mounted.');
-    axios.get(url).then(function (response) {
-      _this.requisitos = response.data;
-      console.log("requisitos");
-      console.log(response.data);
-    });
   },
   methods: {
     onChange: function onChange() {
@@ -2018,7 +2000,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     enviar: function enviar() {
-      var _this2 = this;
+      var _this = this;
 
       var i;
 
@@ -2061,8 +2043,14 @@ __webpack_require__.r(__webpack_exports__);
       };
       console.log(params);
       axios.post('postulations', params).then(function (response) {
-        _this2.$emit('botonEnviar');
+        _this.$emit('botonEnviar');
+
+        console.log("lo envie");
+        console.log(response);
       });
+    },
+    atras: function atras() {
+      this.$emit('botonAtras');
     }
   }
 });
@@ -2078,6 +2066,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -2139,7 +2130,9 @@ __webpack_require__.r(__webpack_exports__);
       login: false,
       proceso: false,
       faculties: null,
-      carrera: "carrera"
+      carrera: "carrera",
+      requisitos: null,
+      notaAlumno: []
     };
   },
   mounted: function mounted() {
@@ -2183,22 +2176,67 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.asignaturaActual = this.asignaturas[index];
-      this.proceso = true;
       console.log(this.student);
       axios.get('/allFacultiesCareers').then(function (response) {
         _this3.faculties = response.data;
-      }); //AQUI SE PIDEN LOS REQUISITOS DE LA ASIGNATURA EN CUESTIÓN
+      });
+      var url = "subject/" + this.asignaturaActual.id + "/requirements";
+      axios.get(url).then(function (response) {
+        _this3.requisitos = response.data;
+        console.log("requisitos");
+        console.log(response.data);
+      });
+      var urlNotas = "student/" + this.student.id + "/subject/" + this.asignaturaActual.id;
+      axios.get(urlNotas).then(function (response) {
+        console.log(response.data);
+        var i, j;
+
+        for (i = 0; i < _this3.requisitos.length; i++) {
+          for (j = 0; j < response.data.length; j++) {
+            if (_this3.requisitos[i][0] == response.data[j].subject_id) {
+              _this3.notaAlumno[i] = response.data[j].score;
+              console.log("estamos en el for:" + i + "," + j);
+              console.log(_this3.notaAlumno[i]);
+            }
+          }
+        }
+
+        console.log("ahora muestro las notas del alumno");
+        console.log(_this3.notaAlumno);
+        _this3.proceso = true;
+      });
     },
     cambioProceso: function cambioProceso() {
       var _this4 = this;
 
-      this.proceso = false;
       console.log(this.student.rut);
       axios.post('students/checkByRut', {
         rut: this.student.rut
       }).then(function (response) {
-        _this4.student = response.data;
+        _this4.student = response.data[0];
       });
+      var urlNotas = "student/" + this.student.id + "/subject/" + this.asignaturaActual.id;
+      axios.get(urlNotas).then(function (response) {
+        console.log(response.data);
+        var i, j;
+
+        for (i = 0; i < _this4.requisitos.length; i++) {
+          for (j = 0; j < response.data.length; j++) {
+            if (_this4.requisitos[i][0] == response.data[j].subject_id) {
+              _this4.notaAlumno[i] = response.data[j].score;
+              console.log("estamos en el for:" + i + "," + j);
+              console.log(_this4.notaAlumno[i]);
+            }
+          }
+        }
+
+        console.log("ahora muestro las notas del alumno");
+        console.log(_this4.notaAlumno);
+      });
+      this.proceso = false;
+    },
+    actualizarEstado: function actualizarEstado() {
+      this.proceso = false;
     }
   }
 });
@@ -38921,14 +38959,28 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "col s6" }, [
+            _c(
+              "button",
+              {
+                staticClass: "waves-effect orange btn",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.atras()
+                  }
+                }
+              },
+              [_vm._v("Atrás")]
+            )
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "col s6 right-align" }, [
             _c(
               "button",
               {
                 staticClass: "waves-effect orange btn",
-                attrs: { type: "submit" },
+                attrs: { type: "button" },
                 on: {
                   click: function($event) {
                     return _vm.enviar()
@@ -38940,23 +38992,11 @@ var render = function() {
           ])
         ]
       )
-    ])
+    ]),
+    _vm._v("\n        \n" + _vm._s(_vm.notaAlumno) + "\n\n")
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s6" }, [
-      _c(
-        "button",
-        { staticClass: "waves-effect orange btn", attrs: { type: "submit" } },
-        [_vm._v("Atrás")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38988,9 +39028,14 @@ var render = function() {
                   estudiante: _vm.student,
                   asignatura: _vm.asignaturaActual,
                   faculties: _vm.faculties,
-                  career: _vm.carrera
+                  career: _vm.carrera,
+                  notaAlumno: _vm.notaAlumno,
+                  requisitos: _vm.requisitos
                 },
-                on: { botonEnviar: _vm.cambioProceso }
+                on: {
+                  botonEnviar: _vm.cambioProceso,
+                  botonAtras: _vm.actualizarEstado
+                }
               })
             : _c("div", { staticClass: "container " }, [
                 _c("p", { staticClass: "center-align" }, [

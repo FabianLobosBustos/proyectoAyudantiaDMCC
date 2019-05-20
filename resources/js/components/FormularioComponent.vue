@@ -82,15 +82,16 @@
                         <input class="validate" required type="text" placeholder="Ingrese nombre del profesor" id="Referencia" v-model="postulacion.reference">
                     </div>
                     <div class="col s6">
-                        <button class="waves-effect orange btn" type="submit">Atrás</button>    
+                        <button class="waves-effect orange btn" type="button" v-on:click= "atras()">Atrás</button>    
                     </div>
                     <div class="col s6 right-align">
-                        <button class="waves-effect orange btn" type="submit" v-on:click= "enviar()">Enviar</button>    
+                        <button class="waves-effect orange btn" type="button" v-on:click= "enviar()">Enviar</button>    
                     </div> 
             </form>
         </div>
             
-    
+    {{notaAlumno}}
+
     </div> 
 </template>
 
@@ -114,21 +115,10 @@
 
 <script>
     export default {
-        props: ['estudiante', 'asignatura','faculties','career'],
+        props: ['estudiante', 'asignatura','faculties','career','notaAlumno','requisitos'],
         data(){
             return {
                 asignaturas: 1,
-                requisitos: [{   //esto deberia cargar solo con axios en el mounted()
-                    id: 1,
-                    name: "Calculo 1"
-                },{
-                    id: 2,
-                    name: "Algebra 1"
-                },{
-                    id: 3,
-                    name: "Algebra 2"
-                }],
-                notaAlumno: [],
                 postulacion: [{
                     numberTimes:"",
                     reference: ""
@@ -140,13 +130,10 @@
             }
         },
         mounted() {
-            const url = "subject/"+this.asignatura.id+"/requirements";
+
+            //este par de weas, mandarlas desde el home, por el problema del cargado.
             console.log('Component mounted.');
-            axios.get(url).then((response)=>{
-                this.requisitos = response.data; 
-                console.log("requisitos");
-                console.log(response.data);
-             });   
+            
                    
         },
         methods:{
@@ -201,8 +188,12 @@
               console.log(params);
               axios.post('postulations', params).then((response)=>{
                   this.$emit('botonEnviar');
-              });
-              
+                  console.log("lo envie");
+                  console.log(response);
+              }); 
+            },
+            atras(){
+                this.$emit('botonAtras');
             }
         }
     }
