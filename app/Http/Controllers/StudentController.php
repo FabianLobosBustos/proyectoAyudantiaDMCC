@@ -8,6 +8,8 @@ use App\Student;
 use App\Career;
 use App\Subject;
 use App\StudentScore;
+use App\Faculty;
+use phpDocumentor\Reflection\Types\Object_;
 
 class StudentController extends Controller
 {
@@ -26,17 +28,52 @@ class StudentController extends Controller
     //Funcion que retorna el alumno, en el caso de que este exista en la bd
     public function checkByRut(Request $request)
     {
-
-
-
         
         $student = Student::where('rut',(int)$request->rut)->get();
-
         if($student->isEmpty()){
-           return 0; 
-        }
+            return 0; 
+         }
+
+        $student = $student->first();
+
+        //print_r($student->careers->first());
+        $career = $student->careers->first();
         
-        return $student;
+        $faculty = Faculty::where('id',$career->faculty->id)->first();
+
+        $allData = new Object_();
+        
+        $studentSend = new Object_();
+        $careerSend = new Object_();
+        $facultySend = new Object_();
+
+        $careerSend->id = $career->id;
+        $careerSend->name = $career->name;
+        
+        $facultySend->id = $faculty->id;
+        $facultySend->name = $faculty->name;
+            
+        $studentSend->id = $student->id;
+        $studentSend->name = $student->name;
+        $studentSend->lastNameMom = $student->lastNameMom;
+        $studentSend->lastNameDad = $student->lastNameDad;
+        $studentSend->level = $student->level;
+        $studentSend->rut = $student->rut;
+        $studentSend->verificatorDigit = $student->verificatorDigit;
+        $studentSend->address = $student->address;
+        $studentSend->email = $student->email;
+        
+
+        
+        $allData->faculty = $facultySend;
+        $allData->career = $careerSend;
+        $allData->student = $studentSend;
+        
+
+        $allData = json_encode($allData);
+        
+        
+        return $allData;
         
     }
 
@@ -96,6 +133,10 @@ class StudentController extends Controller
         $student->address = $request->address;
         $student->save();
         
+        
+        
+
+
         return $student->first();
         
     }
