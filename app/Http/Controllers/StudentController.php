@@ -25,20 +25,22 @@ class StudentController extends Controller
     }
 
     
+    //UNO DE LOS CORES DEL SISTEMA NO MODIFICAR SIN AVISO
     //Funcion que retorna el alumno, en el caso de que este exista en la bd
     public function checkByRut(Request $request)
     {
         
         $student = Student::where('rut',(int)$request->rut)->get();
+        
+        //Se chekea si el estudiante existe en la BD
         if($student->isEmpty()){
             return 0; 
-         }
+        }
 
         $student = $student->first();
-
-        //print_r($student->careers->first());
         $career = $student->careers->first();
         
+        //ACA SE DEBE RETORNAR LA CARRERA VIGENTE DEL ESTUDIANTE! => IMPLEMENTAR CAMBIO EN LA BD
         $faculty = Faculty::where('id',$career->faculty->id)->first();
 
         $allData = new Object_();
@@ -62,8 +64,6 @@ class StudentController extends Controller
         $studentSend->verificatorDigit = $student->verificatorDigit;
         $studentSend->address = $student->address;
         $studentSend->email = $student->email;
-        
-
         
         $allData->faculty = $facultySend;
         $allData->career = $careerSend;
