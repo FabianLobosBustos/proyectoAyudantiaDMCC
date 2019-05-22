@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use PDF;
 use App\Subject;
 use App\Student;
+use App\Exports\PostulationsExportView;
+use Excel;
 
 class ReportController extends Controller
 {
-    public function getAllPostulationsToSubject($idSubject)
+    public function getAllPostulationsToSubjectPDF($idSubject)
     {
         $subject = Subject::where('id', $idSubject)->first();
         
@@ -75,4 +77,12 @@ class ReportController extends Controller
         return $pdf->download('invoice.pdf'); 
         
     }
+
+    public function getAllPostulationsToSubjectEXCEL($idSubject) 
+    { 
+    
+        return Excel::download(new PostulationsExportView($idSubject), 'reporte.xlsx'); 
+         
+    } 
+    
 }

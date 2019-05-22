@@ -32,4 +32,5 @@ Route::get('allFacultiesCareers', 'FacultyController@allFacultiesCareers');
 //Requirement
 Route::apiResource('requirements','RequirementController');
 //Report
-Route::get('practice/{idSubject}','ReportController@getAllPostulationsToSubject');
+Route::get('getReportPostulationPDF/{idSubject}','ReportController@getAllPostulationsToSubjectPDF');
+Route::get('getReportPostulationEXCEL/{idSubject}','ReportController@getAllPostulationsToSubjectEXCEL');
