@@ -26,7 +26,7 @@ tr:nth-child(even) {
 </head>
 <body>
 
-<h2>Postulaciones - {{$data[0]['subject_name']}} - Segundo Semestre 2019</h2>
+<h2>Postulaciones: {{$data[0]['subject_name']}} - Segundo Semestre 2019</h2>
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 <table class="table table-condensed">
@@ -36,7 +36,7 @@ tr:nth-child(even) {
     <th>Apellido Paterno</th>
     <th>Apellido Materno</th>
     <th>Email</th>
-    <th>Telefono</th>
+    <th>Teléfono</th>
     <th>Dirección</th>
     <th>Facultad</th>
     <th>Carrera</th>

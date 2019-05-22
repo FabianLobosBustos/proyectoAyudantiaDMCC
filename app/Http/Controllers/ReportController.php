@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PDF;
+use Excel;
 use App\Subject;
 use App\Student;
 
 class ReportController extends Controller
 {
-    public function getAllPostulationsToSubject($idSubject)
+    public function getAllPostulationsToSubjectPDF($idSubject)
     {
         $subject = Subject::where('id', $idSubject)->first();
         
@@ -73,6 +74,21 @@ class ReportController extends Controller
         $pdf = PDF::loadView('pdfPractice',  ['data' => $bigArray]);
         error_log('ALFIN CTM!!');
         return $pdf->download('invoice.pdf'); 
+        
+    }
+
+    public function getAllPostulationsToSubjectEXCEL($idSubject)
+    {
+   
+        return Excel::download('Filename', function($excel) use($bigArray) {
+        
+            $excel->sheet('Sheetname', function($sheet) use($bigArray) {
+        
+                $sheet->fromArray($bigArray);
+        
+            });
+        
+        });
         
     }
 }
