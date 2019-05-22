@@ -19,12 +19,12 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-Vue.component('formulario-component', require('./components/FormularioComponent.vue').default);
-Vue.component('home-component', require('./components/HomeComponent.vue').default);
-Vue.component('mensaje-component', require('./components/MensajeComponent.vue').default);
-Vue.component('ingreso-component', require('./components/IngresoComponent.vue').default);
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('asignatura-component', require('./components/AsignaturaComponent.vue').default);
+Vue.component('formulario-component', require('./components/student/FormularioComponent.vue').default);
+Vue.component('home-component', require('./components/student/HomeComponent.vue').default);
+Vue.component('mensaje-component', require('./components/student/MensajeComponent.vue').default);
+Vue.component('ingreso-component', require('./components/student/IngresoComponent.vue').default);
+Vue.component('example-component', require('./components/student/ExampleComponent.vue').default);
+Vue.component('asignatura-component', require('./components/student/AsignaturaComponent.vue').default);
 
 
 /**
