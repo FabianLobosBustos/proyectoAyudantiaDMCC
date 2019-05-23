@@ -6,6 +6,8 @@
             :asignatura = "asignaturaActual"
             :faculties = "faculties"
             :career = "carrera"
+            :studentFaculty = "studentFaculty"
+            :studentCareer = "studentCareer"
             :notaAlumno = "notaAlumno"
             :requisitos = "requisitos"
             @botonEnviar="cambioProceso"
@@ -64,7 +66,9 @@
                 faculties:null ,
                 carrera: "carrera",
                 requisitos: null,
-                notaAlumno: []
+                notaAlumno: [],
+                studentFaculty:null,
+                studentCareer:null 
             }
         },
         mounted() {
@@ -94,8 +98,11 @@
                     console.log(this.student);
                 }
                 else{
-                    this.student = response.data[0];
-                console.log(this.student);
+                    console.log("response:");
+                    console.log(response.data);
+                    this.studentFaculty = response.data.faculty.name;
+                    this.studentCareer = response.data.career.name;
+                    this.student = response.data.student;
                 } 
                 this.login = true;
                 });

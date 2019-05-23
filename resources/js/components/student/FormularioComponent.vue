@@ -31,7 +31,7 @@
                     </div>
                     <div class="col s6">
                         <label>Facultad:</label>
-                            <select @change="onChange()"  class="browser-default validate"  required type="text" v-model="faculty">
+                            <select @change="onChange()"  class="browser-default validate"  required type="text" v-model="studentFaculty">
                                 <option disabled selected >Seleccione su Facultad</option>
                                 <option v-for = "(facultad,index) in faculties"
                                     :key="index"
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col s6">
                         <label>Carrera:</label>
-                            <select  class="browser-default validate" v-if="facultadSeleccionada" required type="text" v-model="careerStudent">
+                            <select  class="browser-default validate" v-if="facultadSeleccionada" required type="text" v-model="studentCareer">
                                 <option disabled selected >Seleccione su Carrera</option>
                                 <option v-for = "(carrera,index) in careers"
                                     :key="index"
@@ -90,7 +90,6 @@
             </form>
         </div>
             
-    {{notaAlumno}}
 
     </div> 
 </template>
@@ -115,7 +114,7 @@
 
 <script>
     export default {
-        props: ['estudiante', 'asignatura','faculties','career','notaAlumno','requisitos'],
+        props: ['estudiante', 'asignatura','faculties','career','notaAlumno','requisitos','studentFaculty','studentCareer'],
         data(){
             return {
                 asignaturas: 1,
@@ -123,7 +122,6 @@
                     numberTimes:"",
                     reference: ""
                     }],
-                faculty: null,
                 careerStudent: null,
                 careers: null,
                 facultadSeleccionada: false
@@ -133,16 +131,29 @@
 
             //este par de weas, mandarlas desde el home, por el problema del cargado.
             console.log('Component mounted.');
-            
-                   
+            console.log('facultad:');
+            console.log(this.studentFaculty);
+            console.log('carrera:');
+            console.log(this.studentCareer);
+            if(this.studentFaculty != null){
+                var i;
+                var index = -1;
+                    for(i=0;i<this.faculties.length;i++){
+                        if(this.studentFaculty == this.faculties[i].faculty_name){
+                        index = i;
+                        }
+                    this.careers = this.faculties[index].careers;
+                    }
+                this.facultadSeleccionada = true;
+            }
         },
         methods:{
             onChange(){
                 var i;
                 var index = -1;
-                if(this.faculty != null){
+                if(this.studentFaculty != null){
                     for(i=0;i<this.faculties.length;i++){
-                        if(this.faculty == this.faculties[i].faculty_name){
+                        if(this.studentFaculty == this.faculties[i].faculty_name){
                         index = i;
                         }
                     }

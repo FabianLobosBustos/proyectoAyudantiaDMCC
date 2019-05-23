@@ -1961,9 +1961,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['estudiante', 'asignatura', 'faculties', 'career', 'notaAlumno', 'requisitos'],
+  props: ['estudiante', 'asignatura', 'faculties', 'career', 'notaAlumno', 'requisitos', 'studentFaculty', 'studentCareer'],
   data: function data() {
     return {
       asignaturas: 1,
@@ -1971,7 +1970,6 @@ __webpack_require__.r(__webpack_exports__);
         numberTimes: "",
         reference: ""
       }],
-      faculty: null,
       careerStudent: null,
       careers: null,
       facultadSeleccionada: false
@@ -1980,15 +1978,34 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     //este par de weas, mandarlas desde el home, por el problema del cargado.
     console.log('Component mounted.');
+    console.log('facultad:');
+    console.log(this.studentFaculty);
+    console.log('carrera:');
+    console.log(this.studentCareer);
+
+    if (this.studentFaculty != null) {
+      var i;
+      var index = -1;
+
+      for (i = 0; i < this.faculties.length; i++) {
+        if (this.studentFaculty == this.faculties[i].faculty_name) {
+          index = i;
+        }
+
+        this.careers = this.faculties[index].careers;
+      }
+
+      this.facultadSeleccionada = true;
+    }
   },
   methods: {
     onChange: function onChange() {
       var i;
       var index = -1;
 
-      if (this.faculty != null) {
+      if (this.studentFaculty != null) {
         for (i = 0; i < this.faculties.length; i++) {
-          if (this.faculty == this.faculties[i].faculty_name) {
+          if (this.studentFaculty == this.faculties[i].faculty_name) {
             index = i;
           }
         } //console.log(event.target.value)
@@ -2105,6 +2122,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2132,7 +2151,9 @@ __webpack_require__.r(__webpack_exports__);
       faculties: null,
       carrera: "carrera",
       requisitos: null,
-      notaAlumno: []
+      notaAlumno: [],
+      studentFaculty: null,
+      studentCareer: null
     };
   },
   mounted: function mounted() {
@@ -2165,8 +2186,11 @@ __webpack_require__.r(__webpack_exports__);
           _this2.student = studentX;
           console.log(_this2.student);
         } else {
-          _this2.student = response.data[0];
-          console.log(_this2.student);
+          console.log("response:");
+          console.log(response.data);
+          _this2.studentFaculty = response.data.faculty.name;
+          _this2.studentCareer = response.data.career.name;
+          _this2.student = response.data.student;
         }
 
         _this2.login = true;
@@ -38665,8 +38689,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.faculty,
-                    expression: "faculty"
+                    value: _vm.studentFaculty,
+                    expression: "studentFaculty"
                   }
                 ],
                 staticClass: "browser-default validate",
@@ -38682,7 +38706,7 @@ var render = function() {
                           var val = "_value" in o ? o._value : o.value
                           return val
                         })
-                      _vm.faculty = $event.target.multiple
+                      _vm.studentFaculty = $event.target.multiple
                         ? $$selectedVal
                         : $$selectedVal[0]
                     },
@@ -38721,8 +38745,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.careerStudent,
-                        expression: "careerStudent"
+                        value: _vm.studentCareer,
+                        expression: "studentCareer"
                       }
                     ],
                     staticClass: "browser-default validate",
@@ -38737,7 +38761,7 @@ var render = function() {
                             var val = "_value" in o ? o._value : o.value
                             return val
                           })
-                        _vm.careerStudent = $event.target.multiple
+                        _vm.studentCareer = $event.target.multiple
                           ? $$selectedVal
                           : $$selectedVal[0]
                       }
@@ -38992,8 +39016,7 @@ var render = function() {
           ])
         ]
       )
-    ]),
-    _vm._v("\n        \n" + _vm._s(_vm.notaAlumno) + "\n\n")
+    ])
   ])
 }
 var staticRenderFns = []
@@ -39029,6 +39052,8 @@ var render = function() {
                   asignatura: _vm.asignaturaActual,
                   faculties: _vm.faculties,
                   career: _vm.carrera,
+                  studentFaculty: _vm.studentFaculty,
+                  studentCareer: _vm.studentCareer,
                   notaAlumno: _vm.notaAlumno,
                   requisitos: _vm.requisitos
                 },

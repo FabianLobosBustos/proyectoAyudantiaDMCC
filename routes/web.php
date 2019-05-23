@@ -13,9 +13,16 @@ use App\Http\Controllers\RequirementController;
 |
 */
 
+//RUTA HOME PRINCIPAL SISTEMA (POSTULACION)
 Route::get('/', function () {
     return view('welcome');
 });
+
+//RUTA PARA EL HOME DEL COORDINADOR
+Route::get('/coordinator', function () {
+    return view('welcome');
+});
+
 
 //RUTAS
 //Student
