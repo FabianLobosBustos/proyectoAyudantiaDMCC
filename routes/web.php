@@ -38,6 +38,8 @@ Route::apiResource('postulations', 'PostulationController');
 Route::get('allFacultiesCareers', 'FacultyController@allFacultiesCareers');
 //Requirement
 Route::apiResource('requirements','RequirementController');
+//Export
+Route::get('downloadPostulationExportPDF/{idSubject}','ExportController@getAllPostulationsToSubjectPDF');
+Route::get('downloadPostulationExportEXCEL/{idSubject}','ExportController@getAllPostulationsToSubjectEXCEL');
 //Report
-Route::get('getReportPostulationPDF/{idSubject}','ReportController@getAllPostulationsToSubjectPDF');
-Route::get('getReportPostulationEXCEL/{idSubject}','ReportController@getAllPostulationsToSubjectEXCEL');
+Route::get('getArrayPostulationsBySubject/{idSubject}','ReportController@getArrayPostulationsBySubject');
