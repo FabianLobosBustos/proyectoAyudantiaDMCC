@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStudentCareerTable extends Migration
+class CreatePeriodSubjectTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateStudentCareerTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_career', function (Blueprint $table) {
+        Schema::create('period_subject', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->boolean('active');
-            $table->bigInteger('career_id')->unsigned();
-            $table->bigInteger('student_id')->unsigned();
+            $table->bigInteger('period_id')->unsigned();
+            $table->bigInteger('subject_id')->unsigned();
             $table->timestamps();
-
         });
     }
 
@@ -30,6 +29,6 @@ class CreateStudentCareerTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_career');
+        Schema::dropIfExists('period_subject');
     }
 }

@@ -22,4 +22,8 @@ class Subject extends Model
     	return $this->hasMany(Postulation::class);
     }
 
+    public function periods()
+    {
+        return $this->belongsToMany(Period::class);
+    }
 }
