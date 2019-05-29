@@ -42,4 +42,6 @@ Route::apiResource('requirements','RequirementController');
 Route::get('downloadPostulationExportPDF/{idSubject}','ExportController@getAllPostulationsToSubjectPDF');
 Route::get('downloadPostulationExportEXCEL/{idSubject}','ExportController@getAllPostulationsToSubjectEXCEL');
 //Report
-Route::get('getArrayPostulationsBySubject/{idSubject}','ReportController@getArrayPostulationsBySubject');
+Route::get('getArrayPostulationsBySubject/{idSubject}/period/{idPeriod}','ReportController@getArrayPostulationsBySubject');
+//Period
+Route::apiResource('periods', 'PeriodController');

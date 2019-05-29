@@ -8,12 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
 
-    public static function getArrayPostulationsBySubject($idSubject)
+    public static function getArrayPostulationsBySubject($idSubject,$idPeriod)
     {
-        $subject = Subject::where('id', $idSubject)->first();
-        
-        $postulations = $subject->postulations;
+        //Recuperamos los datos
+        $subject = Subject::query();
+        $subject = $subject->where('id', $idSubject)->first();
+        $postulations = Postulation::query();
+        $postulations = $postulations->where('subject_id',$subject->id);
+        $postulations = $postulations->where('period_id',$idPeriod);
         $requirements = $subject->requirements;
+        
+        //creamos el array
         $array_students = [];
         $array_requirements = [];
         

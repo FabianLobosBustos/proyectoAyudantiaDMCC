@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Period;
 
 class PeriodController extends Controller
 {
@@ -13,7 +14,7 @@ class PeriodController extends Controller
      */
     public function index()
     {
-        //
+        return Period::all();
     }
 
     /**
@@ -24,7 +25,15 @@ class PeriodController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+          $period = new Period([
+            'semester' => $request->get('semester'),
+            'year'=> $request->get('year'),
+            'start'=> $request->get('start'),
+            'finish' => $request->get('finish')
+          ]);
+          $period->save();
+          return 1;
     }
 
     /**
@@ -35,7 +44,8 @@ class PeriodController extends Controller
      */
     public function show($id)
     {
-        //
+        $period = Period::where('id',$id)->first();
+        return $period;
     }
 
     /**
@@ -47,7 +57,13 @@ class PeriodController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $period = Period::where('id',$id)->first();
+
+        $period->start = $request->get('start');
+        $period->finish = $request->get('finish');
+
+        $period->save();
+        return 1;
     }
 
     /**
