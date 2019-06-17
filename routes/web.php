@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 //RUTA PARA EL HOME DEL COORDINADOR
 Route::get('/coordinator', function () {
-    return view('welcome');
+    return view('coordinator');
 });
 
 

@@ -88,7 +88,8 @@
                     email: "",
                     address: "",
                     fone: "",
-                    level: ""
+                    level: "",
+                    id: null
                 };             
                 axios.post('students/checkByRut', {rut: res.rut
                         }
@@ -114,38 +115,46 @@
                 this.faculties = response.data; 
                 });
 
+                
+
+                console.log(this.student.id);
+                if(this.student.id!=null){
+                    const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
+                    axios.get(urlNotas).then((response)=>{
+                        console.log(response.data);
+                        var i,j;
+                        for(i=0;i<this.requisitos.length;i++){
+                            for(j=0;j<response.data.length;j++){
+                                if(this.requisitos[i][0] == response.data[j].subject_id){
+                                    this.notaAlumno[i] = response.data[j].score;
+                                    console.log("estamos en el for:"+i + "," +j);
+                                    console.log(this.notaAlumno[i]);
+                                }
+                            }
+                        }
+                        console.log("ahora muestro las notas del alumno");
+                        console.log(this.notaAlumno);
+                                        this.proceso = true;
+
+                    });
+                }
                 const url = "subject/"+this.asignaturaActual.id+"/requirements";
                 axios.get(url).then((response)=>{
                     this.requisitos = response.data; 
                     console.log("requisitos");
                     console.log(response.data);
+                    this.proceso = true;
                 });
 
-                const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
-                axios.get(urlNotas).then((response)=>{
-                    console.log(response.data);
-                    var i,j;
-                    for(i=0;i<this.requisitos.length;i++){
-                        for(j=0;j<response.data.length;j++){
-                            if(this.requisitos[i][0] == response.data[j].subject_id){
-                                this.notaAlumno[i] = response.data[j].score;
-                                console.log("estamos en el for:"+i + "," +j);
-                                console.log(this.notaAlumno[i]);
-                            }
-                        }
-                    }
-                    console.log("ahora muestro las notas del alumno");
-                    console.log(this.notaAlumno);
-                                    this.proceso = true;
-
-                });
             },
             cambioProceso(){
                 console.log(this.student.rut)
                 axios.post('students/checkByRut', {rut: this.student.rut
                         }
                 ).then((response)=>{
-                this.student = response.data[0];
+                this.student = response.data.student;
+                this.studentFaculty = response.data.faculty.name;
+                this.studentCareer = response.data.career.name;
                 });
                 const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
                 axios.get(urlNotas).then((response)=>{

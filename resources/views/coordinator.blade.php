@@ -2,7 +2,6 @@
 
 @section('content')
 
-hola gente como andamio 
-
+<home-coordinator-component></home-coordinator-component>
 
 @endsection

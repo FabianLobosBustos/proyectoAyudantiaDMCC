@@ -19,6 +19,7 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+//student components
 Vue.component('formulario-component', require('./components/student/FormularioComponent.vue').default);
 Vue.component('home-component', require('./components/student/HomeComponent.vue').default);
 Vue.component('mensaje-component', require('./components/student/MensajeComponent.vue').default);
@@ -26,6 +27,11 @@ Vue.component('ingreso-component', require('./components/student/IngresoComponen
 Vue.component('example-component', require('./components/student/ExampleComponent.vue').default);
 Vue.component('asignatura-component', require('./components/student/AsignaturaComponent.vue').default);
 
+//cordinator components
+Vue.component('postulaciones-component', require('./components/coordinator/PostulacionesComponent.vue').default);
+Vue.component('home-coordinator-component', require('./components/coordinator/HomeCoordinatorComponent.vue').default);
+Vue.component('ingreso-coordinator-component', require('./components/coordinator/IngresoCoordinatorComponent.vue').default);
+Vue.component('menu-asignatura-component', require('./components/coordinator/MenuAsignaturaComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

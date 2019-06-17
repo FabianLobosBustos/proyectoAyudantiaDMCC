@@ -31,7 +31,7 @@
                     </div>
                     <div class="col s6">
                         <label>Facultad:</label>
-                            <select @change="onChange()"  class="browser-default validate"  required type="text" v-model="studentFaculty">
+                            <select @change="onChange()"  class="browser-default validate"  required type="text" v-model="facultyStudent">
                                 <option disabled selected >Seleccione su Facultad</option>
                                 <option v-for = "(facultad,index) in faculties"
                                     :key="index"
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col s6">
                         <label>Carrera:</label>
-                            <select  class="browser-default validate" v-if="facultadSeleccionada" required type="text" v-model="studentCareer">
+                            <select  class="browser-default validate" v-if="facultadSeleccionada" required type="text" v-model="careerStudent">
                                 <option disabled selected >Seleccione su Carrera</option>
                                 <option v-for = "(carrera,index) in careers"
                                     :key="index"
@@ -89,7 +89,7 @@
                     </div> 
             </form>
         </div>
-            
+            {{estudiante.level}}
 
     </div> 
 </template>
@@ -123,6 +123,7 @@
                     reference: ""
                     }],
                 careerStudent: null,
+                facultyStudent: null,
                 careers: null,
                 facultadSeleccionada: false
             }
@@ -135,13 +136,24 @@
             console.log(this.studentFaculty);
             console.log('carrera:');
             console.log(this.studentCareer);
+            console.log("arreglo de facultades: ");
+            console.log(this.faculties);
             if(this.studentFaculty != null){
                 var i;
                 var index = -1;
                     for(i=0;i<this.faculties.length;i++){
-                        if(this.studentFaculty == this.faculties[i].faculty_name){
-                        index = i;
+                        console.log("facultad[i]");
+                        console.log(this.faculties[i].faculty_name);
+                        console.log(this.studentFaculty);
+                        if(this.studentFaculty == this.faculties[i].faculty_name){  
+                            console.log("entre al IF RECULIAO CONCHETUMARE")  
+                            index = i;
                         }
+                    this.facultyStudent = this.studentFaculty;
+                    this.careerStudent = this.studentCareer; 
+                    console.log("index:");
+                    console.log(index);
+                    console.log(this.faculties[index])
                     this.careers = this.faculties[index].careers;
                     }
                 this.facultadSeleccionada = true;
@@ -151,9 +163,9 @@
             onChange(){
                 var i;
                 var index = -1;
-                if(this.studentFaculty != null){
+                if(this.facultyStudent != null){
                     for(i=0;i<this.faculties.length;i++){
-                        if(this.studentFaculty == this.faculties[i].faculty_name){
+                        if(this.facultyStudent == this.faculties[i].faculty_name){
                         index = i;
                         }
                     }
@@ -185,7 +197,7 @@
                     address: this.estudiante.address,
                     level: this.estudiante.level,
                     career: this.careerStudent,
-                    faculty: this.faculty.faculty_name
+                    faculty: this.facultyStudent
                 },
                 postulationSend:{
                     numberTime: parseInt(this.postulacion.numberTimes),
