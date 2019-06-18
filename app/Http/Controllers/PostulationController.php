@@ -58,7 +58,7 @@ class PostulationController extends Controller
         $postulationSend_numberTime = $request->input('postulationSend.numberTime');
         $postulationSend_referenceTeacher_id = $request->input('postulationSend.referenceTeacher_id');
         $postulationSend_subject_id = $request->input('postulationSend.subject_id');
-
+        $postulationSend_period_id = $request->input('postulationSend.period_id');
         $studentScoreSendArray = $request->input('studentScore');
         $requirementSendArray = $request->input('requirement');
         //$arrayRequirements = $phpArray['requirement'];
@@ -93,7 +93,47 @@ class PostulationController extends Controller
 
         //Completo la carrera del estudiante
         $career = Career::where('name', $studentSend_careerName)->first();
-        $student->careers()->attach($career);
+       
+        $student_careers = $student->careers;
+        
+        $same_career_active = 0;
+        //si la carrera es la misma y esta activa, no hago nada
+        foreach($student_careers as $student_career){
+            if($student_career->pivot->active == 1 && $student_career->id == $career->id){
+                 $same_career_active = 1;
+                 break;
+            }
+        }
+
+        //si la carrera existe  pero no esta activa, ahora la activo.
+        $career_not_exist = 0;
+        if ($same_career_active == 0) {
+            foreach ($student_careers as $student_career) {
+                //si existe la carrera
+                if ($student_career->id == $career->id) {
+                    //reviso las otras carreras del alumno y las inactivo
+                    foreach ($student_careers as $student_career) {
+                        $student_career->pivot->active = 0;
+                        $student_career->save();
+                    }
+                    //luego hago que la carrea encontrada sea activada
+                    $student_career->pivot->active = 1;
+                    $student_career->save();
+                    $career_not_exist = 1;
+                }
+            }
+        }
+        
+        //si la carrera no esta registrada por el alumno y no esta activa...
+        if($career_not_exist == 0 && $same_career_active == 0){
+            $student->careers()->attach($career);
+        }
+
+
+        // ------------- PARCHAR STUDENT CARRER -------------- 
+        if($student)
+        
+
         //ATENCION! LA CARRERA SE DEBE ASOCIAR A LA FACULTAD EN CUESTION
         //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
         //$faculty = Faculty::where('name', $studentSend_facultyName)->first();
@@ -113,7 +153,9 @@ class PostulationController extends Controller
         //accepted en 0 (no esta claro si se usara)
         //$postulation->accepted = 0;
 
-        
+        // Se agrega la id del periodo en cuestion
+        $postulation->period_id = $postulationSend_period_id;
+
         //guardamos la postulacion
         $postulation->save();
         $i = 0;

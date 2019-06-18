@@ -31,6 +31,7 @@ Route::post('students/checkByRut', 'StudentController@checkByRut');
 Route::apiResource('students', 'StudentController');
 //Subject
 Route::get('subject/{id}/requirements', 'SubjectController@showRequirementsBySubject');
+Route::get('getActiveSubjects', 'SubjectController@getActiveSubjects');
 Route::apiResource('subjects', 'SubjectController');
 //Postulation
 Route::apiResource('postulations', 'PostulationController');
@@ -45,3 +46,4 @@ Route::get('downloadPostulationExportEXCEL/{idSubject}','ExportController@getAll
 Route::get('getArrayPostulationsBySubject/{idSubject}/period/{idPeriod}','ReportController@getArrayPostulationsBySubject');
 //Period
 Route::apiResource('periods', 'PeriodController');
+Route::get('periodBySubject/{id}','PeriodController@periodBySubject');

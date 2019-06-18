@@ -10,7 +10,7 @@ class Student extends Model
     
     public function careers()
     {
-        return $this->belongsToMany(Career::class,'student_career');
+        return $this->belongsToMany(Career::class,'student_career')->withPivot('active');
     }
 
     public function postulations()

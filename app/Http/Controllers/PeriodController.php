@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Period;
+use App\Subject;
 
 class PeriodController extends Controller
 {
@@ -15,6 +16,23 @@ class PeriodController extends Controller
     public function index()
     {
         return Period::all();
+    }
+
+    //Retorna el periodo activo de la asignatura en cuestion
+    public function periodBySubject($id_subject){
+        
+        $subject = Subject::where('id',$id_subject)->first();
+        
+        $periods = $subject->periods;
+        
+        foreach ($periods as $period) {
+            if($period->pivot->active == 1){
+                $period_active = $period;
+                break;
+            }
+        } 
+
+        return $period_active;
     }
 
     /**

@@ -110,7 +110,7 @@ class StudentController extends Controller
             
         }
        
-        $list_of_scores = json_encode($list_of_scores);
+        //$list_of_scores = json_encode($list_of_scores);
         return $list_of_scores;
     }
     /**

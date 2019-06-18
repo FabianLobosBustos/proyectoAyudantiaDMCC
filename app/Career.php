@@ -8,7 +8,7 @@ class Career extends Model
 {
     public function students()
     {
-        return $this->belongsToMany(Student::class,'student_career');
+        return $this->belongsToMany(Student::class,'student_career')->withPivot('active');
     }
 
     public function faculty()

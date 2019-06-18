@@ -14,6 +14,7 @@ class Report extends Model
         $subject = Subject::query();
         $subject = $subject->where('id', $idSubject)->first();
         $postulations = Postulation::query();
+        //filtro por subject_id y luego por periodo_id
         $postulations = $postulations->where('subject_id',$subject->id);
         $postulations = $postulations->where('period_id',$idPeriod);
         $requirements = $subject->requirements;

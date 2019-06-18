@@ -24,6 +24,6 @@ class Subject extends Model
 
     public function periods()
     {
-        return $this->belongsToMany(Period::class);
+        return $this->belongsToMany(Period::class)->withPivot('active');;
     }
 }

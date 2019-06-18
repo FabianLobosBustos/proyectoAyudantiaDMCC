@@ -11,9 +11,29 @@ class SubjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
         return Subject::all();
+    }
+
+    //EN ESTA FUNCION PUDE RETORNAN UN ARRAY DE OBJECTS!!!
+    //retorna solo las que tienen un periodo activo!!
+    public function getActiveSubjects(){
+        $subjects = Subject::all();
+        $subjects_actives= [];
+        foreach($subjects as $subject){
+            $periods = $subject->periods;
+            foreach ($periods as $period) {
+                if($period->pivot->active==1){
+                    $subjects_actives[] = $subject;
+                    break;
+                }
+            }
+        }
+
+        $subjects_actives = json_encode($subjects_actives);
+        return $subjects_actives;
     }
 
     /**
