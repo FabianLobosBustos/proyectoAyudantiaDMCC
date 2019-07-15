@@ -89,7 +89,6 @@
                     </div> 
             </form>
         </div>
-            {{estudiante.level}}
 
     </div> 
 </template>
@@ -114,7 +113,7 @@
 
 <script>
     export default {
-        props: ['estudiante', 'asignatura','faculties','career','notaAlumno','requisitos','studentFaculty','studentCareer'],
+        props: ['estudiante', 'asignatura','faculties','career','notaAlumno','requisitos','studentFaculty','studentCareer','subjectPeriod'],
         data(){
             return {
                 asignaturas: 1,
@@ -141,21 +140,23 @@
             if(this.studentFaculty != null){
                 var i;
                 var index = -1;
+                console.log("largo de faculties: "+this.faculties.length);
                     for(i=0;i<this.faculties.length;i++){
                         console.log("facultad[i]");
                         console.log(this.faculties[i].faculty_name);
                         console.log(this.studentFaculty);
-                        if(this.studentFaculty == this.faculties[i].faculty_name){  
+                        if(this.studentFaculty === this.faculties[i].faculty_name){  
                             console.log("entre al IF RECULIAO CONCHETUMARE")  
                             index = i;
                         }
+                    }
                     this.facultyStudent = this.studentFaculty;
                     this.careerStudent = this.studentCareer; 
                     console.log("index:");
                     console.log(index);
                     console.log(this.faculties[index])
                     this.careers = this.faculties[index].careers;
-                    }
+                    
                 this.facultadSeleccionada = true;
             }
         },
@@ -202,7 +203,8 @@
                 postulationSend:{
                     numberTime: parseInt(this.postulacion.numberTimes),
                     referenceTeacher_id: parseInt(this.postulacion.reference),
-                    subject_id: this.asignatura.id
+                    subject_id: this.asignatura.id,
+                    subjectPeriod: this.subjectPeriod.id
                 },
                 requirement: this.requisitos,
                 studentScore: this.notaAlumno

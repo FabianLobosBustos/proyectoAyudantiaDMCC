@@ -58,7 +58,7 @@ class PostulationController extends Controller
         $postulationSend_numberTime = $request->input('postulationSend.numberTime');
         $postulationSend_referenceTeacher_id = $request->input('postulationSend.referenceTeacher_id');
         $postulationSend_subject_id = $request->input('postulationSend.subject_id');
-        $postulationSend_period_id = $request->input('postulationSend.period_id');
+        $postulationSend_period_id = $request->input('postulationSend.subjectPeriod');
         $studentScoreSendArray = $request->input('studentScore');
         $requirementSendArray = $request->input('requirement');
         //$arrayRequirements = $phpArray['requirement'];

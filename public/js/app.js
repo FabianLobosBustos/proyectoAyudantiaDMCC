@@ -2260,9 +2260,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['estudiante', 'asignatura', 'faculties', 'career', 'notaAlumno', 'requisitos', 'studentFaculty', 'studentCareer'],
+  props: ['estudiante', 'asignatura', 'faculties', 'career', 'notaAlumno', 'requisitos', 'studentFaculty', 'studentCareer', 'subjectPeriod'],
   data: function data() {
     return {
       asignaturas: 1,
@@ -2289,25 +2288,25 @@ __webpack_require__.r(__webpack_exports__);
     if (this.studentFaculty != null) {
       var i;
       var index = -1;
+      console.log("largo de faculties: " + this.faculties.length);
 
       for (i = 0; i < this.faculties.length; i++) {
         console.log("facultad[i]");
         console.log(this.faculties[i].faculty_name);
         console.log(this.studentFaculty);
 
-        if (this.studentFaculty == this.faculties[i].faculty_name) {
+        if (this.studentFaculty === this.faculties[i].faculty_name) {
           console.log("entre al IF RECULIAO CONCHETUMARE");
           index = i;
         }
-
-        this.facultyStudent = this.studentFaculty;
-        this.careerStudent = this.studentCareer;
-        console.log("index:");
-        console.log(index);
-        console.log(this.faculties[index]);
-        this.careers = this.faculties[index].careers;
       }
 
+      this.facultyStudent = this.studentFaculty;
+      this.careerStudent = this.studentCareer;
+      console.log("index:");
+      console.log(index);
+      console.log(this.faculties[index]);
+      this.careers = this.faculties[index].careers;
       this.facultadSeleccionada = true;
     }
   },
@@ -2366,7 +2365,8 @@ __webpack_require__.r(__webpack_exports__);
         postulationSend: {
           numberTime: parseInt(this.postulacion.numberTimes),
           referenceTeacher_id: parseInt(this.postulacion.reference),
-          subject_id: this.asignatura.id
+          subject_id: this.asignatura.id,
+          subjectPeriod: this.subjectPeriod.id
         },
         requirement: this.requisitos,
         studentScore: this.notaAlumno
@@ -2437,6 +2437,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2466,7 +2467,8 @@ __webpack_require__.r(__webpack_exports__);
       requisitos: null,
       notaAlumno: [],
       studentFaculty: null,
-      studentCareer: null
+      studentCareer: null,
+      subjectPeriod: null
     };
   },
   mounted: function mounted() {
@@ -2476,6 +2478,7 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/subjects').then(function (response) {
       _this.asignaturas = response.data;
     });
+    axios.get('/');
   },
   methods: {
     logear: function logear(res) {
@@ -2518,10 +2521,18 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/allFacultiesCareers').then(function (response) {
         _this3.faculties = response.data;
       });
+      var urlPeriod = "periodBySubject/" + this.asignaturaActual.id;
+      axios.get(urlPeriod).then(function (response) {
+        console.log("la respuesta:");
+        console.log(response.data);
+        _this3.subjectPeriod = response.data;
+        console.log("el id del periodo es " + _this3.subjectPeriod.id);
+      });
       console.log(this.student.id);
 
       if (this.student.id != null) {
         var urlNotas = "student/" + this.student.id + "/subject/" + this.asignaturaActual.id;
+        console.log("pedi las notas del qlo ");
         axios.get(urlNotas).then(function (response) {
           console.log(response.data);
           var i, j;
@@ -2557,28 +2568,29 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('students/checkByRut', {
         rut: this.student.rut
       }).then(function (response) {
+        console.log("la respuesta en el cambio de proceso:");
+        console.log(response.data);
         _this4.student = response.data.student;
         _this4.studentFaculty = response.data.faculty.name;
         _this4.studentCareer = response.data.career.name;
       });
-      var urlNotas = "student/" + this.student.id + "/subject/" + this.asignaturaActual.id;
-      axios.get(urlNotas).then(function (response) {
-        console.log(response.data);
-        var i, j;
-
-        for (i = 0; i < _this4.requisitos.length; i++) {
-          for (j = 0; j < response.data.length; j++) {
-            if (_this4.requisitos[i][0] == response.data[j].subject_id) {
-              _this4.notaAlumno[i] = response.data[j].score;
-              console.log("estamos en el for:" + i + "," + j);
-              console.log(_this4.notaAlumno[i]);
-            }
+      /*const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
+      axios.get(urlNotas).then((response)=>{
+          console.log(response.data);
+          var i,j;
+          for(i=0;i<this.requisitos.length;i++){
+              for(j=0;j<response.data.length;j++){
+                  if(this.requisitos[i][0] == response.data[j].subject_id){
+                      this.notaAlumno[i] = response.data[j].score;
+                      console.log("estamos en el for:"+i + "," +j);
+                      console.log(this.notaAlumno[i]);
+                  }
+              }
           }
-        }
+          console.log("ahora muestro las notas del alumno");
+          console.log(this.notaAlumno);
+      });*/
 
-        console.log("ahora muestro las notas del alumno");
-        console.log(_this4.notaAlumno);
-      });
       this.proceso = false;
     },
     actualizarEstado: function actualizarEstado() {
@@ -39795,8 +39807,7 @@ var render = function() {
           ])
         ]
       )
-    ]),
-    _vm._v("\n        " + _vm._s(_vm.estudiante.level) + "\n\n")
+    ])
   ])
 }
 var staticRenderFns = []
@@ -39835,7 +39846,8 @@ var render = function() {
                   studentFaculty: _vm.studentFaculty,
                   studentCareer: _vm.studentCareer,
                   notaAlumno: _vm.notaAlumno,
-                  requisitos: _vm.requisitos
+                  requisitos: _vm.requisitos,
+                  subjectPeriod: _vm.subjectPeriod
                 },
                 on: {
                   botonEnviar: _vm.cambioProceso,
@@ -53051,8 +53063,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/fabi/Escritorio/PROYECTO/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/fabi/Escritorio/PROYECTO/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -10,6 +10,7 @@
             :studentCareer = "studentCareer"
             :notaAlumno = "notaAlumno"
             :requisitos = "requisitos"
+            :subjectPeriod = "subjectPeriod"
             @botonEnviar="cambioProceso"
             @botonAtras="actualizarEstado">
         </formulario-component>   
@@ -68,7 +69,8 @@
                 requisitos: null,
                 notaAlumno: [],
                 studentFaculty:null,
-                studentCareer:null 
+                studentCareer:null,
+                subjectPeriod:null 
             }
         },
         mounted() {
@@ -76,6 +78,7 @@
             axios.get('/subjects').then((response)=>{
                 this.asignaturas = response.data; 
              });
+            axios.get('/')
         },
         methods:{
             logear(res){
@@ -112,7 +115,14 @@
                 this.asignaturaActual = this.asignaturas[index];
                 console.log(this.student);
                 axios.get('/allFacultiesCareers').then((response)=>{
-                this.faculties = response.data; 
+                    this.faculties = response.data; 
+                });
+                const urlPeriod = "periodBySubject/"+this.asignaturaActual.id;
+                axios.get(urlPeriod).then((response)=>{
+                    console.log("la respuesta:");
+                    console.log(response.data);
+                    this.subjectPeriod = response.data;
+                    console.log("el id del periodo es "+this.subjectPeriod.id);
                 });
 
                 
@@ -120,6 +130,7 @@
                 console.log(this.student.id);
                 if(this.student.id!=null){
                     const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
+                    console.log("pedi las notas del qlo ");
                     axios.get(urlNotas).then((response)=>{
                         console.log(response.data);
                         var i,j;
@@ -152,11 +163,13 @@
                 axios.post('students/checkByRut', {rut: this.student.rut
                         }
                 ).then((response)=>{
+                console.log("la respuesta en el cambio de proceso:");
+                console.log(response.data);
                 this.student = response.data.student;
                 this.studentFaculty = response.data.faculty.name;
                 this.studentCareer = response.data.career.name;
                 });
-                const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
+                /*const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
                 axios.get(urlNotas).then((response)=>{
                     console.log(response.data);
                     var i,j;
@@ -171,7 +184,7 @@
                     }
                     console.log("ahora muestro las notas del alumno");
                     console.log(this.notaAlumno);
-                });
+                });*/
                 this.proceso = false; 
             },
             actualizarEstado(){
