@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\DB;
 
 class Report extends Model
 {
@@ -15,8 +15,16 @@ class Report extends Model
         $subject = $subject->where('id', $idSubject)->first();
         $postulations = Postulation::query();
         //filtro por subject_id y luego por periodo_id
-        $postulations = $postulations->where('subject_id',$subject->id);
-        $postulations = $postulations->where('period_id',$idPeriod);
+
+        $postulations = DB::table('postulations')->where('subject_id',$subject->id);
+        //$postulations = $postulations->where('subject_id',$subject->id);
+        $postulations = $postulations->where('period_id',$idPeriod)->get();
+        //error_log($idPeriod);
+        //error_log($subject->id);
+        //dd($postulations);
+
+       
+
         $requirements = $subject->requirements;
         
         //creamos el array
@@ -36,12 +44,16 @@ class Report extends Model
         }
 
         
-
+        
         foreach ($postulations as $postulation) {
-            $student = $postulation->student;
+            error_log('k wea!');
+
+            $student = Student::find($postulation->student_id);
             $career = $student->careers->first();
             $faculty = $career->faculty;
-            $scores = $postulation->studentScores;
+
+            $scores = StudentScore::where('postulation_id', $postulation->id)->get();
+            //$scores = $postulation->studentScores;
             $array_studentScores = [];
 
             foreach($scores as $score){

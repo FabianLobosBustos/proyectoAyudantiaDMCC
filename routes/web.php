@@ -40,8 +40,8 @@ Route::get('allFacultiesCareers', 'FacultyController@allFacultiesCareers');
 //Requirement
 Route::apiResource('requirements','RequirementController');
 //Export
-Route::get('downloadPostulationExportPDF/{idSubject}','ExportController@getAllPostulationsToSubjectPDF');
-Route::get('downloadPostulationExportEXCEL/{idSubject}','ExportController@getAllPostulationsToSubjectEXCEL');
+Route::get('downloadPostulationExportPDF/{idSubject}/period/{idPeriod}','ExportController@getAllPostulationsToSubjectPDF');
+Route::get('downloadPostulationExportEXCEL/{idSubject}/period/{idPeriod}','ExportController@getAllPostulationsToSubjectEXCEL');
 //Report
 Route::get('getArrayPostulationsBySubject/{idSubject}/period/{idPeriod}','ReportController@getArrayPostulationsBySubject');
 //Period
