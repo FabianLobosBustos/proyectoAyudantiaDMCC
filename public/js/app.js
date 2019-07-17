@@ -1792,13 +1792,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       login: false,
       asignaturas: null,
       proceso: false,
-      asignatura: null
+      asignaturaActual: null,
+      periods: null
     };
   },
   mounted: function mounted() {
@@ -1817,8 +1821,16 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     seleccionAsignatura: function seleccionAsignatura(index) {
-      this.proceso = true;
-      this.asignatura = this.asignaturas[index]; //AQUI PONER LA FUNCIONALIDAD DE QUE ME CAMBIE AL MENU DE ASIGNATURA
+      var _this2 = this;
+
+      this.asignaturaActual = this.asignaturas[index]; //obtener los petiodos
+
+      axios.get('/periods').then(function (response) {
+        _this2.periods = response.data;
+        console.log("los periodos:");
+        console.log(response.data);
+        _this2.proceso = true;
+      }); //AQUI PONER LA FUNCIONALIDAD DE QUE ME CAMBIE AL MENU DE ASIGNATURA
     }
   }
 });
@@ -1935,12 +1947,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['periodos'],
+  props: ['periods', 'asignaturaActual'],
   data: function data() {
     return {
       periodoExcel: null,
-      periodoPdf: null
+      periodoPdf: null,
+      periodoExcelSeleccionado: 0,
+      periodoPdfSeleccionado: 0
     };
   },
   mounted: function mounted() {
@@ -1956,8 +1972,19 @@ __webpack_require__.r(__webpack_exports__);
       var params1 = null; //this.$emit('botonIngresar', params);
     },
     exportarPdf: function exportarPdf() {
-      //se emite el evento de que se esta ingresando.
-      var params2 = null; //this.$emit('botonIngresar', params);
+      axios.get("subjectsdownloadPostulationExportPDF/" + this.asignaturaActual.id).then(function (response) {
+        console.log("finish");
+      });
+    },
+    onChange: function onChange() {
+      if (this.periodoExcel != null) {
+        this.periodoExcelSeleccionado = 1;
+      }
+
+      if (this.periodoPdf != null) {
+        this.periodoPdfSeleccionado = 1;
+        console.log(this.periodoPdfSeleccionado);
+      }
     }
   }
 });
@@ -38815,7 +38842,18 @@ var render = function() {
   return _vm.login
     ? _c("div", [
         _vm.proceso
-          ? _c("div", [_c("menu-asignatura-component")], 1)
+          ? _c(
+              "div",
+              [
+                _c("menu-asignatura-component", {
+                  attrs: {
+                    asignaturaActual: _vm.asignaturaActual,
+                    periods: _vm.periods
+                  }
+                })
+              ],
+              1
+            )
           : _c(
               "div",
               _vm._l(_vm.asignaturas, function(asignatura, index) {
@@ -38903,163 +38941,173 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container row" }, [
-    _c("div", { staticClass: "boton col s12" }, [
-      _c(
-        "a",
-        {
-          staticClass: "waves-effect orange btn ",
-          on: {
-            click: function($event) {
-              return _vm.modificar()
-            }
-          }
-        },
-        [_vm._v("Modificar Requisitos")]
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "boton col s4" }, [
-      _c(
-        "a",
-        {
-          staticClass: "waves-effect orange btn",
-          on: {
-            click: function($event) {
-              return _vm.exportarExcel()
-            }
-          }
-        },
-        [_vm._v("Exportar Excel")]
-      )
-    ]),
-    _vm._v(" "),
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "col s6" }, [
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.periodoExcel,
-              expression: "periodoExcel"
-            }
-          ],
-          staticClass: "browser-default validate espacio",
-          attrs: { required: "", type: "text" },
-          on: {
-            change: [
-              function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.periodoExcel = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
-              function($event) {
-                return _vm.onChange()
+    _c("div", { staticClass: "col s12" }, [
+      _c("div", { staticClass: "boton col s12" }, [
+        _c(
+          "a",
+          {
+            staticClass: "waves-effect orange btn ",
+            on: {
+              click: function($event) {
+                return _vm.modificar()
               }
-            ]
-          }
-        },
-        [
-          _c("option", { attrs: { disabled: "", selected: "" } }, [
-            _vm._v("Seleccione el periodo:")
-          ]),
-          _vm._v(" "),
-          _vm._l(_vm.periodos, function(periodo, index) {
-            return _c("option", { key: index }, [
-              _vm._v(
-                "\n                    " +
-                  _vm._s(periodo.semester) +
-                  _vm._s(periodo.year) +
-                  "\n            "
-              )
-            ])
-          })
-        ],
-        2
-      )
+            }
+          },
+          [_vm._v("Modificar Requisitos")]
+        )
+      ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "boton col s4" }, [
-      _c(
-        "a",
-        {
-          staticClass: "waves-effect orange btn s6",
-          on: {
-            click: function($event) {
-              return _vm.exportarPdf()
-            }
-          }
-        },
-        [_vm._v("Exportar PDF")]
-      )
-    ]),
-    _vm._v(" "),
-    _vm._m(1),
-    _vm._v(" "),
-    _c("div", { staticClass: "col s6" }, [
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.periodoPdf,
-              expression: "periodoPdf"
-            }
-          ],
-          staticClass: "browser-default validate espacio",
-          attrs: { required: "", type: "text" },
-          on: {
-            change: [
-              function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.periodoPdf = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
-              function($event) {
-                return _vm.onChange()
+    _c("div", { staticClass: "col s12" }, [
+      _c("div", { staticClass: "boton col s4" }, [
+        _c(
+          "a",
+          {
+            staticClass: "waves-effect orange btn",
+            attrs: { disabled: _vm.periodoExcelSeleccionado == 0 },
+            on: {
+              click: function($event) {
+                return _vm.exportarExcel()
               }
-            ]
-          }
-        },
-        [
-          _c("option", { attrs: { disabled: "", selected: "" } }, [
-            _vm._v("Seleccione el periodo:")
-          ]),
-          _vm._v(" "),
-          _vm._l(_vm.periodos, function(periodo, index) {
-            return _c("option", { key: index }, [
-              _vm._v(
-                "\n                    " +
-                  _vm._s(periodo.semester) +
-                  _vm._s(periodo.year) +
-                  "\n            "
-              )
-            ])
-          })
-        ],
-        2
-      )
+            }
+          },
+          [_vm._v("Exportar Excel")]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col s6" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.periodoExcel,
+                expression: "periodoExcel"
+              }
+            ],
+            staticClass: "browser-default validate espacio",
+            attrs: { required: "", type: "text" },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.periodoExcel = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.onChange()
+                }
+              ]
+            }
+          },
+          [
+            _c("option", { attrs: { disabled: "", selected: "" } }, [
+              _vm._v("Seleccione el periodo:")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.periods, function(periodo, index) {
+              return _c("option", { key: index }, [
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(periodo.semester) +
+                    "-" +
+                    _vm._s(periodo.year) +
+                    "\n                "
+                )
+              ])
+            })
+          ],
+          2
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col s12" }, [
+      _c("div", { staticClass: "boton col s4" }, [
+        _c(
+          "a",
+          {
+            staticClass: "waves-effect orange btn s6",
+            attrs: { disabled: _vm.periodoPdfSeleccionado == 0 },
+            on: {
+              click: function($event) {
+                return _vm.exportarPdf()
+              }
+            }
+          },
+          [_vm._v("Exportar PDF")]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _c("div", { staticClass: "col s6" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.periodoPdf,
+                expression: "periodoPdf"
+              }
+            ],
+            staticClass: "browser-default validate espacio",
+            attrs: { required: "", type: "text" },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.periodoPdf = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.onChange()
+                }
+              ]
+            }
+          },
+          [
+            _c("option", { attrs: { disabled: "", selected: "" } }, [
+              _vm._v("Seleccione el periodo:")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.periods, function(periodo, index) {
+              return _c("option", { key: index }, [
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(periodo.semester) +
+                    "-" +
+                    _vm._s(periodo.year) +
+                    "\n                "
+                )
+              ])
+            })
+          ],
+          2
+        )
+      ])
     ])
   ])
 }

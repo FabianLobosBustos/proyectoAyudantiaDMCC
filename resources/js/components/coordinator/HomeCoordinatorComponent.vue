@@ -1,7 +1,10 @@
 <template>
     <div v-if="login">
         <div v-if="proceso">
-            <menu-asignatura-component></menu-asignatura-component>
+            <menu-asignatura-component
+            :asignaturaActual= "asignaturaActual"
+            :periods= "periods">
+            </menu-asignatura-component>
         </div>
         <div v-else>
             <asignatura-component class ="col l3" v-for = "(asignatura,index) in asignaturas"
@@ -35,7 +38,8 @@
                 login: false,
                 asignaturas:null,
                 proceso: false,
-                asignatura: null
+                asignaturaActual: null,
+                periods: null
             }
         },
         mounted() {
@@ -52,9 +56,15 @@
              });
            },
            seleccionAsignatura(index){
-               this.proceso = true;
-               this.asignatura = this.asignaturas[index];
-               //AQUI PONER LA FUNCIONALIDAD DE QUE ME CAMBIE AL MENU DE ASIGNATURA
+                this.asignaturaActual = this.asignaturas[index];
+                //obtener los petiodos
+                axios.get('/periods').then((response)=>{
+                    this.periods = response.data;
+                    console.log("los periodos:");
+                    console.log(response.data);
+                    this.proceso = true;
+                    });
+                //AQUI PONER LA FUNCIONALIDAD DE QUE ME CAMBIE AL MENU DE ASIGNATURA
            } 
         }
     }
