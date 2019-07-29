@@ -18,7 +18,7 @@
         <div v-else class="container ">
             <p class= "center-align">
                     Formulatio único para concursar al cargo de ayudante alumno para
-                    el periodo que comprende los meses de Inserte Meses:
+                    el periodo que comprende el periodo {{subjectPeriod.semester}}-{{subjectPeriod.year}}
             <p>
             <br>
             <div class= "row">
@@ -78,7 +78,13 @@
             axios.get('/subjects').then((response)=>{
                 this.asignaturas = response.data; 
              });
-            axios.get('/')
+            const urlPeriod = "periodBySubject/"+this.asignaturas[0].id;
+                axios.get(urlPeriod).then((response)=>{
+                    console.log("la respuesta:");
+                    console.log(response.data);
+                    this.subjectPeriod = response.data;
+                    console.log("el id del periodo es "+this.subjectPeriod.id);
+                });
         },
         methods:{
             logear(res){

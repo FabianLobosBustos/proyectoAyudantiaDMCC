@@ -15,7 +15,7 @@
             </div>
         
             <div class="col s6">
-                <select @change="onChange()"  class="browser-default validate espacio"  required type="text" v-model="periodoExcel">
+                <select @change="onChange()"  class="browser-default validate espacio"  required type="text" v-model="periodoActualExcel">
                     <option disabled selected >Seleccione el periodo:</option>
                     <option v-for = "(periodo,index) in periods"
                             :key="index">
@@ -34,7 +34,7 @@
             </div>
 
             <div class="col s6">
-                <select @change="onChange()"  class="browser-default validate espacio"  required type="text" v-model="periodoPdf">
+                <select @change="onChange()"  class="browser-default validate espacio"  required type="text" v-model="periodoActualPDF">
                     <option disabled selected >Seleccione el periodo:</option>
                     <option v-for = "(periodo,index) in periods"
                             :key="index">
@@ -44,6 +44,7 @@
             </div>
         </div>
     </div>
+    
 </template>
 <style scoped>
     .boton{
@@ -66,7 +67,9 @@
                 periodoExcel: null,
                 periodoPdf: null,
                 periodoExcelSeleccionado: 0,
-                periodoPdfSeleccionado: 0
+                periodoPdfSeleccionado: 0,
+                periodoActualPDF: null,
+                periodoActualExcel: null
             }
         },
         mounted() {
@@ -79,24 +82,71 @@
                // this.$emit('botonIngresar', params);
             },
             exportarExcel(){
-                //se emite el evento de que se esta ingresando.
-                const params1 = null;
-                //this.$emit('botonIngresar', params);
+                var i;
+                var index = -1;
+                for(i=0;i<this.periods.length;i++){
+                        var str1 = this.periods[i].semester+"-"+this.periods[i].year;
+                        console.log(str1);
+                        console.log("===");
+                        console.log(this.periodoActualExcel+"");
+                        if((this.periods[i].semester+"-"+this.periods[i].year) === this.periodoActualExcel+""){
+                            index = i;
+                        }
+                }
+                const urlPDF = "downloadPostulationExportEXCEL/"+this.asignaturaActual.id+"/period/"+this.periods[index].id;
+                axios({
+                    url: urlPDF,
+                    method: 'GET',
+                    responseType: 'blob', // important
+                    }).then((response) => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', "postulaciones_"+this.asignaturaActual.name+"_"+this.periodoActualExcel+".xls");
+                    document.body.appendChild(link);
+                    link.click();
+                    });
             },
             exportarPdf(){
-                axios.get("subjectsdownloadPostulationExportPDF/"+this.asignaturaActual.id).then((response)=>{
-                console.log("finish");
-             });
+                var i;
+                var index = -1;
+                for(i=0;i<this.periods.length;i++){
+                        var str1 = this.periods[i].semester+"-"+this.periods[i].year;
+                        console.log(str1);
+                        console.log("===");
+                        console.log(this.periodoActualPDF+"");
+                        if((this.periods[i].semester+"-"+this.periods[i].year) === this.periodoActualPDF+""){
+                            index = i;
+                        }
+                }
+                const urlPDF = "downloadPostulationExportPDF/"+this.asignaturaActual.id+"/period/"+this.periods[index].id;
+                axios({
+                    url: urlPDF,
+                    method: 'GET',
+                    responseType: 'blob', // important
+                    }).then((response) => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', "postulaciones_"+this.asignaturaActual.name+"_"+this.periodoActualPDF+".pdf");
+                    document.body.appendChild(link);
+                    link.click();
+                    });
             },
             onChange(){
-                if(this.periodoExcel != null){
+                console.log("estoy en el onchangue");
+                console.log(this.periodoPdfSeleccionado);
+                if(this.periodoActualExcel != null){
+                    
                     this.periodoExcelSeleccionado = 1;
                 }
-                if(this.periodoPdf != null){
+                if(this.periodoActualPDF != null){
                     this.periodoPdfSeleccionado = 1;
                     console.log(this.periodoPdfSeleccionado);
                 }
                 
+                                console.log(this.periodoPdfSeleccionado);
+
             }
             
         }
