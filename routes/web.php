@@ -25,10 +25,10 @@ Route::get('/coordinator', function () {
 
 
 //RUTAS
-//Student
-Route::get('student/{id_student}/subject/{id_subject}', 'StudentController@showScoresBySubject');
-Route::post('students/checkByRut', 'StudentController@checkByRut');
-Route::apiResource('students', 'StudentController');
+//Assistant
+Route::get('assistant/{id_assistant}/subject/{id_subject}', 'AssistantController@showScoresBySubject');
+Route::post('assistants/checkByRut', 'AssistantController@checkByRut');
+Route::apiResource('assistants', 'AssistantController');
 //Subject
 Route::get('subject/{id}/requirements', 'SubjectController@showRequirementsBySubject');
 Route::get('getActiveSubjects', 'SubjectController@getActiveSubjects');
