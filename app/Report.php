@@ -28,7 +28,7 @@ class Report extends Model
         $requirements = $subject->requirements;
         
         //creamos el array
-        $array_students = [];
+        $array_assistants = [];
         $array_requirements = [];
         
         $bigArray = [];
@@ -48,40 +48,40 @@ class Report extends Model
         foreach ($postulations as $postulation) {
             error_log('k wea!');
 
-            $student = Student::find($postulation->student_id);
-            $career = $student->careers->first();
+            $assistant = Assistant::find($postulation->assistant_id);
+            $career = $assistant->careers->first();
             $faculty = $career->faculty;
 
-            $scores = StudentScore::where('postulation_id', $postulation->id)->get();
-            //$scores = $postulation->studentScores;
-            $array_studentScores = [];
+            $scores = AssistantScore::where('postulation_id', $postulation->id)->get();
+            //$scores = $postulation->assistantScores;
+            $array_assistantScores = [];
 
             foreach($scores as $score){
-                $array_studentScores[] = [
+                $array_assistantScores[] = [
                     'subject_id' => $score->subject_id,
                     'score' => $score->score 
                 ];
             }
 
-            $array_students[] = [
-                'student_rut' => $student->rut,
-                'student_fone' => $student->fone,
-                'student_email' => $student->email,
-                'student_address' => $student->address,
-                'student_name' => $student->name,
-                'student_lastNameDad' => $student->lastNameDad,
-                'student_lastNameMom' => $student->lastNameMom,
-                'student_level' => $student->level,
+            $array_assistants[] = [
+                'assistant_rut' => $assistant->rut,
+                'assistant_fone' => $assistant->fone,
+                'assistant_email' => $assistant->email,
+                'assistant_address' => $assistant->address,
+                'assistant_name' => $assistant->name,
+                'assistant_lastNameDad' => $assistant->lastNameDad,
+                'assistant_lastNameMom' => $assistant->lastNameMom,
+                'assistant_level' => $assistant->level,
                 'faculty_name' => $faculty->name,
                 'career_name' => $career->name,
-                'scores' => $array_studentScores
+                'scores' => $array_assistantScores
             ];
 
         }
         $bigArray[] = [
             'subject_name' => $subject->name,
             'requirements_subject' => $array_requirements,
-            'students' => $array_students
+            'assistants' => $array_assistants
         ];
 
         return $bigArray;

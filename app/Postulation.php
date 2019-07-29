@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Postulation extends Model
 {
-    public function student()
+    public function assistant()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Assistant::class);
     }
 
     public function period()
@@ -21,9 +21,9 @@ class Postulation extends Model
         return $this->belongsTo(Subjects::class);
     }
 
-    public function studentScores()
+    public function assistantScores()
     {
-        return $this->hasMany(StudentScore::class);
+        return $this->hasMany(AssistantScore::class);
     }
 
 }

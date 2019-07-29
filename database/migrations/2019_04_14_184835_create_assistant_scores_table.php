@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStudentScoresTable extends Migration
+class CreateAssistantScoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateStudentScoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_scores', function (Blueprint $table) {
+        Schema::create('assistant_scores', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->float('score');
             $table->bigInteger('postulation_id')->unsigned();
             $table->foreign('postulation_id')->references('id')->on('postulations');
-            $table->bigInteger('student_id')->unsigned();
-            $table->foreign('student_id')->references('id')->on('students');
+            $table->bigInteger('assistant_id')->unsigned();
+            $table->foreign('assistant_id')->references('id')->on('assistants');
             $table->bigInteger('subject_id')->unsigned();
             $table->foreign('subject_id')->references('id')->on('subjects');
             $table->timestamps();
@@ -33,6 +33,6 @@ class CreateStudentScoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_scores');
+        Schema::dropIfExists('assistant_scores');
     }
 }

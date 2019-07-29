@@ -4,13 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Student extends Model
+class Assistant extends Model
 {
     protected $fillable = ['name', 'lastName','level','fone','rut','verificatorDigit','address'];
     
     public function careers()
     {
-        return $this->belongsToMany(Career::class,'student_career')->withPivot('active');
+        return $this->belongsToMany(Career::class,'assistant_career')->withPivot('active');
     }
 
     public function postulations()
@@ -18,9 +18,9 @@ class Student extends Model
     	return $this->hasMany(Postulation::class);
     }
 
-    public function studentScores()
+    public function assistantScores()
     {	
-    	return $this->hasMany(StudentScore::class);
+    	return $this->hasMany(AssistantScore::class);
     }
     
 }

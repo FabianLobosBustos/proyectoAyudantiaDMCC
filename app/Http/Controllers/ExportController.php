@@ -48,19 +48,19 @@ class ExportController extends Controller
         //agregamos las filas faltantes -> arrayExport es el contenedor macro
         $arrayExport=[$firstRow];
 
-        foreach ($bigArray[0]['students'] as $value){
+        foreach ($bigArray[0]['assistants'] as $value){
             
             $secondRow = [
-                $value['student_rut'],
-                $value['student_name'],
-                $value['student_lastNameDad'],
-                $value['student_lastNameMom'],
-                $value['student_email'],
-                $value['student_fone'],
-                $value['student_address'],
+                $value['assistant_rut'],
+                $value['assistant_name'],
+                $value['assistant_lastNameDad'],
+                $value['assistant_lastNameMom'],
+                $value['assistant_email'],
+                $value['assistant_fone'],
+                $value['assistant_address'],
                 $value['faculty_name'],
                 $value['career_name'],
-                $value['student_level'],
+                $value['assistant_level'],
             ];
             foreach ($value['scores'] as $score){
                 array_push($secondRow,$score['score']);

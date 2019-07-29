@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Career extends Model
 {
-    public function students()
+    public function assistants()
     {
-        return $this->belongsToMany(Student::class,'student_career')->withPivot('active');
+        return $this->belongsToMany(Assistant::class,'assistant_career')->withPivot('active');
     }
 
     public function faculty()

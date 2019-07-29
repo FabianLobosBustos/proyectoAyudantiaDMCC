@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StudentScore extends Model
+class AssistantScore extends Model
 {
-    public function student()
+    public function assistant()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Assistant::class);
     }
 
     public function postulation()

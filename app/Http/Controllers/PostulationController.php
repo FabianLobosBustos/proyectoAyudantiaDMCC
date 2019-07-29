@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Postulation;
-use App\Student;
+use App\Assistant;
 use App\Faculty;
 use App\Career;
 use App\Subject;
-use App\StudentScore;
+use App\AssistantScore;
 
 
 class PostulationController extends Controller
@@ -31,7 +31,7 @@ class PostulationController extends Controller
      * @return \Illuminate\Http\Response
      */
     //El request trae todo lo de la postulacion
-    //si algo es inerente al alumno, sera student_atributo
+    //si algo es inerente al alumno, sera assistant_atributo
     //si algo es inerente de la carrera, sera career_atributo
     //si algo es inerente de la facultad, sera faculty_atributo
     //asi hasta el final de los tiempo
@@ -40,66 +40,66 @@ class PostulationController extends Controller
 
      
         //obtenemos todos los datos
-        $studentSend_rut = $request->input('studentSend.rut');
-        $studentSend_name = $request->input('studentSend.name');
-        $studentSend_lastNameDad = $request->input('studentSend.lastNameDad');
-        $studentSend_lastNameMom = $request->input('studentSend.lastNameMom');
-        $studentSend_address = $request->input('studentSend.address');
-        $studentSend_email = $request->input('studentSend.email');
-        $studentSend_fone = $request->input('studentSend.fone');
-        $studentSend_level = $request->input('studentSend.level');
+        $assistantSend_rut = $request->input('assistantSend.rut');
+        $assistantSend_name = $request->input('assistantSend.name');
+        $assistantSend_lastNameDad = $request->input('assistantSend.lastNameDad');
+        $assistantSend_lastNameMom = $request->input('assistantSend.lastNameMom');
+        $assistantSend_address = $request->input('assistantSend.address');
+        $assistantSend_email = $request->input('assistantSend.email');
+        $assistantSend_fone = $request->input('assistantSend.fone');
+        $assistantSend_level = $request->input('assistantSend.level');
         //OJO luego se consumira de request
-        $studentSend_verificatorDigit = 'k';
+        $assistantSend_verificatorDigit = 'k';
 
         //OJO! la carrera nos llega mientras solo su name! => luego actualizar
-        $studentSend_careerName = $request->input('studentSend.career');
-        $studentSend_facultyName = $request->input('studentSend.faculty');
+        $assistantSend_careerName = $request->input('assistantSend.career');
+        $assistantSend_facultyName = $request->input('assistantSend.faculty');
         
         $postulationSend_numberTime = $request->input('postulationSend.numberTime');
         $postulationSend_referenceTeacher_id = $request->input('postulationSend.referenceTeacher_id');
         $postulationSend_subject_id = $request->input('postulationSend.subject_id');
         $postulationSend_period_id = $request->input('postulationSend.subjectPeriod');
-        $studentScoreSendArray = $request->input('studentScore');
+        $assistantScoreSendArray = $request->input('assistantScore');
         $requirementSendArray = $request->input('requirement');
         //$arrayRequirements = $phpArray['requirement'];
-        //$arrayStudentScores = $phpArray['studentScore'];
+        //$arrayassistantScores = $phpArray['assistantScore'];
 
         //creamos una nueva postulacion!
         $postulation = new Postulation;
           //CREAR CODE para acceso de teachers
         
         //filtramos por rut del alumno
-        $student = Student::where('rut', $studentSend_rut)->get();
-        
-        if ($student->isEmpty()) {
-            $student = new Student;
+        $assistant = Assistant::where('rut', $assistantSend_rut)->get();
+    
+        if ($assistant->isEmpty()) {
+            $assistant = new Assistant;
         }else{
-            $student =  $student->first();
+            $assistant =  $assistant->first();
         }
     
         
         // Cargamos o Recargamos los datos del estudiante
-        $student->name = $studentSend_name;
-        $student->lastNameDad = $studentSend_lastNameDad;
-        $student->lastNameMom = $studentSend_lastNameMom;
-        $student->level = $studentSend_level;
-        $student->fone = $studentSend_fone;
-        $student->rut = $studentSend_rut;
-        $student->address = $studentSend_address;
-        $student->email = $studentSend_email;
-        $student->verificatorDigit = $studentSend_verificatorDigit;
-        $student->save();
+        $assistant->name = $assistantSend_name;
+        $assistant->lastNameDad = $assistantSend_lastNameDad;
+        $assistant->lastNameMom = $assistantSend_lastNameMom;
+        $assistant->level = $assistantSend_level;
+        $assistant->fone = $assistantSend_fone;
+        $assistant->rut = $assistantSend_rut;
+        $assistant->address = $assistantSend_address;
+        $assistant->email = $assistantSend_email;
+        $assistant->verificatorDigit = $assistantSend_verificatorDigit;
+        $assistant->save();
         
 
         //Completo la carrera del estudiante
-        $career = Career::where('name', $studentSend_careerName)->first();
+        $career = Career::where('name', $assistantSend_careerName)->first();
        
-        $student_careers = $student->careers;
+        $assistant_careers = $assistant->careers;
         
         $same_career_active = 0;
         //si la carrera es la misma y esta activa, no hago nada
-        foreach($student_careers as $student_career){
-            if($student_career->pivot->active == 1 && $student_career->id == $career->id){
+        foreach($assistant_careers as $assistant_career){
+            if($assistant_career->pivot->active == 1 && $assistant_career->id == $career->id){
                  $same_career_active = 1;
                  break;
             }
@@ -108,17 +108,17 @@ class PostulationController extends Controller
         //si la carrera existe  pero no esta activa, ahora la activo.
         $career_not_exist = 0;
         if ($same_career_active == 0) {
-            foreach ($student_careers as $student_career) {
+            foreach ($assistant_careers as $assistant_career) {
                 //si existe la carrera
-                if ($student_career->id == $career->id) {
+                if ($assistant_career->id == $career->id) {
                     //reviso las otras carreras del alumno y las inactivo
-                    foreach ($student_careers as $student_career) {
-                        $student_career->pivot->active = 0;
-                        $student_career->save();
+                    foreach ($assistant_careers as $assistant_career) {
+                        $assistant_career->pivot->active = 0;
+                        $assistant_career->save();
                     }
                     //luego hago que la carrea encontrada sea activada
-                    $student_career->pivot->active = 1;
-                    $student_career->save();
+                    $assistant_career->pivot->active = 1;
+                    $assistant_career->save();
                     $career_not_exist = 1;
                 }
             }
@@ -126,23 +126,23 @@ class PostulationController extends Controller
         
         //si la carrera no esta registrada por el alumno y no esta activa...
         if($career_not_exist == 0 && $same_career_active == 0){
-            $student->careers()->attach($career);
+            $assistant->careers()->attach($career);
         }
 
 
-        // ------------- PARCHAR STUDENT CARRER -------------- 
-        if($student)
+        // ------------- PARCHAR assistant CARRER -------------- 
+        //if($assistant)
         
 
         //ATENCION! LA CARRERA SE DEBE ASOCIAR A LA FACULTAD EN CUESTION
         //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
-        //$faculty = Faculty::where('name', $studentSend_facultyName)->first();
+        //$faculty = Faculty::where('name', $assistantSend_facultyName)->first();
         //$career->faculty_id = $faculty->id;
         //Asigamos la asignatura
         $postulation->subject_id = $postulationSend_subject_id;
 
         //obviamente añadimos al alumno
-        $postulation->student_id = $student->id;
+        $postulation->assistant_id = $assistant->id;
 
         //y la informacion referente al alumno
         $postulation->numberTime = (integer)$postulationSend_numberTime;
@@ -161,12 +161,12 @@ class PostulationController extends Controller
         $i = 0;
         foreach($requirementSendArray as $requirement){
         
-            $studentScore = new StudentScore;
-            $studentScore->score = $studentScoreSendArray[$i];
-            $studentScore->postulation_id = $postulation->id;
-            $studentScore->student_id = $student->id;
-            $studentScore->subject_id = $requirement['id'];
-            $studentScore->save();
+            $assistantScore = new AssistantScore;
+            $assistantScore->score = $assistantScoreSendArray[$i];
+            $assistantScore->postulation_id = $postulation->id;
+            $assistantScore->assistant_id = $assistant->id;
+            $assistantScore->subject_id = $requirement['id'];
+            $assistantScore->save();
             $i++;
         }
         

@@ -20,8 +20,8 @@ class CreatePostulationsTable extends Migration
             $table->string('referenceText');
             $table->bigInteger('subject_id')->unsigned();
             $table->foreign('subject_id')->references('id')->on('subjects');
-            $table->bigInteger('student_id')->unsigned();
-            $table->foreign('student_id')->references('id')->on('students');
+            $table->bigInteger('assistant_id')->unsigned();
+            $table->foreign('assistant_id')->references('id')->on('assistants');
             $table->bigInteger('period_id')->unsigned();
             $table->foreign('period_id')->references('id')->on('periods');
             $table->timestamps();

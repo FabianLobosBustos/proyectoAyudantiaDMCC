@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Student;
+use App\Assistant;
 use App\Career;
 use App\Subject;
-use App\StudentScore;
+use App\AssistantScore;
 use App\Faculty;
 use phpDocumentor\Reflection\Types\Object_;
 
-class StudentController extends Controller
+class AssistantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +21,7 @@ class StudentController extends Controller
     public function index()
     {
         error_log('Some message here.');
-        return Student::all();
+        return Assistant::all();
     }
 
     
@@ -30,22 +30,22 @@ class StudentController extends Controller
     public function checkByRut(Request $request)
     {
         
-        $student = Student::where('rut',(int)$request->rut)->get();
+        $assistant = Assistant::where('rut',(int)$request->rut)->get();
         
         //Se chekea si el estudiante existe en la BD
-        if($student->isEmpty()){
+        if($assistant->isEmpty()){
             return 0; 
         }
 
-        $student = $student->first();
-        $career = $student->careers->first();
+        $assistant = $assistant->first();
+        $career = $assistant->careers->first();
         
         //ACA SE DEBE RETORNAR LA CARRERA VIGENTE DEL ESTUDIANTE! => IMPLEMENTAR CAMBIO EN LA BD
         $faculty = Faculty::where('id',$career->faculty->id)->first();
 
         $allData = new Object_();
         
-        $studentSend = new Object_();
+        $assistantSend = new Object_();
         $careerSend = new Object_();
         $facultySend = new Object_();
 
@@ -55,19 +55,19 @@ class StudentController extends Controller
         $facultySend->id = $faculty->id;
         $facultySend->name = $faculty->name;
             
-        $studentSend->id = $student->id;
-        $studentSend->name = $student->name;
-        $studentSend->lastNameMom = $student->lastNameMom;
-        $studentSend->lastNameDad = $student->lastNameDad;
-        $studentSend->level = $student->level;
-        $studentSend->rut = $student->rut;
-        $studentSend->verificatorDigit = $student->verificatorDigit;
-        $studentSend->address = $student->address;
-        $studentSend->email = $student->email;
+        $assistantSend->id = $assistant->id;
+        $assistantSend->name = $assistant->name;
+        $assistantSend->lastNameMom = $assistant->lastNameMom;
+        $assistantSend->lastNameDad = $assistant->lastNameDad;
+        $assistantSend->level = $assistant->level;
+        $assistantSend->rut = $assistant->rut;
+        $assistantSend->verificatorDigit = $assistant->verificatorDigit;
+        $assistantSend->address = $assistant->address;
+        $assistantSend->email = $assistant->email;
         
         $allData->faculty = $facultySend;
         $allData->career = $careerSend;
-        $allData->student = $studentSend;
+        $allData->assistant = $assistantSend;
         
 
         $allData = json_encode($allData);
@@ -79,10 +79,10 @@ class StudentController extends Controller
 
     //Funcion que muestra la nota que tuvo el alumno en las asignatura
     //que son requerimientos de la asignatura dada por parametro.
-    public function showScoresBySubject($id_student,$id_subject){
-        $student = Student::where('id',$id_student)->first();
+    public function showScoresBySubject($id_assistant,$id_subject){
+        $assistant = Assistant::where('id',$id_assistant)->first();
         //con el sort_by se logra que se obtengan las ultimas notas registradas primero
-        $studentScores = $student->studentScores->sortBy('created_at',SORT_REGULAR, true);
+        $assistantScores = $assistant->assistantScores->sortBy('created_at',SORT_REGULAR, true);
         $subject = Subject::where('id',$id_subject)->first();
         $requirements = $subject->requirements;
         
@@ -92,17 +92,17 @@ class StudentController extends Controller
         }
 
         $list_of_scores = [];
-        foreach($studentScores as $studentScore){
+        foreach($assistantScores as $assistantScore){
             
-            $studentScore = StudentScore::where('id',$studentScore->id)->first();
-            $requirementSubjectId = $studentScore->subject_id;
+            $assistantScore = AssistantScore::where('id',$assistantScore->id)->first();
+            $requirementSubjectId = $assistantScore->subject_id;
     
             if (in_array($requirementSubjectId,$listOfRequirementsIds)) {
                 $requirementName = Subject::where('id',$requirementSubjectId)->first()->name;
                 $list_of_scores[] = [
                     'subject_id' => $requirementSubjectId,
                     'subject_name' => $requirementName,
-                    'score' => $studentScore->score
+                    'score' => $assistantScore->score
                 ];
                 //Eliminamos del requirimiento la nota agregada!
                 unset($listOfRequirementsIds[array_search($requirementSubjectId,$listOfRequirementsIds)]);
@@ -122,22 +122,22 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         error_log('Guardando alumno en BD!');
-        $student = new Student;
+        $assistant = new Assistant;
         
-        $student->name = $request->name;
-        $student->lastName = $request->lastName;
-        $student->level = $request->level;
-        $student->fone =$request->fone;
-        $student->rut = $request->rut;
-        $student->verificatorDigit = $request->verificatorDigit;
-        $student->address = $request->address;
-        $student->save();
+        $assistant->name = $request->name;
+        $assistant->lastName = $request->lastName;
+        $assistant->level = $request->level;
+        $assistant->fone =$request->fone;
+        $assistant->rut = $request->rut;
+        $assistant->verificatorDigit = $request->verificatorDigit;
+        $assistant->address = $request->address;
+        $assistant->save();
         
         
         
 
 
-        return $student->first();
+        return $assistant->first();
         
     }
 
@@ -150,7 +150,7 @@ class StudentController extends Controller
     public function show($id)
     {
         error_log('mostrando1!!');
-        return Student::where('id',$id)->get();
+        return Assistant::where('id',$id)->get();
     }
 
     /**
