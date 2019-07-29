@@ -2,12 +2,12 @@
 
     <div v-if="login">
         <formulario-component v-if="proceso"
-            :estudiante = "student"
+            :estudiante = "assistant"
             :asignatura = "asignaturaActual"
             :faculties = "faculties"
             :career = "carrera"
-            :studentFaculty = "studentFaculty"
-            :studentCareer = "studentCareer"
+            :assistantFaculty = "assistantFaculty"
+            :assistantCareer = "assistantCareer"
             :notaAlumno = "notaAlumno"
             :requisitos = "requisitos"
             :subjectPeriod = "subjectPeriod"
@@ -21,7 +21,7 @@
                     el periodo que comprende el periodo {{subjectPeriod.semester}}-{{subjectPeriod.year}}
             <p>
             <br>
-            <div class= "row">
+            <div class= "row card cardI">
                 <asignatura-component class ="col l3" v-for = "(asignatura,index) in asignaturas"
                     :key="asignatura.id"
                     :asignatura = "asignatura"
@@ -40,6 +40,14 @@
 
 </template>
 
+<style scoped>
+.cardI{
+        padding-left: 20px;
+        padding-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+</style>
 <script>
     export default {
         data(){
@@ -60,7 +68,7 @@
                     id: 5,
                     name: "Ecuaciones diferenciales"
                 }],
-                student:[],
+                assistant:[],
                 asignaturaActual: [],
                 login: false,
                 proceso: false,
@@ -68,8 +76,8 @@
                 carrera: "carrera",
                 requisitos: null,
                 notaAlumno: [],
-                studentFaculty:null,
-                studentCareer:null,
+                assistantFaculty:null,
+                assistantCareer:null,
                 subjectPeriod:null 
             }
         },
@@ -88,8 +96,8 @@
         },
         methods:{
             logear(res){
-                //aqui debo obtener una respuesta con el alumno y esa se la paso al this.student
-                let studentX = {
+                //aqui debo obtener una respuesta con el alumno y esa se la paso al this.assistant
+                let assistantX = {
                     rut: res.rut,
                     name: "",
                     lastNameMom: "",
@@ -100,26 +108,26 @@
                     level: "",
                     id: null
                 };             
-                axios.post('students/checkByRut', {rut: res.rut
+                axios.post('assistants/checkByRut', {rut: res.rut
                         }
                 ).then((response)=>{
                 if(response.data == 0){
-                    this.student = studentX;
-                    console.log(this.student);
+                    this.assistant = assistantX;
+                    console.log(this.assistant);
                 }
                 else{
                     console.log("response:");
                     console.log(response.data);
-                    this.studentFaculty = response.data.faculty.name;
-                    this.studentCareer = response.data.career.name;
-                    this.student = response.data.student;
+                    this.assistantFaculty = response.data.faculty.name;
+                    this.assistantCareer = response.data.career.name;
+                    this.assistant = response.data.assistant;
                 } 
                 this.login = true;
                 });
             },
             seleccionAsignatura(index){
                 this.asignaturaActual = this.asignaturas[index];
-                console.log(this.student);
+                console.log(this.assistant);
                 axios.get('/allFacultiesCareers').then((response)=>{
                     this.faculties = response.data; 
                 });
@@ -133,9 +141,9 @@
 
                 
 
-                console.log(this.student.id);
-                if(this.student.id!=null){
-                    const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
+                console.log(this.assistant.id);
+                if(this.assistant.id!=null){
+                    const urlNotas = "assistant/"+this.assistant.id+"/subject/"+this.asignaturaActual.id;
                     console.log("pedi las notas del qlo ");
                     axios.get(urlNotas).then((response)=>{
                         console.log(response.data);
@@ -165,17 +173,17 @@
 
             },
             cambioProceso(){
-                console.log(this.student.rut)
-                axios.post('students/checkByRut', {rut: this.student.rut
+                console.log(this.assistant.rut)
+                axios.post('assistants/checkByRut', {rut: this.assistant.rut
                         }
                 ).then((response)=>{
                 console.log("la respuesta en el cambio de proceso:");
                 console.log(response.data);
-                this.student = response.data.student;
-                this.studentFaculty = response.data.faculty.name;
-                this.studentCareer = response.data.career.name;
+                this.assistant = response.data.assistant;
+                this.assistantFaculty = response.data.faculty.name;
+                this.assistantCareer = response.data.career.name;
                 });
-                /*const urlNotas = "student/"+this.student.id+"/subject/"+this.asignaturaActual.id;
+                /*const urlNotas = "assistant/"+this.assistant.id+"/subject/"+this.asignaturaActual.id;
                 axios.get(urlNotas).then((response)=>{
                     console.log(response.data);
                     var i,j;
