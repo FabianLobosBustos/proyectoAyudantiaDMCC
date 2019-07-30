@@ -74,9 +74,9 @@
                     </div>
                     <div class="col l6">
                         <p class = "parrafo">PPA: <span class ="requerido" v-if="!estudiante.ppa">*</span></p>
-                        <input required id="email_inline" type="number" class="validate" max="7" min="0" v-model="estudiante.ppa">
+                        <input step="0.1" required id="email_inline" type="number" class="validate" max="7" min="0" v-model="estudiante.ppa">
                         
-                        <span step="0.1" class="helper-text" data-error="Error" placeholder="ej: 1.89" >Corresponde al Promedio Ponderado Acumulado</span>
+                        <span  class="helper-text" data-error="Error" placeholder="ej: 1.89" >Corresponde al Promedio Ponderado Acumulado</span>
                     </div>
                 </div> 
                 <div class="row card cardI ">
@@ -235,6 +235,13 @@
                 }
             },
             enviar(){
+                var mensaje;
+                var opcion = confirm("Estas seguro de enviar este formulario? \n Posteriormente no podrás editarlo");
+                if (opcion == true) {
+                    mensaje = "Has clickado OK";
+                } else {
+                    mensaje = "Has clickado Cancelar";
+                }
                 var i;
                 for (i = 0; i < this.notaAlumno.length; i++) {
                     this.notaAlumno[i] = parseFloat(this.notaAlumno[i]);
