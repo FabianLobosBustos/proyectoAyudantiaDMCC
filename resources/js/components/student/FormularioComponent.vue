@@ -237,7 +237,7 @@
                     console.log(this.requisitos[i]);
                 };
                 const params = {
-                studentSend:{
+                assistantSend:{
                     rut: this.estudiante.rut,
                     name: this.estudiante.name,
                     email: this.estudiante.email,

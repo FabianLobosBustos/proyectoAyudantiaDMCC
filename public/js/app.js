@@ -2489,7 +2489,7 @@ __webpack_require__.r(__webpack_exports__);
 
       ;
       var params = {
-        studentSend: {
+        assistantSend: {
           rut: this.estudiante.rut,
           name: this.estudiante.name,
           email: this.estudiante.email,
@@ -2619,7 +2619,7 @@ __webpack_require__.r(__webpack_exports__);
       }],
       assistant: [],
       asignaturaActual: [],
-      login: true,
+      login: false,
       proceso: false,
       faculties: null,
       carrera: "carrera",

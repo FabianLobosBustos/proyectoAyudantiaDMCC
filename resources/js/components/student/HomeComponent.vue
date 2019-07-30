@@ -81,7 +81,7 @@
                 }],
                 assistant:[],
                 asignaturaActual: [],
-                login: true,
+                login: false,
                 proceso: false,
                 faculties:null ,
                 carrera: "carrera",
