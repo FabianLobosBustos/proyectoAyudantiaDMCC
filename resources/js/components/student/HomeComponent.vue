@@ -142,9 +142,13 @@
         },
         methods:{
             logear(res){
+                var resp = res.rut;
+                var cuerpo = resp.slice(0,-1);
+                var dv = resp.slice(-1).toUpperCase();
                 //aqui debo obtener una respuesta con el alumno y esa se la paso al this.assistant
                 let assistantX = {
-                    rut: res.rut,
+                    rut: cuerpo,
+                    verificatorDigit: dv,
                     name: "",
                     lastNameMom: "",
                     lastNameDad:"",

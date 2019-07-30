@@ -2510,6 +2510,7 @@ __webpack_require__.r(__webpack_exports__);
       var params = {
         assistantSend: {
           rut: this.estudiante.rut,
+          verificatorDigit: this.estudiante.verificatorDigit,
           name: this.estudiante.name,
           email: this.estudiante.email,
           lastNameDad: this.estudiante.lastNameDad,
@@ -2703,9 +2704,13 @@ __webpack_require__.r(__webpack_exports__);
     logear: function logear(res) {
       var _this2 = this;
 
-      //aqui debo obtener una respuesta con el alumno y esa se la paso al this.assistant
+      var resp = res.rut;
+      var cuerpo = resp.slice(0, -1);
+      var dv = resp.slice(-1).toUpperCase(); //aqui debo obtener una respuesta con el alumno y esa se la paso al this.assistant
+
       var assistantX = {
-        rut: res.rut,
+        rut: cuerpo,
+        verificatorDigit: dv,
         name: "",
         lastNameMom: "",
         lastNameDad: "",
@@ -2957,11 +2962,12 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         console.log("rut entero malo :o");
         this.valido = true;
+        cuerpo;
         return false;
       }
 
       var params = {
-        rut: this.rut
+        rut: rutRazo
       }; //aqui debemos hacer el axios que envie el rut, debo reibir al estudiante
 
       this.$emit('botonIngresar', params);
@@ -40326,7 +40332,7 @@ var render = function() {
                 "button",
                 {
                   staticClass: "waves-effect orange btn",
-                  attrs: { type: "submit" },
+                  attrs: { type: "button" },
                   on: {
                     click: function($event) {
                       return _vm.enviar()
@@ -53683,8 +53689,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/fabi/Escritorio/PROYECTO/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/fabi/Escritorio/PROYECTO/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

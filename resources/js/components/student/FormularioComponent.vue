@@ -101,7 +101,7 @@
                         <button class="waves-effect orange btn" type="button" v-on:click= "atras()">Atrás</button>    
                     </div>
                     <div class="col l6 right-align">
-                        <button class="waves-effect orange btn" type="submit" v-on:click= "enviar()">Enviar</button>    
+                        <button class="waves-effect orange btn" type="button" v-on:click= "enviar()">Enviar</button>    
                     </div>
                 </div>
                 
@@ -255,6 +255,7 @@
                 const params = {
                 assistantSend:{
                     rut: this.estudiante.rut,
+                    verificatorDigit: this.estudiante.verificatorDigit,
                     name: this.estudiante.name,
                     email: this.estudiante.email,
                     lastNameDad: this.estudiante.lastNameDad,
