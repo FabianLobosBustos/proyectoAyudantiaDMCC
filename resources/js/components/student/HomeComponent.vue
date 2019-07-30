@@ -10,19 +10,21 @@
             :assistantCareer = "assistantCareer"
             :notaAlumno = "notaAlumno"
             :requisitos = "requisitos"
-            :subjectPeriod = "subjectPeriod"
+            :subjectPeriod = "subjectPhase"
             @botonEnviar="cambioProceso"
             @botonAtras="actualizarEstado">
         </formulario-component>   
 
         <div v-else class="container ">
-            <p class= "center-align">
-                    Formulatio único para concursar al cargo de ayudante alumno para
-                    el periodo que comprende el periodo {{subjectPeriod.semester}}-{{subjectPeriod.year}}
+            <p class= "center-align presentacion">
+                    Formulario único para concursar al cargo de ayudante alumno para
+                    el periodo {{subjectPhase.semester}}-{{subjectPhase.year}}
             <p>
             <br>
-            <div class= "row card cardI">
-                <asignatura-component class ="col l3" v-for = "(asignatura,index) in asignaturas"
+            <br>
+            <br>
+            <div class= "row card cardA">
+                <asignatura-component class ="col l4" v-for = "(asignatura,index) in asignaturas"
                     :key="asignatura.id"
                     :asignatura = "asignatura"
                     @asignaturaBoton= "seleccionAsignatura(index)"> 
@@ -41,18 +43,27 @@
 </template>
 
 <style scoped>
-.cardI{
-        padding-left: 20px;
+.cardA{
+        padding-top: 30px;
         padding-bottom: 20px;
-        margin-left: 10px;
-        margin-right: 10px;
+        background-color: #f3f3f3;
+        box-shadow: 8px 7px 13px 7px rgba(0,0,0,0.52);
+
     }
+.presentacion{
+    line-height: 1.2;
+    font-weight: 500;
+    font-size: 25px;
+    padding-top: 40px;
+    color: #333333
+    
+}
 </style>
 <script>
     export default {
         data(){
             return {
-                asignaturas:[{   //aqui deberia un un arreglo vacio para el axios
+                asignaturas:[{   //aqui deberia un un arreglo vacio para el axios {{subjectPhase.semester}}-{{subjectPhase.year}}
                     id: 1,
                     name: "Algebra 1"
                 },{
@@ -70,7 +81,7 @@
                 }],
                 assistant:[],
                 asignaturaActual: [],
-                login: false,
+                login: true,
                 proceso: false,
                 faculties:null ,
                 carrera: "carrera",
@@ -78,7 +89,7 @@
                 notaAlumno: [],
                 assistantFaculty:null,
                 assistantCareer:null,
-                subjectPeriod:null 
+                subjectPhase:null 
             }
         },
         mounted() {
@@ -86,12 +97,12 @@
             axios.get('/subjects').then((response)=>{
                 this.asignaturas = response.data; 
              });
-            const urlPeriod = "periodBySubject/"+this.asignaturas[0].id;
-                axios.get(urlPeriod).then((response)=>{
+            const urlPhase = "phaseBySubject/"+this.asignaturas[0].id;
+                axios.get(urlPhase).then((response)=>{
                     console.log("la respuesta:");
                     console.log(response.data);
-                    this.subjectPeriod = response.data;
-                    console.log("el id del periodo es "+this.subjectPeriod.id);
+                    this.subjectPhase = response.data;
+                    console.log("el id del periodo es "+this.subjectPhase.id);
                 });
         },
         methods:{
@@ -131,12 +142,12 @@
                 axios.get('/allFacultiesCareers').then((response)=>{
                     this.faculties = response.data; 
                 });
-                const urlPeriod = "periodBySubject/"+this.asignaturaActual.id;
-                axios.get(urlPeriod).then((response)=>{
+                const urlPhase = "phaseBySubject/"+this.asignaturaActual.id;
+                axios.get(urlPhase).then((response)=>{
                     console.log("la respuesta:");
                     console.log(response.data);
-                    this.subjectPeriod = response.data;
-                    console.log("el id del periodo es "+this.subjectPeriod.id);
+                    this.subjectPhase = response.data;
+                    console.log("el id del periodo es "+this.subjectPhase.id);
                 });
 
                 

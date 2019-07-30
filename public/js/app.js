@@ -2586,11 +2586,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       asignaturas: [{
-        //aqui deberia un un arreglo vacio para el axios
+        //aqui deberia un un arreglo vacio para el axios {{subjectPhase.semester}}-{{subjectPhase.year}}
         id: 1,
         name: "Algebra 1"
       }, {
@@ -2608,7 +2619,7 @@ __webpack_require__.r(__webpack_exports__);
       }],
       assistant: [],
       asignaturaActual: [],
-      login: false,
+      login: true,
       proceso: false,
       faculties: null,
       carrera: "carrera",
@@ -2616,7 +2627,7 @@ __webpack_require__.r(__webpack_exports__);
       notaAlumno: [],
       assistantFaculty: null,
       assistantCareer: null,
-      subjectPeriod: null
+      subjectPhase: null
     };
   },
   mounted: function mounted() {
@@ -2626,12 +2637,12 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/subjects').then(function (response) {
       _this.asignaturas = response.data;
     });
-    var urlPeriod = "periodBySubject/" + this.asignaturas[0].id;
-    axios.get(urlPeriod).then(function (response) {
+    var urlPhase = "phaseBySubject/" + this.asignaturas[0].id;
+    axios.get(urlPhase).then(function (response) {
       console.log("la respuesta:");
       console.log(response.data);
-      _this.subjectPeriod = response.data;
-      console.log("el id del periodo es " + _this.subjectPeriod.id);
+      _this.subjectPhase = response.data;
+      console.log("el id del periodo es " + _this.subjectPhase.id);
     });
   },
   methods: {
@@ -2675,12 +2686,12 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/allFacultiesCareers').then(function (response) {
         _this3.faculties = response.data;
       });
-      var urlPeriod = "periodBySubject/" + this.asignaturaActual.id;
-      axios.get(urlPeriod).then(function (response) {
+      var urlPhase = "phaseBySubject/" + this.asignaturaActual.id;
+      axios.get(urlPhase).then(function (response) {
         console.log("la respuesta:");
         console.log(response.data);
-        _this3.subjectPeriod = response.data;
-        console.log("el id del periodo es " + _this3.subjectPeriod.id);
+        _this3.subjectPhase = response.data;
+        console.log("el id del periodo es " + _this3.subjectPhase.id);
       });
       console.log(this.assistant.id);
 
@@ -7369,7 +7380,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.cardI[data-v-662b5faf]{\n        padding-left: 20px;\n        padding-bottom: 20px;\n        margin-left: 10px;\n        margin-right: 10px;\n}\n", ""]);
+exports.push([module.i, "\n.cardA[data-v-662b5faf]{\n        padding-top: 30px;\n        padding-bottom: 20px;\n        background-color: #f3f3f3;\n        box-shadow: 8px 7px 13px 7px rgba(0,0,0,0.52);\n}\n.presentacion[data-v-662b5faf]{\n    line-height: 1.2;\n    font-weight: 500;\n    font-size: 25px;\n    padding-top: 40px;\n    color: #333333\n}\n", ""]);
 
 // exports
 
@@ -40171,7 +40182,7 @@ var render = function() {
                   assistantCareer: _vm.assistantCareer,
                   notaAlumno: _vm.notaAlumno,
                   requisitos: _vm.requisitos,
-                  subjectPeriod: _vm.subjectPeriod
+                  subjectPeriod: _vm.subjectPhase
                 },
                 on: {
                   botonEnviar: _vm.cambioProceso,
@@ -40179,23 +40190,29 @@ var render = function() {
                 }
               })
             : _c("div", { staticClass: "container " }, [
-                _c("p", { staticClass: "center-align" }, [
+                _c("p", { staticClass: "center-align presentacion" }, [
                   _vm._v(
-                    "\n                Formulatio único para concursar al cargo de ayudante alumno para\n                el periodo que comprende el periodo " +
-                      _vm._s(_vm.subjectPeriod.semester) +
+                    "\n                Formulario único para concursar al cargo de ayudante alumno para\n                el periodo " +
+                      _vm._s(_vm.subjectPhase.semester) +
                       "-" +
-                      _vm._s(_vm.subjectPeriod.year) +
+                      _vm._s(_vm.subjectPhase.year) +
                       "\n        "
                   )
                 ]),
-                _c("p", [_c("br")]),
+                _c("p", [
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("br")
+                ]),
                 _c(
                   "div",
-                  { staticClass: "row card cardI" },
+                  { staticClass: "row card cardA" },
                   _vm._l(_vm.asignaturas, function(asignatura, index) {
                     return _c("asignatura-component", {
                       key: asignatura.id,
-                      staticClass: "col l3",
+                      staticClass: "col l4",
                       attrs: { asignatura: asignatura },
                       on: {
                         asignaturaBoton: function($event) {
