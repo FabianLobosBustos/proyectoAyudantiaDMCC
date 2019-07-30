@@ -17,7 +17,7 @@ class ExportController extends Controller
     public function getAllPostulationsToSubjectPDF($idSubject,$idPhase)
     {
         $bigArray = Report::getArrayPostulationsBySubject($idSubject,$idPhase);
-        $pdf = PDF::loadView('pdfPractice',  ['data' => $bigArray]);
+        $pdf = PDF::loadView('pdfPractice',  ['data' => $bigArray])->setPaper('a4', 'landscape');
         return $pdf->download('report.pdf'); 
         
     }

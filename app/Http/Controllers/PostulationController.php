@@ -10,7 +10,7 @@ use App\Faculty;
 use App\Career;
 use App\Subject;
 use App\AssistantScore;
-
+use Illuminate\Support\Facades\DB;
 
 class PostulationController extends Controller
 {
@@ -48,7 +48,7 @@ class PostulationController extends Controller
         $assistantSend_email = $request->input('assistantSend.email');
         $assistantSend_fone = $request->input('assistantSend.fone');
         $assistantSend_level = $request->input('assistantSend.level');
-        $assistantSend_verificatorDigit = $request->input('assistantSend.codigo');
+        $assistantSend_verificatorDigit = $request->input('assistantSend.verificatorDigit');
         $assistantSend_ppa = $request->input('assistantSend.ppa');
 
         //OJO! la carrera nos llega mientras solo su name!
@@ -82,7 +82,10 @@ class PostulationController extends Controller
 
         try {
             // Cargamos o Recargamos los datos del estudiante
+
+            error_log("1");
             $assistant->name = $assistantSend_name;
+            
             $assistant->lastNameDad = $assistantSend_lastNameDad;
             $assistant->lastNameMom = $assistantSend_lastNameMom;
             $assistant->level = $assistantSend_level;
@@ -91,6 +94,9 @@ class PostulationController extends Controller
             $assistant->address = $assistantSend_address;
             $assistant->email = $assistantSend_email;
             $assistant->verificatorDigit = $assistantSend_verificatorDigit;
+            error_log( $assistantSend_verificatorDigit);
+            $assistant->ppa = $assistantSend_ppa;
+            error_log("2");
             $assistant->save();
             
 
@@ -100,7 +106,7 @@ class PostulationController extends Controller
             $assistant_careers = $assistant->careers;
             
             $same_career_active = 0;
-            
+            error_log("3");
             //si la carrera es la misma y esta activa, no hago nada
             foreach($assistant_careers as $assistant_career){
                 if($assistant_career->pivot->active == 1 && $assistant_career->id == $career->id){
@@ -108,7 +114,7 @@ class PostulationController extends Controller
                     break;
                 }
             }
-
+            error_log("4");
             //si la carrera existe  pero no esta activa, ahora la activo.
             $career_not_exist = 0;
             if ($same_career_active == 0) {
@@ -127,12 +133,12 @@ class PostulationController extends Controller
                     }
                 }
             }
-            
+            error_log("5");
             //si la carrera no esta registrada por el alumno y no esta activa...
             if($career_not_exist == 0 && $same_career_active == 0){
                 $assistant->careers()->attach($career);
             }
-            
+            error_log("6");
             //ATENCION! LA CARRERA SE DEBE ASOCIAR A LA FACULTAD EN CUESTION
             //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
             //$faculty = Faculty::where('name', $assistantSend_facultyName)->first();
@@ -155,6 +161,7 @@ class PostulationController extends Controller
 
             //guardamos la postulacion
             $postulation->save();
+            error_log("7");
             $i = 0;
             foreach($requirementSendArray as $requirement){
             
@@ -166,7 +173,7 @@ class PostulationController extends Controller
                 $assistantScore->save();
                 $i++;
             }
-
+            error_log("8");
             DB::commit();  
             return 'CORRECTO';           
         } 
@@ -174,7 +181,7 @@ class PostulationController extends Controller
         catch (\Exception $e) {
             
             DB::rollback();
-            return 'INCORRECTO';
+            return $e;
         }
                 
             
