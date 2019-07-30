@@ -15,7 +15,7 @@ class CreateAssistantCareerTable extends Migration
     {
         Schema::create('assistant_career', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('active');
+            $table->boolean('active')->default(1);
             $table->bigInteger('career_id')->unsigned();
             $table->bigInteger('assistant_id')->unsigned();
             $table->timestamps();

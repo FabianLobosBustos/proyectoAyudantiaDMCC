@@ -72,6 +72,7 @@ class Report extends Model
                 'assistant_lastNameDad' => $assistant->lastNameDad,
                 'assistant_lastNameMom' => $assistant->lastNameMom,
                 'assistant_level' => $assistant->level,
+                'assistant_ppa' => $assistant->ppa,
                 'faculty_name' => $faculty->name,
                 'career_name' => $career->name,
                 'scores' => $array_assistantScores

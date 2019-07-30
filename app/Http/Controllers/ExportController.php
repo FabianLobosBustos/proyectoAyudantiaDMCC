@@ -38,6 +38,7 @@ class ExportController extends Controller
             'Dirección',
             'Facultad',
             'Carrera',
+            'PPA',
             'Nivel'
         ];
 
@@ -60,6 +61,7 @@ class ExportController extends Controller
                 $value['assistant_address'],
                 $value['faculty_name'],
                 $value['career_name'],
+                $value['assistant_ppa'],
                 $value['assistant_level'],
             ];
             foreach ($value['scores'] as $score){

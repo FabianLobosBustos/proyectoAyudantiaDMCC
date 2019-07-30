@@ -22,6 +22,7 @@ class CreateAssistantTable extends Migration
             $table->integer('fone');
             $table->integer('rut');
             $table->string('verificatorDigit');
+            $table->float('ppa');
             $table->string('address');
             $table->string('email');
             $table->timestamps();

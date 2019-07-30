@@ -38,8 +38,8 @@ class PostulationController extends Controller
     public function store(Request $request)
     {
 
-     
-        //obtenemos todos los datos
+        // ----------------- OBTENCIÓN DE DATOS -----------------------
+        //del ayudante
         $assistantSend_rut = $request->input('assistantSend.rut');
         $assistantSend_name = $request->input('assistantSend.name');
         $assistantSend_lastNameDad = $request->input('assistantSend.lastNameDad');
@@ -48,25 +48,26 @@ class PostulationController extends Controller
         $assistantSend_email = $request->input('assistantSend.email');
         $assistantSend_fone = $request->input('assistantSend.fone');
         $assistantSend_level = $request->input('assistantSend.level');
-        //OJO luego se consumira de request
-        $assistantSend_verificatorDigit = 'k';
+        $assistantSend_verificatorDigit = $request->input('assistantSend.codigo');
+        $assistantSend_ppa = $request->input('assistantSend.ppa');
 
-        //OJO! la carrera nos llega mientras solo su name! => luego actualizar
+        //OJO! la carrera nos llega mientras solo su name!
         $assistantSend_careerName = $request->input('assistantSend.career');
-        $assistantSend_facultyName = $request->input('assistantSend.faculty');
         
+        //de la postulación
         $postulationSend_numberTime = $request->input('postulationSend.numberTime');
         $postulationSend_referenceTeacher_id = $request->input('postulationSend.referenceTeacher_id');
         $postulationSend_subject_id = $request->input('postulationSend.subject_id');
         $postulationSend_phase_id = $request->input('postulationSend.subjectPhase');
+        $postulationSend_referenceText = $request->input('postulationSend.referenceText');
+
+        //los scores
         $assistantScoreSendArray = $request->input('assistantScore');
         $requirementSendArray = $request->input('requirement');
-        //$arrayRequirements = $phpArray['requirement'];
-        //$arrayassistantScores = $phpArray['assistantScore'];
 
         //creamos una nueva postulacion!
         $postulation = new Postulation;
-          //CREAR CODE para acceso de teachers
+        //CREAR CODE para acceso de teachers
         
         //filtramos por rut del alumno
         $assistant = Assistant::where('rut', $assistantSend_rut)->get();
@@ -77,102 +78,106 @@ class PostulationController extends Controller
             $assistant =  $assistant->first();
         }
     
-        
-        // Cargamos o Recargamos los datos del estudiante
-        $assistant->name = $assistantSend_name;
-        $assistant->lastNameDad = $assistantSend_lastNameDad;
-        $assistant->lastNameMom = $assistantSend_lastNameMom;
-        $assistant->level = $assistantSend_level;
-        $assistant->fone = $assistantSend_fone;
-        $assistant->rut = $assistantSend_rut;
-        $assistant->address = $assistantSend_address;
-        $assistant->email = $assistantSend_email;
-        $assistant->verificatorDigit = $assistantSend_verificatorDigit;
-        $assistant->save();
-        
+        DB::beginTransaction();
 
-        //Completo la carrera del estudiante
-        $career = Career::where('name', $assistantSend_careerName)->first();
-       
-        $assistant_careers = $assistant->careers;
-        
-        $same_career_active = 0;
-        //si la carrera es la misma y esta activa, no hago nada
-        foreach($assistant_careers as $assistant_career){
-            if($assistant_career->pivot->active == 1 && $assistant_career->id == $career->id){
-                 $same_career_active = 1;
-                 break;
-            }
-        }
+        try {
+            // Cargamos o Recargamos los datos del estudiante
+            $assistant->name = $assistantSend_name;
+            $assistant->lastNameDad = $assistantSend_lastNameDad;
+            $assistant->lastNameMom = $assistantSend_lastNameMom;
+            $assistant->level = $assistantSend_level;
+            $assistant->fone = $assistantSend_fone;
+            $assistant->rut = $assistantSend_rut;
+            $assistant->address = $assistantSend_address;
+            $assistant->email = $assistantSend_email;
+            $assistant->verificatorDigit = $assistantSend_verificatorDigit;
+            $assistant->save();
+            
 
-        //si la carrera existe  pero no esta activa, ahora la activo.
-        $career_not_exist = 0;
-        if ($same_career_active == 0) {
-            foreach ($assistant_careers as $assistant_career) {
-                //si existe la carrera
-                if ($assistant_career->id == $career->id) {
-                    //reviso las otras carreras del alumno y las inactivo
-                    foreach ($assistant_careers as $assistant_career) {
-                        $assistant_career->pivot->active = 0;
-                        $assistant_career->save();
-                    }
-                    //luego hago que la carrea encontrada sea activada
-                    $assistant_career->pivot->active = 1;
-                    $assistant_career->save();
-                    $career_not_exist = 1;
+            //Completo la carrera del estudiante
+            $career = Career::where('name', $assistantSend_careerName)->first();
+        
+            $assistant_careers = $assistant->careers;
+            
+            $same_career_active = 0;
+            
+            //si la carrera es la misma y esta activa, no hago nada
+            foreach($assistant_careers as $assistant_career){
+                if($assistant_career->pivot->active == 1 && $assistant_career->id == $career->id){
+                    $same_career_active = 1;
+                    break;
                 }
             }
+
+            //si la carrera existe  pero no esta activa, ahora la activo.
+            $career_not_exist = 0;
+            if ($same_career_active == 0) {
+                foreach ($assistant_careers as $assistant_career) {
+                    //si existe la carrera
+                    if ($assistant_career->id == $career->id) {
+                        //reviso las otras carreras del alumno y las inactivo
+                        foreach ($assistant_careers as $assistant_career) {
+                            $assistant_career->pivot->active = 0;
+                            $assistant_career->save();
+                        }
+                        //luego hago que la carrea encontrada sea activada
+                        $assistant_career->pivot->active = 1;
+                        $assistant_career->save();
+                        $career_not_exist = 1;
+                    }
+                }
+            }
+            
+            //si la carrera no esta registrada por el alumno y no esta activa...
+            if($career_not_exist == 0 && $same_career_active == 0){
+                $assistant->careers()->attach($career);
+            }
+            
+            //ATENCION! LA CARRERA SE DEBE ASOCIAR A LA FACULTAD EN CUESTION
+            //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
+            //$faculty = Faculty::where('name', $assistantSend_facultyName)->first();
+            //$career->faculty_id = $faculty->id;
+            //Asigamos la asignatura
+            $postulation->subject_id = $postulationSend_subject_id;
+
+            //obviamente añadimos al alumno
+            $postulation->assistant_id = $assistant->id;
+
+            //y la informacion referente al alumno
+            $postulation->numberTime = (integer)$postulationSend_numberTime;
+            $postulation->referenceTeacher_id = (integer)$postulationSend_referenceTeacher_id;
+            
+            //El reference text tambien
+            $postulation->referenceText = $postulationSend_referenceText;
+
+            // Se agrega la id de la fase en cuestion
+            $postulation->phase_id = $postulationSend_phase_id;
+
+            //guardamos la postulacion
+            $postulation->save();
+            $i = 0;
+            foreach($requirementSendArray as $requirement){
+            
+                $assistantScore = new AssistantScore;
+                $assistantScore->score = $assistantScoreSendArray[$i];
+                $assistantScore->postulation_id = $postulation->id;
+                $assistantScore->assistant_id = $assistant->id;
+                $assistantScore->subject_id = $requirement['id'];
+                $assistantScore->save();
+                $i++;
+            }
+
+            DB::commit();  
+            return 'CORRECTO';           
+        } 
+            
+        catch (\Exception $e) {
+            
+            DB::rollback();
+            return 'INCORRECTO';
         }
-        
-        //si la carrera no esta registrada por el alumno y no esta activa...
-        if($career_not_exist == 0 && $same_career_active == 0){
-            $assistant->careers()->attach($career);
-        }
-
-
-        // ------------- PARCHAR assistant CARRER -------------- 
-        //if($assistant)
-        
-
-        //ATENCION! LA CARRERA SE DEBE ASOCIAR A LA FACULTAD EN CUESTION
-        //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
-        //$faculty = Faculty::where('name', $assistantSend_facultyName)->first();
-        //$career->faculty_id = $faculty->id;
-        //Asigamos la asignatura
-        $postulation->subject_id = $postulationSend_subject_id;
-
-        //obviamente añadimos al alumno
-        $postulation->assistant_id = $assistant->id;
-
-        //y la informacion referente al alumno
-        $postulation->numberTime = (integer)$postulationSend_numberTime;
-        $postulation->referenceTeacher_id = (integer)$postulationSend_referenceTeacher_id;
-        
-        //El reference text sera 'null' por mientras
-        $postulation->referenceText = "null";
-        //accepted en 0 (no esta claro si se usara)
-        //$postulation->accepted = 0;
-
-        // Se agrega la id de la fase en cuestion
-        $postulation->phase_id = $postulationSend_phase_id;
-
-        //guardamos la postulacion
-        $postulation->save();
-        $i = 0;
-        foreach($requirementSendArray as $requirement){
-        
-            $assistantScore = new AssistantScore;
-            $assistantScore->score = $assistantScoreSendArray[$i];
-            $assistantScore->postulation_id = $postulation->id;
-            $assistantScore->assistant_id = $assistant->id;
-            $assistantScore->subject_id = $requirement['id'];
-            $assistantScore->save();
-            $i++;
-        }
-        
-        
-        return 'CORRECTO';
-
+                
+            
     }
     /**
      * Display the specified resource.
