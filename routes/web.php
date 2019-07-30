@@ -40,10 +40,10 @@ Route::get('allFacultiesCareers', 'FacultyController@allFacultiesCareers');
 //Requirement
 Route::apiResource('requirements','RequirementController');
 //Export
-Route::get('downloadPostulationExportPDF/{idSubject}/period/{idPeriod}','ExportController@getAllPostulationsToSubjectPDF');
-Route::get('downloadPostulationExportEXCEL/{idSubject}/period/{idPeriod}','ExportController@getAllPostulationsToSubjectEXCEL');
+Route::get('downloadPostulationExportPDF/{idSubject}/phase/{idPhase}','ExportController@getAllPostulationsToSubjectPDF');
+Route::get('downloadPostulationExportEXCEL/{idSubject}/phase/{idPhase}','ExportController@getAllPostulationsToSubjectEXCEL');
 //Report
-Route::get('getArrayPostulationsBySubject/{idSubject}/period/{idPeriod}','ReportController@getArrayPostulationsBySubject');
-//Period
-Route::apiResource('periods', 'PeriodController');
-Route::get('periodBySubject/{id}','PeriodController@periodBySubject');
+Route::get('getArrayPostulationsBySubject/{idSubject}/phase/{idPhase}','ReportController@getArrayPostulationsBySubject');
+//Phase
+Route::apiResource('phases', 'PhaseController');
+Route::get('phaseBySubject/{id}','PhaseController@phaseBySubject');

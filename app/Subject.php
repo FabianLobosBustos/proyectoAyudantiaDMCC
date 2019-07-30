@@ -22,8 +22,8 @@ class Subject extends Model
     	return $this->hasMany(Postulation::class);
     }
 
-    public function periods()
+    public function phases()
     {
-        return $this->belongsToMany(Period::class)->withPivot('active');;
+        return $this->belongsToMany(Phase::class)->withPivot('active');;
     }
 }

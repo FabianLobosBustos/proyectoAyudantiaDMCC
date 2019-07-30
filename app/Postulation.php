@@ -11,9 +11,9 @@ class Postulation extends Model
         return $this->belongsTo(Assistant::class);
     }
 
-    public function period()
+    public function phase()
     {
-        return $this->belongsTo(Period::class);
+        return $this->belongsTo(Phase::class);
     }
 
     public function subject()

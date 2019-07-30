@@ -8,18 +8,18 @@ use Illuminate\Support\Facades\DB;
 class Report extends Model
 {
 
-    public static function getArrayPostulationsBySubject($idSubject,$idPeriod)
+    public static function getArrayPostulationsBySubject($idSubject,$idPhase)
     {
         //Recuperamos los datos
         $subject = Subject::query();
         $subject = $subject->where('id', $idSubject)->first();
         $postulations = Postulation::query();
-        //filtro por subject_id y luego por periodo_id
+        //filtro por subject_id y luego por phase_id
 
         $postulations = DB::table('postulations')->where('subject_id',$subject->id);
         //$postulations = $postulations->where('subject_id',$subject->id);
-        $postulations = $postulations->where('period_id',$idPeriod)->get();
-        //error_log($idPeriod);
+        $postulations = $postulations->where('phase_id',$idPhase)->get();
+        //error_log($idPhase);
         //error_log($subject->id);
         //dd($postulations);
 

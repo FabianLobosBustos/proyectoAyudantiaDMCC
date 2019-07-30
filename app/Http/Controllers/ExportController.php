@@ -14,18 +14,18 @@ use App\Report;
 //CONTROLADOR ENFOCADO A GENERACION DE REPORTES
 class ExportController extends Controller
 {
-    public function getAllPostulationsToSubjectPDF($idSubject,$idPeriod)
+    public function getAllPostulationsToSubjectPDF($idSubject,$idPhase)
     {
-        $bigArray = Report::getArrayPostulationsBySubject($idSubject,$idPeriod);
+        $bigArray = Report::getArrayPostulationsBySubject($idSubject,$idPhase);
         $pdf = PDF::loadView('pdfPractice',  ['data' => $bigArray]);
         return $pdf->download('report.pdf'); 
         
     }
 
-    public function getAllPostulationsToSubjectEXCEL($idSubject,$idPeriod) 
+    public function getAllPostulationsToSubjectEXCEL($idSubject,$idPhase) 
     { 
         //despues el bigArray llegara por el frontEnd
-        $bigArray = Report::getArrayPostulationsBySubject($idSubject,$idPeriod);
+        $bigArray = Report::getArrayPostulationsBySubject($idSubject,$idPhase);
 
         //creamos la primera linea de nuestro reporte
         $firstRow = [

@@ -22,8 +22,8 @@ class CreatePostulationsTable extends Migration
             $table->foreign('subject_id')->references('id')->on('subjects');
             $table->bigInteger('assistant_id')->unsigned();
             $table->foreign('assistant_id')->references('id')->on('assistants');
-            $table->bigInteger('period_id')->unsigned();
-            $table->foreign('period_id')->references('id')->on('periods');
+            $table->bigInteger('phase_id')->unsigned();
+            $table->foreign('phase_id')->references('id')->on('phases');
             $table->timestamps();
         });
     }
