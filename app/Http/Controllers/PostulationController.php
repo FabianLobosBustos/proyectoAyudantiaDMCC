@@ -143,6 +143,7 @@ class PostulationController extends Controller
             //Y VALIDARSE EL PROCESO! //ademas se asume de que existe
             //$faculty = Faculty::where('name', $assistantSend_facultyName)->first();
             //$career->faculty_id = $faculty->id;
+           
             //Asigamos la asignatura
             $postulation->subject_id = $postulationSend_subject_id;
 
@@ -167,6 +168,7 @@ class PostulationController extends Controller
             
                 $assistantScore = new AssistantScore;
                 $assistantScore->score = $assistantScoreSendArray[$i];
+                
                 $assistantScore->postulation_id = $postulation->id;
                 $assistantScore->assistant_id = $assistant->id;
                 $assistantScore->subject_id = $requirement['id'];
