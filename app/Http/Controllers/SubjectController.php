@@ -18,14 +18,14 @@ class SubjectController extends Controller
     }
 
     //EN ESTA FUNCION PUDE RETORNAN UN ARRAY DE OBJECTS!!!
-    //retorna solo las que tienen un periodo activo!!
+    //retorna solo las que tienen una fase activa!!
     public function getActiveSubjects(){
         $subjects = Subject::all();
         $subjects_actives= [];
         foreach($subjects as $subject){
-            $periods = $subject->periods;
-            foreach ($periods as $period) {
-                if($period->pivot->active==1){
+            $phases = $subject->phases;
+            foreach ($phases as $phase) {
+                if($phase->pivot->active==1){
                     $subjects_actives[] = $subject;
                     break;
                 }

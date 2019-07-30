@@ -58,7 +58,7 @@ class PostulationController extends Controller
         $postulationSend_numberTime = $request->input('postulationSend.numberTime');
         $postulationSend_referenceTeacher_id = $request->input('postulationSend.referenceTeacher_id');
         $postulationSend_subject_id = $request->input('postulationSend.subject_id');
-        $postulationSend_period_id = $request->input('postulationSend.subjectPeriod');
+        $postulationSend_phase_id = $request->input('postulationSend.subjectPhase');
         $assistantScoreSendArray = $request->input('assistantScore');
         $requirementSendArray = $request->input('requirement');
         //$arrayRequirements = $phpArray['requirement'];
@@ -153,8 +153,8 @@ class PostulationController extends Controller
         //accepted en 0 (no esta claro si se usara)
         //$postulation->accepted = 0;
 
-        // Se agrega la id del periodo en cuestion
-        $postulation->period_id = $postulationSend_period_id;
+        // Se agrega la id de la fase en cuestion
+        $postulation->phase_id = $postulationSend_phase_id;
 
         //guardamos la postulacion
         $postulation->save();

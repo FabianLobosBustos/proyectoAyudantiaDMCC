@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Period;
+use App\Phase;
 use App\Subject;
 
-class PeriodController extends Controller
+class PhaseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,24 +15,24 @@ class PeriodController extends Controller
      */
     public function index()
     {
-        return Period::all();
+        return Phase::all();
     }
 
-    //Retorna el periodo activo de la asignatura en cuestion
-    public function periodBySubject($id_subject){
+    //Retorna la fase activa de la asignatura en cuestion
+    public function phaseBySubject($id_subject){
         
         $subject = Subject::where('id',$id_subject)->first();
         
-        $periods = $subject->periods;
+        $phases = $subject->phases;
         
-        foreach ($periods as $period) {
-            if($period->pivot->active == 1){
-                $period_active = $period;
+        foreach ($phases as $phase) {
+            if($phase->pivot->active == 1){
+                $phase_active = $phase;
                 break;
             }
         } 
 
-        return $period_active;
+        return $phase_active;
     }
 
     /**
@@ -44,13 +44,13 @@ class PeriodController extends Controller
     public function store(Request $request)
     {
 
-          $period = new Period([
+          $phase = new Phase([
             'semester' => $request->get('semester'),
             'year'=> $request->get('year'),
             'start'=> $request->get('start'),
             'finish' => $request->get('finish')
           ]);
-          $period->save();
+          $phase->save();
           return 1;
     }
 
@@ -62,8 +62,8 @@ class PeriodController extends Controller
      */
     public function show($id)
     {
-        $period = Period::where('id',$id)->first();
-        return $period;
+        $phase = Phase::where('id',$id)->first();
+        return $phase;
     }
 
     /**
@@ -75,12 +75,12 @@ class PeriodController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $period = Period::where('id',$id)->first();
+        $phase = Phase::where('id',$id)->first();
 
-        $period->start = $request->get('start');
-        $period->finish = $request->get('finish');
+        $phase->start = $request->get('start');
+        $phase->finish = $request->get('finish');
 
-        $period->save();
+        $phase->save();
         return 1;
     }
 
