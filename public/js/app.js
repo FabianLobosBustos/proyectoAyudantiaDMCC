@@ -2480,6 +2480,15 @@ __webpack_require__.r(__webpack_exports__);
     enviar: function enviar() {
       var _this = this;
 
+      var mensaje;
+      var opcion = confirm("Estas seguro de enviar este formulario? \n Posteriormente no podrás editarlo");
+
+      if (opcion == true) {
+        mensaje = "Has clickado OK";
+      } else {
+        mensaje = "Has clickado Cancelar";
+      }
+
       var i;
 
       for (i = 0; i < this.notaAlumno.length; i++) {
@@ -40125,6 +40134,7 @@ var render = function() {
                 ],
                 staticClass: "validate",
                 attrs: {
+                  step: "0.1",
                   required: "",
                   id: "email_inline",
                   type: "number",
@@ -40146,11 +40156,7 @@ var render = function() {
                 "span",
                 {
                   staticClass: "helper-text",
-                  attrs: {
-                    step: "0.1",
-                    "data-error": "Error",
-                    placeholder: "ej: 1.89"
-                  }
+                  attrs: { "data-error": "Error", placeholder: "ej: 1.89" }
                 },
                 [_vm._v("Corresponde al Promedio Ponderado Acumulado")]
               )
