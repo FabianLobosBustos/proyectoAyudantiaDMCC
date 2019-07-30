@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a class="waves-effect orange btn  z-depth-4 " v-on:click= "seleccion()">{{asignatura.name}}</a>
+        <a class="waves-effect orange btn  z-depth-3 " v-on:click= "seleccion()">{{asignatura.name}}</a>
     </div>
 </template>
 
@@ -9,6 +9,7 @@
         font-size:13px;
         width: 220px;
         height: 35px;
+        font-weight: 500;
     }
     div{
       height: 13vh;

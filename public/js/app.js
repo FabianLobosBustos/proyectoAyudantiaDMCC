@@ -2172,6 +2172,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['asignatura'],
   data: function data() {
@@ -2237,6 +2238,15 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2504,12 +2514,12 @@ __webpack_require__.r(__webpack_exports__);
         },
         postulationSend: {
           numberTime: this.postulacion.numberTimes,
-          referenceTeacher_id: parseInt(this.postulacion.reference),
+          referenceText: this.postulacion.reference,
           subject_id: this.asignatura.id,
-          subjectPeriod: this.subjectPeriod.id
+          subjectPhase: this.subjectPeriod.id
         },
         requirement: this.requisitos,
-        studentScore: this.notaAlumno
+        assistantScore: this.notaAlumno
       };
       console.log(params);
       axios.post('postulations', params).then(function (response) {
@@ -2536,6 +2546,41 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2799,10 +2844,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      rut: ''
+      rut: '',
+      formato: false,
+      valido: false,
+      vacio: false
     };
   },
   mounted: function mounted() {
@@ -2810,7 +2878,79 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     ingresar: function ingresar() {
-      this.rut = parseInt(this.rut);
+      this.formato = false;
+      this.valido = false;
+      this.vacio = false;
+
+      if (this.rut == "") {
+        this.vacio = true;
+        return false;
+      }
+
+      var valido = 0; //VALIDACION DEL RUT
+
+      console.log("rut qlo es:", this.rut);
+      var rutRazo = this.rut;
+      var formato = rutRazo.replace('-', '');
+      formato = formato.replace('.', '');
+
+      if (formato != rutRazo) {
+        console.log("error de formato");
+        this.formato = true;
+        return false;
+      } // Aislar Cuerpo y Dígito Verificador
+
+
+      var cuerpo = rutRazo.slice(0, -1);
+      var dv = rutRazo.slice(-1).toUpperCase(); // Formatear RUN
+
+      var rutFormateado = cuerpo + '-' + dv; // Si no cumple con el mínimo ej. (n.nnn.nnn)
+
+      if (cuerpo.length < 7) {
+        console.log("RUT INCORRECTO");
+        this.valido = true;
+        return false;
+      } // Calcular Dígito Verificador
+
+
+      var suma = 0;
+      var multiplo = 2;
+      var i;
+      var index; // Para cada dígito del Cuerpo
+
+      for (i = 1; i <= cuerpo.length; i++) {
+        // Obtener su Producto con el Múltiplo Correspondiente
+        index = multiplo * rutRazo.charAt(cuerpo.length - i); // Sumar al Contador General
+
+        suma = suma + index; // Consolidar Múltiplo dentro del rango [2,7]
+
+        if (multiplo < 7) {
+          multiplo = multiplo + 1;
+        } else {
+          multiplo = 2;
+        }
+      } // Calcular Dígito Verificador en base al Módulo 11
+
+
+      var dvEsperado = 11 - suma % 11; // Casos Especiales (0 y K)
+
+      dv = dv == 'K' ? 10 : dv;
+      dv = dv == 0 ? 11 : dv; // Validar que el Cuerpo coincide con su Dígito Verificador
+
+      if (dvEsperado == dv) {
+        console.log("dvEsperado = ", dvEsperado);
+        console.log("dv = ", dv);
+        valido = 1;
+      }
+
+      if (valido == 1) {
+        console.log("rut valido :3");
+      } else {
+        console.log("rut entero malo :o");
+        this.valido = true;
+        return false;
+      }
+
       var params = {
         rut: this.rut
       }; //aqui debemos hacer el axios que envie el rut, debo reibir al estudiante
@@ -7342,7 +7482,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.btn[data-v-4077e0db]{\n    font-size:13px;\n    width: 220px;\n    height: 35px;\n}\ndiv[data-v-4077e0db]{\n  height: 13vh;\n}\n", ""]);
+exports.push([module.i, "\n.btn[data-v-4077e0db]{\n    font-size:13px;\n    width: 220px;\n    height: 35px;\n    font-weight: 500;\n}\ndiv[data-v-4077e0db]{\n  height: 13vh;\n}\n", ""]);
 
 // exports
 
@@ -7361,7 +7501,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.tarjeta[data-v-1a8b36bc]{\n    background-color: #f3f3f3;\n    box-shadow: 8px 7px 13px 7px rgba(0,0,0,0.52);\n    padding-bottom: 90px;\n}\n.cardI[data-v-1a8b36bc]{\n    padding-left: 20px;\n    padding-bottom: 20px;\n    margin-left: 10px;\n    margin-right: 10px;\n}\n.veces[data-v-1a8b36bc]{\n    margin-top:24px;\n}\n.col[data-v-1a8b36bc]{\n    \n    line-height: 0.7;\n}\n.titulointerno[data-v-1a8b36bc]{\n    padding-top: 20px; \n    padding-bottom: 30px;\n    color:orange;\n    margin-top: 20px;\n    margin-left: 15px;\n}\n.btn[data-v-1a8b36bc]{\n    font-size:13px;\n    width: 220px;\n    height: 35px;\n    bottom: -100px\n}\n.parrafo[data-v-1a8b36bc]{\n    font-weight: 600;\n    font-size: 15px;\n}\nnombreAsig[data-v-1a8b36bc]{   \n    font-family: 'Merriweather', serif;   \n    color:orange;\n}\n.titulo[data-v-1a8b36bc]{\n    padding-top: 40px; \n    font-family: 'Merriweather', serif;\n    color:darkblue;\n}    \n", ""]);
+exports.push([module.i, "\n.requerido[data-v-1a8b36bc]{\n    color: red;\n}\n.tarjeta[data-v-1a8b36bc]{\n    background-color: #f3f3f3;\n    box-shadow: 8px 7px 13px 7px rgba(0,0,0,0.52);\n    padding-bottom: 90px;\n}\n.cardI[data-v-1a8b36bc]{\n    padding-left: 20px;\n    padding-bottom: 20px;\n    margin-left: 10px;\n    margin-right: 10px;\n}\n.veces[data-v-1a8b36bc]{\n    margin-top:24px;\n}\n.col[data-v-1a8b36bc]{\n    \n    line-height: 0.7;\n}\n.titulointerno[data-v-1a8b36bc]{\n    padding-top: 20px; \n    padding-bottom: 30px;\n    color:orange;\n    margin-top: 20px;\n    margin-left: 15px;\n}\n.btn[data-v-1a8b36bc]{\n    font-size:13px;\n    width: 220px;\n    height: 35px;\n    bottom: -100px;\n    font-weight: 500;\n}\n.parrafo[data-v-1a8b36bc]{\n    font-weight: 600;\n    font-size: 15px;\n    line-height: 1.0;\n}\n.nombreAsig[data-v-1a8b36bc]{   \n    font-family: 'Merriweather', serif;   \n    color:orange;\n}\n.titulo[data-v-1a8b36bc]{\n    padding-top: 40px; \n    font-family: 'Merriweather', serif;\n    color:#333;\n    font-weight: 500;\n}\n.helper-text[data-v-1a8b36bc]{\n    line-height: 1.0;\n}   \n", ""]);
 
 // exports
 
@@ -7380,7 +7520,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.cardA[data-v-662b5faf]{\n        padding-top: 30px;\n        padding-bottom: 20px;\n        background-color: #f3f3f3;\n        box-shadow: 8px 7px 13px 7px rgba(0,0,0,0.52);\n}\n.presentacion[data-v-662b5faf]{\n    line-height: 1.2;\n    font-weight: 500;\n    font-size: 25px;\n    padding-top: 40px;\n    color: #333333\n}\n", ""]);
+exports.push([module.i, "\n.texto[data-v-662b5faf]{\n    color:#333;\n    font-size: 20px;\n    line-height: 1.2;\n}\n.claves[data-v-662b5faf]{\n    color:rgb(46, 45, 45);\n    font-weight: 600;\n    font-size: 20px;\n    line-height: 1.2;\n}\n.periodo[data-v-662b5faf]{\n    color: orange;\n}\n.titulo[data-v-662b5faf]{\n    padding-top: 20px; \n    padding-bottom: 40px;\n    font-family: 'Merriweather', serif;\n    text-align: center;\n    font-weight: 500;\n}\n.titulointerno[data-v-662b5faf]{ \n        padding-bottom: 30px;\n        color:#333;\n        margin-left: 15px;\n        font-weight: 500;\n}\n.cardA[data-v-662b5faf]{\n\n        padding-top: 10px;\n        padding-bottom: 20px;\n        background-color: #ffffff;\n}\n.presentacion[data-v-662b5faf]{\n    line-height: 1.2;\n    font-weight: 500;\n    font-size: 40px;\n    padding-top: 10px;\n    color: #333;\n    font-family: 'Merriweather', serif;\n    text-align: center;\n}\n\n", ""]);
 
 // exports
 
@@ -7399,7 +7539,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.container[data-v-89e803ea]{\n  height: 150px;\n}\n.input-field[data-v-89e803ea]{\n  top: 30px;\n}\n", ""]);
+exports.push([module.i, "\n.suave[data-v-89e803ea]{\n  color: gray;\n  font-size: 12px;\n}\n.cardB[data-v-89e803ea]{\n    margin-bottom: 15px;\n    padding-bottom: 65px;\n    background-color: #ffffff;\n}\n.container[data-v-89e803ea]{\n  height: 150px;\n}\n.input-field[data-v-89e803ea]{\n  top: 30px;\n}\n.formato[data-v-89e803ea]{\n  color:red;\n}\n.parrafo[data-v-89e803ea]{\n  font-weight: 600;\n  font-size: 15px;\n  line-height: 1.0;\n}\n", ""]);
 
 // exports
 
@@ -39410,7 +39550,7 @@ var render = function() {
     _c(
       "a",
       {
-        staticClass: "waves-effect orange btn  z-depth-4 ",
+        staticClass: "waves-effect orange btn  z-depth-3 ",
         on: {
           click: function($event) {
             return _vm.seleccion()
@@ -39500,15 +39640,12 @@ var render = function() {
     }),
     _vm._v(" "),
     _c("div", { staticClass: "row card cardT tarjeta" }, [
-      _c(
-        "h4",
-        { staticClass: "center-align titulo" },
-        [
-          _vm._v("POSTULACIÓN DE AYUDANTE PARA LA ASIGNATURA "),
-          _c("nombreAsig", [_vm._v(_vm._s(_vm.asignatura.name))])
-        ],
-        1
-      ),
+      _c("h4", { staticClass: "center-align titulo" }, [
+        _vm._v("POSTULACIÓN DE AYUDANTE PARA LA ASIGNATURA "),
+        _c("span", { staticClass: "nombreAsig" }, [
+          _vm._v(_vm._s(_vm.asignatura.name))
+        ])
+      ]),
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
@@ -39517,7 +39654,8 @@ var render = function() {
       _c(
         "form",
         {
-          staticClass: "col s12",
+          staticClass: "col l12",
+          attrs: { method: "post" },
           on: {
             submit: function($event) {
               $event.preventDefault()
@@ -39531,9 +39669,12 @@ var render = function() {
               _vm._v(" Datos Personales:")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
+            _c("div", { staticClass: "col l6" }, [
               _c("p", { staticClass: "parrafo", attrs: { for: "nombre" } }, [
-                _vm._v("Nombre:")
+                _vm._v("Nombre: "),
+                !_vm.estudiante.name
+                  ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c("input", {
@@ -39564,9 +39705,12 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
+            _c("div", { staticClass: "col l6" }, [
               _c("p", { staticClass: "parrafo", attrs: { for: "correo" } }, [
-                _vm._v("Correo:")
+                _vm._v("Correo: "),
+                !_vm.estudiante.email
+                  ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c("input", {
@@ -39597,11 +39741,16 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
+            _c("div", { staticClass: "col l6" }, [
               _c(
                 "p",
                 { staticClass: "parrafo", attrs: { for: "apellidoPaterno" } },
-                [_vm._v("Apellido Paterno:")]
+                [
+                  _vm._v("Apellido Paterno: "),
+                  !_vm.estudiante.lastNameDad
+                    ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                    : _vm._e()
+                ]
               ),
               _vm._v(" "),
               _c("input", {
@@ -39632,11 +39781,16 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
+            _c("div", { staticClass: "col l6" }, [
               _c(
                 "p",
                 { staticClass: "parrafo", attrs: { for: "apellidoMaterno" } },
-                [_vm._v("Apellido Materno:")]
+                [
+                  _vm._v("Apellido Materno: "),
+                  !_vm.estudiante.lastNameMom
+                    ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                    : _vm._e()
+                ]
               ),
               _vm._v(" "),
               _c("input", {
@@ -39667,9 +39821,12 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
+            _c("div", { staticClass: "col l6" }, [
               _c("p", { staticClass: "parrafo", attrs: { for: "telefono" } }, [
-                _vm._v("Teléfono:")
+                _vm._v("Teléfono: "),
+                !_vm.estudiante.fone
+                  ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c("input", {
@@ -39700,9 +39857,12 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
+            _c("div", { staticClass: "col l6" }, [
               _c("p", { staticClass: "parrafo", attrs: { for: "direccion" } }, [
-                _vm._v("Dirección:")
+                _vm._v("Dirección: "),
+                !_vm.estudiante.address
+                  ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c("input", {
@@ -39739,8 +39899,13 @@ var render = function() {
               _vm._v(" Datos Curriculares:")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
-              _c("p", { staticClass: "parrafo" }, [_vm._v("Facultad:")]),
+            _c("div", { staticClass: "col l6" }, [
+              _c("p", { staticClass: "parrafo" }, [
+                _vm._v("Facultad: "),
+                !_vm.facultyStudent
+                  ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                  : _vm._e()
+              ]),
               _vm._v(" "),
               _c(
                 "select",
@@ -39794,8 +39959,13 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
-              _c("p", { staticClass: "parrafo" }, [_vm._v("Carrera:")]),
+            _c("div", { staticClass: "col l6" }, [
+              _c("p", { staticClass: "parrafo" }, [
+                _vm._v("Carrera: "),
+                !_vm.careerStudent
+                  ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                  : _vm._e()
+              ]),
               _vm._v(" "),
               _vm.facultadSeleccionada
                 ? _c(
@@ -39890,8 +40060,13 @@ var render = function() {
                   )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
-              _c("p", { staticClass: "parrafo" }, [_vm._v("Nivel:")]),
+            _c("div", { staticClass: "col l6" }, [
+              _c("p", { staticClass: "parrafo" }, [
+                _vm._v("Nivel: "),
+                !_vm.estudiante.level
+                  ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                  : _vm._e()
+              ]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -39931,8 +40106,13 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
-              _c("p", { staticClass: "parrafo" }, [_vm._v("PPA:")]),
+            _c("div", { staticClass: "col l6" }, [
+              _c("p", { staticClass: "parrafo" }, [
+                _vm._v("PPA: "),
+                !_vm.estudiante.ppa
+                  ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                  : _vm._e()
+              ]),
               _vm._v(" "),
               _c("input", {
                 directives: [
@@ -39984,11 +40164,14 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "col s12" },
+              { staticClass: "col l12" },
               _vm._l(_vm.requisitos, function(requisito, index) {
-                return _c("div", { key: index, staticClass: "col s4" }, [
+                return _c("div", { key: index, staticClass: "col l4" }, [
                   _c("p", { staticClass: "parrafo" }, [
-                    _vm._v("Nota " + _vm._s(requisito[1]) + ":")
+                    _vm._v("Nota " + _vm._s(requisito[1]) + ": "),
+                    !_vm.notaAlumno[index]
+                      ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                      : _vm._e()
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -40030,13 +40213,16 @@ var render = function() {
               0
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
+            _c("div", { staticClass: "col l6" }, [
               _c("p", { staticClass: "parrafo veces" }, [
                 _vm._v(
                   "Cantidad de veces que ha sido ayudante de " +
                     _vm._s(_vm.asignatura.name) +
-                    ":"
-                )
+                    ": "
+                ),
+                !_vm.postulacion.numberTimes
+                  ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c("input", {
@@ -40071,13 +40257,18 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
+            _c("div", { staticClass: "col l6" }, [
               _c("br"),
               _vm._v(" "),
               _c(
                 "p",
                 { staticClass: "parrafo", attrs: { for: "Referencia" } },
-                [_vm._v("Profesor de Referencia:")]
+                [
+                  _vm._v("Profesor de Referencia: "),
+                  !_vm.postulacion.reference
+                    ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                    : _vm._e()
+                ]
               ),
               _vm._v(" "),
               _c("input", {
@@ -40108,12 +40299,12 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
+            _c("div", { staticClass: "col l6" }, [
               _c(
                 "button",
                 {
                   staticClass: "waves-effect orange btn",
-                  attrs: { type: "submit" },
+                  attrs: { type: "button" },
                   on: {
                     click: function($event) {
                       return _vm.atras()
@@ -40124,7 +40315,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6 right-align" }, [
+            _c("div", { staticClass: "col l6 right-align" }, [
               _c(
                 "button",
                 {
@@ -40170,6 +40361,7 @@ var render = function() {
   return _vm.login
     ? _c(
         "div",
+        { staticClass: "todo" },
         [
           _vm.proceso
             ? _c("formulario-component", {
@@ -40189,48 +40381,72 @@ var render = function() {
                   botonAtras: _vm.actualizarEstado
                 }
               })
-            : _c("div", { staticClass: "container " }, [
-                _c("p", { staticClass: "center-align presentacion" }, [
-                  _vm._v(
-                    "\n                Formulario único para concursar al cargo de ayudante alumno para\n                el periodo " +
-                      _vm._s(_vm.subjectPhase.semester) +
-                      "-" +
-                      _vm._s(_vm.subjectPhase.year) +
-                      "\n        "
+            : _c("div", [
+                _c("div", { staticClass: "container cardA" }, [
+                  _c("p", { staticClass: "center-align presentacion" }, [
+                    _vm._v(
+                      "\n                    FORMULARIO ÚNICO PARA CONCURSAR AL CARGO DE AYUDANTE ALUMNO PARA EL PERIODO "
+                    ),
+                    _c("span", { staticClass: "periodo" }, [
+                      _vm._v(
+                        _vm._s(_vm.subjectPhase.semester) +
+                          "-" +
+                          _vm._s(_vm.subjectPhase.year)
+                      )
+                    ])
+                  ]),
+                  _c("p", [_c("br"), _vm._v(" "), _c("br")]),
+                  _c(
+                    "div",
+                    { staticClass: "row card cardA" },
+                    [
+                      _c("h5", { staticClass: "titulointerno" }, [
+                        _vm._v("Ayudantias disponibles a postular:")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.asignaturas, function(asignatura, index) {
+                        return _c("asignatura-component", {
+                          key: asignatura.id,
+                          staticClass: "col l4",
+                          attrs: { asignatura: asignatura },
+                          on: {
+                            asignaturaBoton: function($event) {
+                              return _vm.seleccionAsignatura(index)
+                            }
+                          }
+                        })
+                      })
+                    ],
+                    2
                   )
-                ]),
-                _c("p", [
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("br")
-                ]),
-                _c(
-                  "div",
-                  { staticClass: "row card cardA" },
-                  _vm._l(_vm.asignaturas, function(asignatura, index) {
-                    return _c("asignatura-component", {
-                      key: asignatura.id,
-                      staticClass: "col l4",
-                      attrs: { asignatura: asignatura },
-                      on: {
-                        asignaturaBoton: function($event) {
-                          return _vm.seleccionAsignatura(index)
-                        }
-                      }
-                    })
-                  }),
-                  1
-                )
+                ])
               ])
         ],
         1
       )
     : _c(
         "div",
+        { staticClass: "container home" },
         [
-          _c("mensaje-component"),
+          _c("h3", { staticClass: "titulo" }, [
+            _vm._v("POSTULACIÓN DE AYUDANTIAS")
+          ]),
+          _vm._v(" "),
+          _c("P", { staticClass: "texto" }, [
+            _vm._v("Bienvenido al sistema de postulación de "),
+            _c("span", { staticClass: "claves" }, [_vm._v("ayudantias")]),
+            _vm._v(
+              ", en \n    este sitio podrás postular como ayudante a las "
+            ),
+            _c("span", { staticClass: "claves" }, [_vm._v("asignaturas")]),
+            _vm._v(" \n    que tengan activo este proceso, "),
+            _c("span", { staticClass: "claves" }, [
+              _vm._v("ingresa tu rut para comenzar:")
+            ]),
+            _vm._v(" .\n    ")
+          ]),
+          _vm._v(" "),
+          _c("br"),
           _vm._v(" "),
           _c(
             "div",
@@ -40264,11 +40480,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container z-depth-3" }, [
+  return _c("div", { staticClass: "card cardB" }, [
     _c(
       "form",
       {
-        staticClass: "container ",
+        staticClass: "container",
+        attrs: { method: "post" },
         on: {
           submit: function($event) {
             $event.preventDefault()
@@ -40278,6 +40495,8 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "input-field col s6 " }, [
+          _vm._m(0),
+          _vm._v(" "),
           _c("input", {
             directives: [
               {
@@ -40287,8 +40506,13 @@ var render = function() {
                 expression: "rut"
               }
             ],
-            staticClass: "validate ",
-            attrs: { id: "rutt", type: "text", placeholder: "12.345.678-9" },
+            staticClass: "validate",
+            attrs: {
+              required: "",
+              id: "rutt",
+              type: "text",
+              placeholder: "12345678k"
+            },
             domProps: { value: _vm.rut },
             on: {
               input: function($event) {
@@ -40300,12 +40524,29 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { attrs: { for: "rutt" } }, [_vm._v("Rut:")]),
+          _vm.formato
+            ? _c("span", { staticClass: "helper-text formato" }, [
+                _vm._v("Error en formato, recuerde no incluir puntos ni guión")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.valido
+            ? _c("span", { staticClass: "helper-text formato" }, [
+                _vm._v("Rut inválido")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.vacio
+            ? _c("span", { staticClass: "helper-text formato" }, [
+                _vm._v("Ingrese rut")
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _c(
             "a",
             {
-              staticClass: "waves-effect orange btn",
+              staticClass: "waves-effect orange btn boton",
+              attrs: { type: "submit" },
               on: {
                 click: function($event) {
                   return _vm.ingresar()
@@ -40319,7 +40560,17 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "parrafo", attrs: { for: "rutt" } }, [
+      _vm._v("Rut: "),
+      _c("span", { staticClass: "suave" }, [_vm._v(" (sin puntos ni guión)")])
+    ])
+  }
+]
 render._withStripped = true
 
 

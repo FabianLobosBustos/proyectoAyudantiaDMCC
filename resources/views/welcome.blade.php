@@ -2,7 +2,6 @@
 
 @section('content')
 
-<home-component></home-component>
-
+<home-component class="asd"></home-component>
 
 @endsection

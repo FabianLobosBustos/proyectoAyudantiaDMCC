@@ -1,6 +1,6 @@
 <template>
 
-    <div v-if="login">
+    <div class ="todo" v-if="login">
         <formulario-component v-if="proceso"
             :estudiante = "assistant"
             :asignatura = "asignaturaActual"
@@ -15,26 +15,32 @@
             @botonAtras="actualizarEstado">
         </formulario-component>   
 
-        <div v-else class="container ">
-            <p class= "center-align presentacion">
-                    Formulario único para concursar al cargo de ayudante alumno para
-                    el periodo {{subjectPhase.semester}}-{{subjectPhase.year}}
-            <p>
-            <br>
-            <br>
-            <br>
-            <div class= "row card cardA">
-                <asignatura-component class ="col l4" v-for = "(asignatura,index) in asignaturas"
-                    :key="asignatura.id"
-                    :asignatura = "asignatura"
-                    @asignaturaBoton= "seleccionAsignatura(index)"> 
-                </asignatura-component>
+        <div v-else>
+            <div class="container cardA"> 
+                <p class= "center-align presentacion">
+                        FORMULARIO ÚNICO PARA CONCURSAR AL CARGO DE AYUDANTE ALUMNO PARA EL PERIODO <span class ="periodo">{{subjectPhase.semester}}-{{subjectPhase.year}}</span>
+                <p>
+                <br>
+                <br>
+                <div  class= "row card cardA">
+                    <h5 class="titulointerno">Ayudantias disponibles a postular:</h5>
+                    <asignatura-component class ="col l4" v-for = "(asignatura,index) in asignaturas"
+                        :key="asignatura.id"
+                        :asignatura = "asignatura"
+                        @asignaturaBoton= "seleccionAsignatura(index)"> 
+                    </asignatura-component>
+                </div>
             </div>
         </div>
     </div>                    
 
-    <div v-else>
-        <mensaje-component ></mensaje-component>
+    <div v-else class ="container home">
+        <h3 class="titulo">POSTULACIÓN DE AYUDANTIAS</h3>
+        <P class = "texto">Bienvenido al sistema de postulación de <span class="claves">ayudantias</span>, en 
+        este sitio podrás postular como ayudante a las <span class="claves">asignaturas</span> 
+        que tengan activo este proceso, <span class="claves">ingresa tu rut para comenzar:</span> .
+        </p>
+        <br>
         <div class="container">
             <ingreso-component @botonIngresar="logear"></ingreso-component>
         </div>
@@ -43,21 +49,50 @@
 </template>
 
 <style scoped>
-.cardA{
-        padding-top: 30px;
-        padding-bottom: 20px;
-        background-color: #f3f3f3;
-        box-shadow: 8px 7px 13px 7px rgba(0,0,0,0.52);
+.texto{
+    color:#333;
+    font-size: 20px;
+    line-height: 1.2;
 
+}
+.claves{
+    color:rgb(46, 45, 45);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.2;
+}
+.periodo{
+    color: orange;
+}
+.titulo{
+    padding-top: 20px; 
+    padding-bottom: 40px;
+    font-family: 'Merriweather', serif;
+    text-align: center;
+    font-weight: 500;
+}
+.titulointerno{ 
+        padding-bottom: 30px;
+        color:#333;
+        margin-left: 15px;
+        font-weight: 500;
+    }
+.cardA{
+
+        padding-top: 10px;
+        padding-bottom: 20px;
+        background-color: #ffffff;
     }
 .presentacion{
     line-height: 1.2;
     font-weight: 500;
-    font-size: 25px;
-    padding-top: 40px;
-    color: #333333
-    
+    font-size: 40px;
+    padding-top: 10px;
+    color: #333;
+    font-family: 'Merriweather', serif;
+    text-align: center;
 }
+
 </style>
 <script>
     export default {
