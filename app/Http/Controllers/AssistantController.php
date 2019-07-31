@@ -37,10 +37,14 @@ class AssistantController extends Controller
             return 0; 
         }
 
+
         $assistant = $assistant->first();
+
+        //OBSERVAR!!!
+        //ACA SE DEBE RETORNAR LA CARRERA VIGENTE DEL ESTUDIANTE! => IMPLEMENTAR CAMBIO EN LA BD
         $career = $assistant->careers->first();
         
-        //ACA SE DEBE RETORNAR LA CARRERA VIGENTE DEL ESTUDIANTE! => IMPLEMENTAR CAMBIO EN LA BD
+        
         $faculty = Faculty::where('id',$career->faculty->id)->first();
 
         $allData = new Object_();
@@ -65,6 +69,7 @@ class AssistantController extends Controller
         $assistantSend->verificatorDigit = $assistant->verificatorDigit;
         $assistantSend->address = $assistant->address;
         $assistantSend->email = $assistant->email;
+        $assistantSend->ppa = $assistant->ppa;
         
         $allData->faculty = $facultySend;
         $allData->career = $careerSend;
