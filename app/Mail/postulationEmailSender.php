@@ -21,17 +21,21 @@ class postulationEmailSender extends Mailable
     public $assistant;
     public $phase;
 
+    public $assistantScoreSendArray;
+    public $requirementSendArray;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Postulation $postulation, Subject $asignatura, Assistant $assistant, Phase $phase)
+    public function __construct(Postulation $postulation, Subject $asignatura, Assistant $assistant, Phase $phase,$assistantScoreSendArray,$requirementSendArray)
     {
         $this->postulation = $postulation;
         $this->asignatura = $asignatura;
         $this->assistant = $assistant;
         $this->phase = $phase;
+        $this->assistantScoreSendArray = $assistantScoreSendArray;
+        $this->requirementSendArray = $requirementSendArray;
     }
 
     /**

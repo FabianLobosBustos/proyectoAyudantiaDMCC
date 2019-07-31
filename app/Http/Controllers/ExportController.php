@@ -30,6 +30,7 @@ class ExportController extends Controller
         //creamos la primera linea de nuestro reporte
         $firstRow = [
             'Rut',
+            'DV',
             'Nombre',
             'Apellido Paterno',
             'Apellido Materno',
@@ -53,6 +54,7 @@ class ExportController extends Controller
             
             $secondRow = [
                 $value['assistant_rut'],
+                $value['assistant_verificatorDigit'],
                 $value['assistant_name'],
                 $value['assistant_lastNameDad'],
                 $value['assistant_lastNameMom'],

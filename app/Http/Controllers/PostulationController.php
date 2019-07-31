@@ -182,7 +182,7 @@ class PostulationController extends Controller
             $assistant = Assistant::where('rut', $assistantSend_rut)->first();
             $subject = Subject::where('id',$postulationSend_subject_id)->first();
             $phase = Phase::where('id',$postulationSend_phase_id)->first();
-            Mail::to($assistant->email)->send(new postulationEmailSender($postulation,$subject,$assistant,$phase));            
+            Mail::to($assistant->email)->send(new postulationEmailSender($postulation,$subject,$assistant,$phase,$assistantScoreSendArray,$requirementSendArray));            
             DB::commit();  
             return 'CORRECTO';           
         } 

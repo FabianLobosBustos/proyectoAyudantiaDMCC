@@ -65,6 +65,7 @@ class Report extends Model
 
             $array_assistants[] = [
                 'assistant_rut' => $assistant->rut,
+                'assistant_verificatorDigit' => $assistant->verificatorDigit,
                 'assistant_fone' => $assistant->fone,
                 'assistant_email' => $assistant->email,
                 'assistant_address' => $assistant->address,
