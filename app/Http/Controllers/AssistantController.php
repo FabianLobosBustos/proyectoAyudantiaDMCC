@@ -61,6 +61,7 @@ class AssistantController extends Controller
         $assistantSend->lastNameDad = $assistant->lastNameDad;
         $assistantSend->level = $assistant->level;
         $assistantSend->rut = $assistant->rut;
+        $assistantSend->fone = $assistant->fone;
         $assistantSend->verificatorDigit = $assistant->verificatorDigit;
         $assistantSend->address = $assistant->address;
         $assistantSend->email = $assistant->email;
