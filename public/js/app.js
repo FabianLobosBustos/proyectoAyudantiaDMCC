@@ -2410,7 +2410,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['estudiante', 'asignatura', 'faculties', 'career', 'notaAlumno', 'requisitos', 'studentFaculty', 'studentCareer', 'subjectPeriod'],
+  props: ['estudiante', 'asignatura', 'faculties', 'career', 'notaAlumno', 'requisitos', 'assistantFaculty', 'assistantCareer', 'subjectPeriod'],
   data: function data() {
     return {
       asignaturas: 1,
@@ -2428,13 +2428,13 @@ __webpack_require__.r(__webpack_exports__);
     //este par de weas, mandarlas desde el home, por el problema del cargado.
     console.log('Component mounted.');
     console.log('facultad:');
-    console.log(this.studentFaculty);
+    console.log(this.assistantFaculty);
     console.log('carrera:');
-    console.log(this.studentCareer);
+    console.log(this.assistantCareer);
     console.log("arreglo de facultades: ");
     console.log(this.faculties);
 
-    if (this.studentFaculty != null) {
+    if (this.assistantFaculty != null) {
       var i;
       var index = -1;
       console.log("largo de faculties: " + this.faculties.length);
@@ -2442,16 +2442,16 @@ __webpack_require__.r(__webpack_exports__);
       for (i = 0; i < this.faculties.length; i++) {
         console.log("facultad[i]");
         console.log(this.faculties[i].faculty_name);
-        console.log(this.studentFaculty);
+        console.log(this.assistantFaculty);
 
-        if (this.studentFaculty === this.faculties[i].faculty_name) {
+        if (this.assistantFaculty === this.faculties[i].faculty_name) {
           console.log("entre al IF RECULIAO CONCHETUMARE");
           index = i;
         }
       }
 
-      this.facultyStudent = this.studentFaculty;
-      this.careerStudent = this.studentCareer;
+      this.facultyStudent = this.assistantFaculty;
+      this.careerStudent = this.assistantCareer;
       console.log("index:");
       console.log(index);
       console.log(this.faculties[index]);
@@ -2652,6 +2652,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2721,8 +2722,11 @@ __webpack_require__.r(__webpack_exports__);
         id: null
       };
       axios.post('assistants/checkByRut', {
-        rut: res.rut
+        rut: cuerpo
       }).then(function (response) {
+        console.log("response:");
+        console.log(response.data);
+
         if (response.data == 0) {
           _this2.assistant = assistantX;
           console.log(_this2.assistant);
@@ -2731,6 +2735,7 @@ __webpack_require__.r(__webpack_exports__);
           console.log(response.data);
           _this2.assistantFaculty = response.data.faculty.name;
           _this2.assistantCareer = response.data.career.name;
+          _this2.career = response.data.career.name;
           _this2.assistant = response.data.assistant;
         }
 
@@ -2744,6 +2749,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.assistant);
       axios.get('/allFacultiesCareers').then(function (response) {
         _this3.faculties = response.data;
+        console.log("facultades: ", response.data);
       });
       var urlPhase = "phaseBySubject/" + this.asignaturaActual.id;
       axios.get(urlPhase).then(function (response) {
@@ -2752,17 +2758,28 @@ __webpack_require__.r(__webpack_exports__);
         _this3.subjectPhase = response.data;
         console.log("el id del periodo es " + _this3.subjectPhase.id);
       });
+      var url = "subject/" + this.asignaturaActual.id + "/requirements";
+      axios.get(url).then(function (response) {
+        _this3.requisitos = response.data;
+        console.log("requisitos");
+        console.log(response.data);
+      });
       console.log(this.assistant.id);
 
       if (this.assistant.id != null) {
         var urlNotas = "assistant/" + this.assistant.id + "/subject/" + this.asignaturaActual.id;
         console.log("pedi las notas del qlo ");
         axios.get(urlNotas).then(function (response) {
+          console.log("entre aqui?");
           console.log(response.data);
           var i, j;
 
           for (i = 0; i < _this3.requisitos.length; i++) {
+            console.log("entre aqui22222?");
+
             for (j = 0; j < response.data.length; j++) {
+              console.log("entre aqui333333?");
+
               if (_this3.requisitos[i][0] == response.data[j].subject_id) {
                 _this3.notaAlumno[i] = response.data[j].score;
                 console.log("estamos en el for:" + i + "," + j);
@@ -2774,16 +2791,9 @@ __webpack_require__.r(__webpack_exports__);
           console.log("ahora muestro las notas del alumno");
           console.log(_this3.notaAlumno);
           _this3.proceso = true;
+          _this3.proceso = true;
         });
       }
-
-      var url = "subject/" + this.asignaturaActual.id + "/requirements";
-      axios.get(url).then(function (response) {
-        _this3.requisitos = response.data;
-        console.log("requisitos");
-        console.log(response.data);
-        _this3.proceso = true;
-      });
     },
     cambioProceso: function cambioProceso() {
       var _this4 = this;
@@ -40465,7 +40475,8 @@ var render = function() {
             { staticClass: "container" },
             [_c("ingreso-component", { on: { botonIngresar: _vm.logear } })],
             1
-          )
+          ),
+          _vm._v("\n    " + _vm._s(_vm.assistantFaculty) + "\n")
         ],
         1
       )
@@ -53689,8 +53700,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/fabi/Escritorio/PROYECTO/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/fabi/Escritorio/PROYECTO/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

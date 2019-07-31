@@ -44,6 +44,7 @@
         <div class="container">
             <ingreso-component @botonIngresar="logear"></ingreso-component>
         </div>
+        {{assistantFaculty}}
     </div>
 
 </template>
@@ -158,9 +159,11 @@
                     level: "",
                     id: null
                 };             
-                axios.post('assistants/checkByRut', {rut: res.rut
+                axios.post('assistants/checkByRut', {rut: cuerpo
                         }
                 ).then((response)=>{
+                    console.log("response:");
+                    console.log(response.data);
                 if(response.data == 0){
                     this.assistant = assistantX;
                     console.log(this.assistant);
@@ -170,6 +173,7 @@
                     console.log(response.data);
                     this.assistantFaculty = response.data.faculty.name;
                     this.assistantCareer = response.data.career.name;
+                    this.career = response.data.career.name;
                     this.assistant = response.data.assistant;
                 } 
                 this.login = true;
@@ -179,7 +183,8 @@
                 this.asignaturaActual = this.asignaturas[index];
                 console.log(this.assistant);
                 axios.get('/allFacultiesCareers').then((response)=>{
-                    this.faculties = response.data; 
+                    this.faculties = response.data;
+                    console.log("facultades: ", response.data); 
                 });
                 const urlPhase = "phaseBySubject/"+this.asignaturaActual.id;
                 axios.get(urlPhase).then((response)=>{
@@ -189,17 +194,25 @@
                     console.log("el id del periodo es "+this.subjectPhase.id);
                 });
 
-                
+                const url = "subject/"+this.asignaturaActual.id+"/requirements";
+                axios.get(url).then((response)=>{
+                    this.requisitos = response.data; 
+                    console.log("requisitos");
+                    console.log(response.data);
+                });
 
                 console.log(this.assistant.id);
                 if(this.assistant.id!=null){
                     const urlNotas = "assistant/"+this.assistant.id+"/subject/"+this.asignaturaActual.id;
                     console.log("pedi las notas del qlo ");
                     axios.get(urlNotas).then((response)=>{
+                        console.log("entre aqui?");
                         console.log(response.data);
                         var i,j;
                         for(i=0;i<this.requisitos.length;i++){
+                            console.log("entre aqui22222?");
                             for(j=0;j<response.data.length;j++){
+                                console.log("entre aqui333333?");
                                 if(this.requisitos[i][0] == response.data[j].subject_id){
                                     this.notaAlumno[i] = response.data[j].score;
                                     console.log("estamos en el for:"+i + "," +j);
@@ -210,17 +223,9 @@
                         console.log("ahora muestro las notas del alumno");
                         console.log(this.notaAlumno);
                                         this.proceso = true;
-
+                        this.proceso = true;
                     });
                 }
-                const url = "subject/"+this.asignaturaActual.id+"/requirements";
-                axios.get(url).then((response)=>{
-                    this.requisitos = response.data; 
-                    console.log("requisitos");
-                    console.log(response.data);
-                    this.proceso = true;
-                });
-
             },
             cambioProceso(){
                 console.log(this.assistant.rut)

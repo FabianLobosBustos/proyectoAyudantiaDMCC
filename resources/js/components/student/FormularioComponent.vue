@@ -171,7 +171,7 @@
 
 <script>
     export default {
-        props: ['estudiante', 'asignatura','faculties','career','notaAlumno','requisitos','studentFaculty','studentCareer','subjectPeriod'],
+        props: ['estudiante', 'asignatura','faculties','career','notaAlumno','requisitos','assistantFaculty','assistantCareer','subjectPeriod'],
         data(){
             return {
                 asignaturas: 1,
@@ -190,26 +190,26 @@
             //este par de weas, mandarlas desde el home, por el problema del cargado.
             console.log('Component mounted.');
             console.log('facultad:');
-            console.log(this.studentFaculty);
+            console.log(this.assistantFaculty);
             console.log('carrera:');
-            console.log(this.studentCareer);
+            console.log(this.assistantCareer);
             console.log("arreglo de facultades: ");
             console.log(this.faculties);
-            if(this.studentFaculty != null){
+            if(this.assistantFaculty != null){
                 var i;
                 var index = -1;
                 console.log("largo de faculties: "+this.faculties.length);
                     for(i=0;i<this.faculties.length;i++){
                         console.log("facultad[i]");
                         console.log(this.faculties[i].faculty_name);
-                        console.log(this.studentFaculty);
-                        if(this.studentFaculty === this.faculties[i].faculty_name){  
+                        console.log(this.assistantFaculty);
+                        if(this.assistantFaculty === this.faculties[i].faculty_name){  
                             console.log("entre al IF RECULIAO CONCHETUMARE")  
                             index = i;
                         }
                     }
-                    this.facultyStudent = this.studentFaculty;
-                    this.careerStudent = this.studentCareer; 
+                    this.facultyStudent = this.assistantFaculty;
+                    this.careerStudent = this.assistantCareer; 
                     console.log("index:");
                     console.log(index);
                     console.log(this.faculties[index])
