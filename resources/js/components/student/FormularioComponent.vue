@@ -5,38 +5,38 @@
             <h4 class="center-align titulo">POSTULACIÓN DE AYUDANTE PARA LA ASIGNATURA <span class="nombreAsig">{{asignatura.name}}</span></h4>  
             <br>
             <br>
-            <form class="col l12"  method="post" v-on:submit.prevent=enviar() >
+            <form  class="col s12"  method="post" v-on:submit.prevent=enviar() >
                 <div class="row card cardI ">
                     <h5 class="titulointerno"> Datos Personales:</h5> 
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo" for="nombre">Nombre: <span class ="requerido" v-if="!estudiante.name">*</span></p>
                         <input class ="validate" required type="text"  placeholder="Ingresa tu nombre" id="nombre" v-model ="estudiante.name">    
                     </div>
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo" for="correo">Correo: <span class ="requerido" v-if="!estudiante.email">*</span></p>
                         <input class="validate" required type="email" placeholder="ejemplo@usach.cl" id="correo" v-model="estudiante.email">
                             
                     </div>
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo" for="apellidoPaterno">Apellido Paterno: <span class ="requerido" v-if="!estudiante.lastNameDad">*</span></p>
                         <input class="validate" required type="text" placeholder="Ingresa tu Apellido Paterno" id="apellidoPaterno" v-model="estudiante.lastNameDad">    
                     </div>
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo" for="apellidoMaterno">Apellido Materno: <span class ="requerido" v-if="!estudiante.lastNameMom">*</span></p>
                         <input class="validate" required type="text" placeholder="Ingresa tu Apellido Materno" id="apellidoMaterno" v-model="estudiante.lastNameMom">
                     </div>
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo" for="telefono">Teléfono: <span class ="requerido" v-if="!estudiante.fone">*</span></p>
-                        <input class="validate" required type="number" placeholder="12345678" id="telefono" v-model="estudiante.fone">
+                        <input class="validate" required type="text" placeholder="+56912345678" id="telefono" v-model="estudiante.fone">
                     </div>
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo" for="direccion">Dirección: <span class ="requerido" v-if="!estudiante.address">*</span></p>
                         <input class="validate" required type="text" placeholder="Ingresa tu dirección " id="direccion" v-model="estudiante.address">
                     </div>
                 </div>
                 <div class="row card cardI">
                     <h5 class="titulointerno"> Datos Curriculares:</h5> 
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo">Facultad: <span class ="requerido" v-if="!facultyStudent">*</span></p>
                             <select @change="onChange()"  class="browser-default validate"  required type="text" v-model="facultyStudent">
                                 <option disabled selected >Seleccione su Facultad</option>
@@ -46,7 +46,7 @@
                                 </option>
                             </select>
                     </div>
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo">Carrera: <span class ="requerido" v-if="!careerStudent">*</span></p>
                             <select  class="browser-default validate" v-if="facultadSeleccionada" required type="text" v-model="careerStudent">
                                 <option disabled selected >Seleccione su Carrera</option>
@@ -66,42 +66,42 @@
                         <!--<p class = "parrafo" for="Carrera">Carrera:</p>
                         <input class="validate" required type="text" placeholder="Ingrese Carrera" id="Carrera" v-model ="career">-->
                     </div>
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo">Nivel: <span class ="requerido" v-if="!estudiante.level">*</span></p>
                         <input required id="email_inline" type="number" class="validate" max="12" min="1" v-model="estudiante.level">
                         
                         <span class="helper-text" data-error="Error" > Correspode al nivel de la asignatura más baja</span>
                     </div>
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo">PPA: <span class ="requerido" v-if="!estudiante.ppa">*</span></p>
                         <input step="0.1" required id="email_inline" type="number" class="validate" max="7" min="0" v-model="estudiante.ppa">
                         
-                        <span  class="helper-text" data-error="Error" placeholder="ej: 1.89" >Corresponde al Promedio Ponderado Acumulado</span>
+                        <span  class="helper-text" placeholder="ej: 1.89" >Corresponde al Promedio Ponderado Acumulado</span>
                     </div>
                 </div> 
                 <div class="row card cardI ">
                     <h5 class="titulointerno"> Datos sobre la asignatura:</h5>     
-                    <div class="col l12">
-                        <div class="col l4" v-for= "(requisito, index) in requisitos" :key= index>
+                    <div class="col s12">
+                        <div class="col s4" v-for= "(requisito, index) in requisitos" :key= index>
                                 <p class = "parrafo">Nota {{requisito[1]}}: <span class ="requerido" v-if="!notaAlumno[index]">*</span></p>
                                 <input step="0.1" id="email_inline" type="number" required class="validate" placeholder="ej: 4.8" max="7.0" min="4.0" v-model="notaAlumno[index]">
-                                <span class="helper-text" data-error="Error" ></span>
+                                <span class="helper-text"  ></span>
                         </div>
                     </div>
-                    <div class="col l6">
+                    <div class="col s6">
                         <p class = "parrafo veces">Cantidad de veces que ha sido ayudante de {{asignatura.name}}: <span class ="requerido" v-if="!postulacion.numberTimes">*</span></p>
                         <input required id="email_inlin" type="number" class="validate"  min=0 v-model="postulacion.numberTimes">   
                     </div>
-                    <div class="col l6">
+                    <div class="col s6">
                         <br>
                         <p class = "parrafo" for="Referencia">Profesor de Referencia: <span class ="requerido" v-if="!postulacion.reference">*</span></p>
                         <input  class="validate" required type="text" placeholder="Ingrese nombre del profesor" id="Referencia" v-model="postulacion.reference">
                     </div>
-                    <div class="col l6">
-                        <button class="waves-effect orange btn" type="button" v-on:click= "atras()">Atrás</button>    
+                    <div class="col s6">
+                        <button v-bind:disabled="fin" class="waves-effect orange btn" type="button" v-on:click= "atras()">Atrás</button>    
                     </div>
-                    <div class="col l6 right-align">
-                        <button class="waves-effect orange btn" type="button" v-on:click= "enviar()">Enviar</button>    
+                    <div class="col s6 right-align">
+                        <button v-bind:disabled="fin" class="waves-effect orange btn" type="button" v-on:click= "enviar()">Enviar</button>    
                     </div>
                 </div>
                 
@@ -182,11 +182,12 @@
                 careerStudent: null,
                 facultyStudent: null,
                 careers: null,
-                facultadSeleccionada: false
+                facultadSeleccionada: false,
+                fin:false
             }
         },
         mounted() {
-
+            this.spinner3=true;
             //este par de weas, mandarlas desde el home, por el problema del cargado.
             console.log('Component mounted.');
             console.log('facultad:');
@@ -235,8 +236,9 @@
                 }
             },
             enviar(){
+                this.fin = true;
                 var mensaje;
-                var opcion = confirm("Estas seguro de enviar este formulario? \n Posteriormente no podrás editarlo");
+                var opcion = confirm("Estas seguro de enviar este formulario? \nPosteriormente no podrás editarlo.");
                 if (opcion == true) {
                     mensaje = "Has clickado OK";
                 } else {
@@ -279,7 +281,9 @@
               };
               console.log(params);
               axios.post('postulations', params).then((response)=>{
+                  window.alert("Se le ha enviado un comprobante de confirmación a su correo electrónico.");
                   this.$emit('botonEnviar');
+                  this.fin=false;
                   console.log("lo envie");
                   console.log(response);
               }); 

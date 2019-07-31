@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a class="waves-effect orange btn  z-depth-3 " v-on:click= "seleccion()">{{asignatura.name}}</a>
+        <a v-bind:disabled="spinner2" class="waves-effect orange btn  z-depth-3 " v-on:click= "seleccion()">{{asignatura.name}}</a>
     </div>
 </template>
 
@@ -20,7 +20,7 @@
 
 <script>
     export default {
-        props: ['asignatura'],
+        props: ['asignatura','spinner2'],
         data(){
             return {
                 nombre:''

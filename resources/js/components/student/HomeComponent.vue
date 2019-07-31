@@ -1,20 +1,20 @@
 <template>
-
     <div class ="todo" v-if="login">
-        <formulario-component v-if="proceso"
-            :estudiante = "assistant"
-            :asignatura = "asignaturaActual"
-            :faculties = "faculties"
-            :career = "carrera"
-            :assistantFaculty = "assistantFaculty"
-            :assistantCareer = "assistantCareer"
-            :notaAlumno = "notaAlumno"
-            :requisitos = "requisitos"
-            :subjectPeriod = "subjectPhase"
-            @botonEnviar="cambioProceso"
-            @botonAtras="actualizarEstado">
-        </formulario-component>   
-
+        <div v-if="proceso">
+            <formulario-component 
+                :estudiante = "assistant"
+                :asignatura = "asignaturaActual"
+                :faculties = "faculties"
+                :career = "carrera"
+                :assistantFaculty = "assistantFaculty"
+                :assistantCareer = "assistantCareer"
+                :notaAlumno = "notaAlumno"
+                :requisitos = "requisitos"
+                :subjectPeriod = "subjectPhase"
+                @botonEnviar="cambioProceso"
+                @botonAtras="actualizarEstado">
+            </formulario-component>
+        </div>
         <div v-else>
             <div class="container cardA"> 
                 <p class= "center-align presentacion">
@@ -24,7 +24,10 @@
                 <br>
                 <div  class= "row card cardA">
                     <h5 class="titulointerno">Ayudantias disponibles a postular:</h5>
-                    <asignatura-component class ="col l4" v-for = "(asignatura,index) in asignaturas"
+                    <div class="lds-roller-container2">
+                        <div v-if="spinner2" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <asignatura-component :spinner2 = "spinner2" class ="col l4" v-for = "(asignatura,index) in asignaturas"
                         :key="asignatura.id"
                         :asignatura = "asignatura"
                         @asignaturaBoton= "seleccionAsignatura(index)"> 
@@ -38,13 +41,17 @@
         <h3 class="titulo">POSTULACIÓN DE AYUDANTIAS</h3>
         <P class = "texto">Bienvenido al sistema de postulación de <span class="claves">ayudantias</span>, en 
         este sitio podrás postular como ayudante a las <span class="claves">asignaturas</span> 
-        que tengan activo este proceso, <span class="claves">ingresa tu rut para comenzar:</span> .
+        que tengan activo este proceso, <span class="claves">ingresa tu rut para comenzar:</span>
         </p>
+        <div class="lds-roller-container">
+            <div v-if="spinner1" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+        <br>
+        <br>
         <br>
         <div class="container">
-            <ingreso-component @botonIngresar="logear"></ingreso-component>
+            <ingreso-component :spinner1 = "spinner1"  @botonIngresar="logear"></ingreso-component>
         </div>
-        {{assistantFaculty}}
     </div>
 
 </template>
@@ -93,10 +100,106 @@
     font-family: 'Merriweather', serif;
     text-align: center;
 }
+.lds-roller-container{
+    position: absolute;
+    right: 50%;
+}
+.lds-roller-container2{
+    position: absolute;
+    right: 50%;
+    top: -30%;
+}
+.lds-roller {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.lds-roller div {
+  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  transform-origin: 32px 32px;
+}
+.lds-roller div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(62, 23, 206);
+  margin: -3px 0 0 -3px;
+}
+.lds-roller div:nth-child(1) {
+  animation-delay: -0.036s;
+}
+.lds-roller div:nth-child(1):after {
+  top: 50px;
+  left: 50px;
+}
+.lds-roller div:nth-child(2) {
+  animation-delay: -0.072s;
+}
+.lds-roller div:nth-child(2):after {
+  top: 54px;
+  left: 45px;
+}
+.lds-roller div:nth-child(3) {
+  animation-delay: -0.108s;
+}
+.lds-roller div:nth-child(3):after {
+  top: 57px;
+  left: 39px;
+}
+.lds-roller div:nth-child(4) {
+  animation-delay: -0.144s;
+}
+.lds-roller div:nth-child(4):after {
+  top: 58px;
+  left: 32px;
+}
+.lds-roller div:nth-child(5) {
+  animation-delay: -0.18s;
+}
+.lds-roller div:nth-child(5):after {
+  top: 57px;
+  left: 25px;
+}
+.lds-roller div:nth-child(6) {
+  animation-delay: -0.216s;
+}
+.lds-roller div:nth-child(6):after {
+  top: 54px;
+  left: 19px;
+}
+.lds-roller div:nth-child(7) {
+  animation-delay: -0.252s;
+}
+.lds-roller div:nth-child(7):after {
+  top: 50px;
+  left: 14px;
+}
+.lds-roller div:nth-child(8) {
+  animation-delay: -0.288s;
+}
+.lds-roller div:nth-child(8):after {
+  top: 45px;
+  left: 10px;
+}
+@keyframes lds-roller {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+     
+  }
+}
+
 
 </style>
 <script>
     export default {
+        name: 'ProgressSpinnerIndeterminate',
         data(){
             return {
                 asignaturas:[{   //aqui deberia un un arreglo vacio para el axios {{subjectPhase.semester}}-{{subjectPhase.year}}
@@ -115,6 +218,9 @@
                     id: 5,
                     name: "Ecuaciones diferenciales"
                 }],
+                spinner1:false,
+                spinner2:false,
+                spinner3:false,
                 assistant:[],
                 asignaturaActual: [],
                 login: false,
@@ -143,6 +249,7 @@
         },
         methods:{
             logear(res){
+                this.spinner1 = true;
                 var resp = res.rut;
                 var cuerpo = resp.slice(0,-1);
                 var dv = resp.slice(-1).toUpperCase();
@@ -176,10 +283,12 @@
                     this.career = response.data.career.name;
                     this.assistant = response.data.assistant;
                 } 
+                this.spinner1 = false;
                 this.login = true;
                 });
             },
             seleccionAsignatura(index){
+                this.spinner2 = true;
                 this.asignaturaActual = this.asignaturas[index];
                 console.log(this.assistant);
                 axios.get('/allFacultiesCareers').then((response)=>{
@@ -224,6 +333,7 @@
                         console.log(this.notaAlumno);
                                         this.proceso = true;
                         this.proceso = true;
+                        this.spinner2 = false;
                     });
                 }
             },

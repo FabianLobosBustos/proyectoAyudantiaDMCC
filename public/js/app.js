@@ -2174,7 +2174,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['asignatura'],
+  props: ['asignatura', 'spinner2'],
   data: function data() {
     return {
       nombre: ''
@@ -2421,11 +2421,13 @@ __webpack_require__.r(__webpack_exports__);
       careerStudent: null,
       facultyStudent: null,
       careers: null,
-      facultadSeleccionada: false
+      facultadSeleccionada: false,
+      fin: false
     };
   },
   mounted: function mounted() {
-    //este par de weas, mandarlas desde el home, por el problema del cargado.
+    this.spinner3 = true; //este par de weas, mandarlas desde el home, por el problema del cargado.
+
     console.log('Component mounted.');
     console.log('facultad:');
     console.log(this.assistantFaculty);
@@ -2480,8 +2482,9 @@ __webpack_require__.r(__webpack_exports__);
     enviar: function enviar() {
       var _this = this;
 
+      this.fin = true;
       var mensaje;
-      var opcion = confirm("Estas seguro de enviar este formulario? \n Posteriormente no podrás editarlo");
+      var opcion = confirm("Estas seguro de enviar este formulario? \nPosteriormente no podrás editarlo.");
 
       if (opcion == true) {
         mensaje = "Has clickado OK";
@@ -2533,8 +2536,11 @@ __webpack_require__.r(__webpack_exports__);
       };
       console.log(params);
       axios.post('postulations', params).then(function (response) {
+        window.alert("Se le ha enviado un comprobante de confirmación a su correo electrónico.");
+
         _this.$emit('botonEnviar');
 
+        _this.fin = false;
         console.log("lo envie");
         console.log(response);
       });
@@ -2653,7 +2659,110 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'ProgressSpinnerIndeterminate',
   data: function data() {
     return {
       asignaturas: [{
@@ -2673,6 +2782,9 @@ __webpack_require__.r(__webpack_exports__);
         id: 5,
         name: "Ecuaciones diferenciales"
       }],
+      spinner1: false,
+      spinner2: false,
+      spinner3: false,
       assistant: [],
       asignaturaActual: [],
       login: false,
@@ -2705,6 +2817,7 @@ __webpack_require__.r(__webpack_exports__);
     logear: function logear(res) {
       var _this2 = this;
 
+      this.spinner1 = true;
       var resp = res.rut;
       var cuerpo = resp.slice(0, -1);
       var dv = resp.slice(-1).toUpperCase(); //aqui debo obtener una respuesta con el alumno y esa se la paso al this.assistant
@@ -2739,12 +2852,14 @@ __webpack_require__.r(__webpack_exports__);
           _this2.assistant = response.data.assistant;
         }
 
+        _this2.spinner1 = false;
         _this2.login = true;
       });
     },
     seleccionAsignatura: function seleccionAsignatura(index) {
       var _this3 = this;
 
+      this.spinner2 = true;
       this.asignaturaActual = this.asignaturas[index];
       console.log(this.assistant);
       axios.get('/allFacultiesCareers').then(function (response) {
@@ -2792,6 +2907,7 @@ __webpack_require__.r(__webpack_exports__);
           console.log(_this3.notaAlumno);
           _this3.proceso = true;
           _this3.proceso = true;
+          _this3.spinner2 = false;
         });
       }
     },
@@ -2889,6 +3005,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['spinner1'],
   data: function data() {
     return {
       rut: '',
@@ -7545,7 +7662,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.texto[data-v-662b5faf]{\n    color:#333;\n    font-size: 20px;\n    line-height: 1.2;\n}\n.claves[data-v-662b5faf]{\n    color:rgb(46, 45, 45);\n    font-weight: 600;\n    font-size: 20px;\n    line-height: 1.2;\n}\n.periodo[data-v-662b5faf]{\n    color: orange;\n}\n.titulo[data-v-662b5faf]{\n    padding-top: 20px; \n    padding-bottom: 40px;\n    font-family: 'Merriweather', serif;\n    text-align: center;\n    font-weight: 500;\n}\n.titulointerno[data-v-662b5faf]{ \n        padding-bottom: 30px;\n        color:#333;\n        margin-left: 15px;\n        font-weight: 500;\n}\n.cardA[data-v-662b5faf]{\n\n        padding-top: 10px;\n        padding-bottom: 20px;\n        background-color: #ffffff;\n}\n.presentacion[data-v-662b5faf]{\n    line-height: 1.2;\n    font-weight: 500;\n    font-size: 40px;\n    padding-top: 10px;\n    color: #333;\n    font-family: 'Merriweather', serif;\n    text-align: center;\n}\n\n", ""]);
+exports.push([module.i, "\n.texto[data-v-662b5faf]{\n    color:#333;\n    font-size: 20px;\n    line-height: 1.2;\n}\n.claves[data-v-662b5faf]{\n    color:rgb(46, 45, 45);\n    font-weight: 600;\n    font-size: 20px;\n    line-height: 1.2;\n}\n.periodo[data-v-662b5faf]{\n    color: orange;\n}\n.titulo[data-v-662b5faf]{\n    padding-top: 20px; \n    padding-bottom: 40px;\n    font-family: 'Merriweather', serif;\n    text-align: center;\n    font-weight: 500;\n}\n.titulointerno[data-v-662b5faf]{ \n        padding-bottom: 30px;\n        color:#333;\n        margin-left: 15px;\n        font-weight: 500;\n}\n.cardA[data-v-662b5faf]{\n\n        padding-top: 10px;\n        padding-bottom: 20px;\n        background-color: #ffffff;\n}\n.presentacion[data-v-662b5faf]{\n    line-height: 1.2;\n    font-weight: 500;\n    font-size: 40px;\n    padding-top: 10px;\n    color: #333;\n    font-family: 'Merriweather', serif;\n    text-align: center;\n}\n.lds-roller-container[data-v-662b5faf]{\n    position: absolute;\n    right: 50%;\n}\n.lds-roller-container2[data-v-662b5faf]{\n    position: absolute;\n    right: 50%;\n    top: -30%;\n}\n.lds-roller[data-v-662b5faf] {\n  display: inline-block;\n  position: relative;\n  width: 64px;\n  height: 64px;\n}\n.lds-roller div[data-v-662b5faf] {\n  -webkit-animation: lds-roller-data-v-662b5faf 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;\n          animation: lds-roller-data-v-662b5faf 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;\n  -webkit-transform-origin: 32px 32px;\n          transform-origin: 32px 32px;\n}\n.lds-roller div[data-v-662b5faf]:after {\n  content: \" \";\n  display: block;\n  position: absolute;\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background: rgb(62, 23, 206);\n  margin: -3px 0 0 -3px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(1) {\n  -webkit-animation-delay: -0.036s;\n          animation-delay: -0.036s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(1):after {\n  top: 50px;\n  left: 50px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(2) {\n  -webkit-animation-delay: -0.072s;\n          animation-delay: -0.072s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(2):after {\n  top: 54px;\n  left: 45px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(3) {\n  -webkit-animation-delay: -0.108s;\n          animation-delay: -0.108s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(3):after {\n  top: 57px;\n  left: 39px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(4) {\n  -webkit-animation-delay: -0.144s;\n          animation-delay: -0.144s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(4):after {\n  top: 58px;\n  left: 32px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(5) {\n  -webkit-animation-delay: -0.18s;\n          animation-delay: -0.18s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(5):after {\n  top: 57px;\n  left: 25px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(6) {\n  -webkit-animation-delay: -0.216s;\n          animation-delay: -0.216s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(6):after {\n  top: 54px;\n  left: 19px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(7) {\n  -webkit-animation-delay: -0.252s;\n          animation-delay: -0.252s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(7):after {\n  top: 50px;\n  left: 14px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(8) {\n  -webkit-animation-delay: -0.288s;\n          animation-delay: -0.288s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(8):after {\n  top: 45px;\n  left: 10px;\n}\n@-webkit-keyframes lds-roller-data-v-662b5faf {\n0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg);\n}\n}\n@keyframes lds-roller-data-v-662b5faf {\n0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg);\n}\n}\n\n\n", ""]);
 
 // exports
 
@@ -39576,6 +39693,7 @@ var render = function() {
       "a",
       {
         staticClass: "waves-effect orange btn  z-depth-3 ",
+        attrs: { disabled: _vm.spinner2 },
         on: {
           click: function($event) {
             return _vm.seleccion()
@@ -39679,7 +39797,7 @@ var render = function() {
       _c(
         "form",
         {
-          staticClass: "col l12",
+          staticClass: "col s12",
           attrs: { method: "post" },
           on: {
             submit: function($event) {
@@ -39694,7 +39812,7 @@ var render = function() {
               _vm._v(" Datos Personales:")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c("p", { staticClass: "parrafo", attrs: { for: "nombre" } }, [
                 _vm._v("Nombre: "),
                 !_vm.estudiante.name
@@ -39730,7 +39848,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c("p", { staticClass: "parrafo", attrs: { for: "correo" } }, [
                 _vm._v("Correo: "),
                 !_vm.estudiante.email
@@ -39766,7 +39884,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c(
                 "p",
                 { staticClass: "parrafo", attrs: { for: "apellidoPaterno" } },
@@ -39806,7 +39924,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c(
                 "p",
                 { staticClass: "parrafo", attrs: { for: "apellidoMaterno" } },
@@ -39846,7 +39964,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c("p", { staticClass: "parrafo", attrs: { for: "telefono" } }, [
                 _vm._v("Teléfono: "),
                 !_vm.estudiante.fone
@@ -39866,8 +39984,8 @@ var render = function() {
                 staticClass: "validate",
                 attrs: {
                   required: "",
-                  type: "number",
-                  placeholder: "12345678",
+                  type: "text",
+                  placeholder: "+56912345678",
                   id: "telefono"
                 },
                 domProps: { value: _vm.estudiante.fone },
@@ -39882,7 +40000,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c("p", { staticClass: "parrafo", attrs: { for: "direccion" } }, [
                 _vm._v("Dirección: "),
                 !_vm.estudiante.address
@@ -39924,7 +40042,7 @@ var render = function() {
               _vm._v(" Datos Curriculares:")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c("p", { staticClass: "parrafo" }, [
                 _vm._v("Facultad: "),
                 !_vm.facultyStudent
@@ -39984,7 +40102,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c("p", { staticClass: "parrafo" }, [
                 _vm._v("Carrera: "),
                 !_vm.careerStudent
@@ -40085,7 +40203,7 @@ var render = function() {
                   )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c("p", { staticClass: "parrafo" }, [
                 _vm._v("Nivel: "),
                 !_vm.estudiante.level
@@ -40131,7 +40249,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c("p", { staticClass: "parrafo" }, [
                 _vm._v("PPA: "),
                 !_vm.estudiante.ppa
@@ -40172,7 +40290,7 @@ var render = function() {
                 "span",
                 {
                   staticClass: "helper-text",
-                  attrs: { "data-error": "Error", placeholder: "ej: 1.89" }
+                  attrs: { placeholder: "ej: 1.89" }
                 },
                 [_vm._v("Corresponde al Promedio Ponderado Acumulado")]
               )
@@ -40186,9 +40304,9 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "col l12" },
+              { staticClass: "col s12" },
               _vm._l(_vm.requisitos, function(requisito, index) {
-                return _c("div", { key: index, staticClass: "col l4" }, [
+                return _c("div", { key: index, staticClass: "col s4" }, [
                   _c("p", { staticClass: "parrafo" }, [
                     _vm._v("Nota " + _vm._s(requisito[1]) + ": "),
                     !_vm.notaAlumno[index]
@@ -40226,16 +40344,13 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c("span", {
-                    staticClass: "helper-text",
-                    attrs: { "data-error": "Error" }
-                  })
+                  _c("span", { staticClass: "helper-text" })
                 ])
               }),
               0
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c("p", { staticClass: "parrafo veces" }, [
                 _vm._v(
                   "Cantidad de veces que ha sido ayudante de " +
@@ -40279,7 +40394,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c("br"),
               _vm._v(" "),
               _c(
@@ -40321,12 +40436,12 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6" }, [
+            _c("div", { staticClass: "col s6" }, [
               _c(
                 "button",
                 {
                   staticClass: "waves-effect orange btn",
-                  attrs: { type: "button" },
+                  attrs: { disabled: _vm.fin, type: "button" },
                   on: {
                     click: function($event) {
                       return _vm.atras()
@@ -40337,12 +40452,12 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col l6 right-align" }, [
+            _c("div", { staticClass: "col s6 right-align" }, [
               _c(
                 "button",
                 {
                   staticClass: "waves-effect orange btn",
-                  attrs: { type: "button" },
+                  attrs: { disabled: _vm.fin, type: "button" },
                   on: {
                     click: function($event) {
                       return _vm.enviar()
@@ -40381,71 +40496,90 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.login
-    ? _c(
-        "div",
-        { staticClass: "todo" },
-        [
-          _vm.proceso
-            ? _c("formulario-component", {
-                attrs: {
-                  estudiante: _vm.assistant,
-                  asignatura: _vm.asignaturaActual,
-                  faculties: _vm.faculties,
-                  career: _vm.carrera,
-                  assistantFaculty: _vm.assistantFaculty,
-                  assistantCareer: _vm.assistantCareer,
-                  notaAlumno: _vm.notaAlumno,
-                  requisitos: _vm.requisitos,
-                  subjectPeriod: _vm.subjectPhase
-                },
-                on: {
-                  botonEnviar: _vm.cambioProceso,
-                  botonAtras: _vm.actualizarEstado
-                }
-              })
-            : _c("div", [
-                _c("div", { staticClass: "container cardA" }, [
-                  _c("p", { staticClass: "center-align presentacion" }, [
+    ? _c("div", { staticClass: "todo" }, [
+        _vm.proceso
+          ? _c(
+              "div",
+              [
+                _c("formulario-component", {
+                  attrs: {
+                    estudiante: _vm.assistant,
+                    asignatura: _vm.asignaturaActual,
+                    faculties: _vm.faculties,
+                    career: _vm.carrera,
+                    assistantFaculty: _vm.assistantFaculty,
+                    assistantCareer: _vm.assistantCareer,
+                    notaAlumno: _vm.notaAlumno,
+                    requisitos: _vm.requisitos,
+                    subjectPeriod: _vm.subjectPhase
+                  },
+                  on: {
+                    botonEnviar: _vm.cambioProceso,
+                    botonAtras: _vm.actualizarEstado
+                  }
+                })
+              ],
+              1
+            )
+          : _c("div", [
+              _c("div", { staticClass: "container cardA" }, [
+                _c("p", { staticClass: "center-align presentacion" }, [
+                  _vm._v(
+                    "\n                    FORMULARIO ÚNICO PARA CONCURSAR AL CARGO DE AYUDANTE ALUMNO PARA EL PERIODO "
+                  ),
+                  _c("span", { staticClass: "periodo" }, [
                     _vm._v(
-                      "\n                    FORMULARIO ÚNICO PARA CONCURSAR AL CARGO DE AYUDANTE ALUMNO PARA EL PERIODO "
-                    ),
-                    _c("span", { staticClass: "periodo" }, [
-                      _vm._v(
-                        _vm._s(_vm.subjectPhase.semester) +
-                          "-" +
-                          _vm._s(_vm.subjectPhase.year)
-                      )
-                    ])
-                  ]),
-                  _c("p", [_c("br"), _vm._v(" "), _c("br")]),
-                  _c(
-                    "div",
-                    { staticClass: "row card cardA" },
-                    [
-                      _c("h5", { staticClass: "titulointerno" }, [
-                        _vm._v("Ayudantias disponibles a postular:")
-                      ]),
-                      _vm._v(" "),
-                      _vm._l(_vm.asignaturas, function(asignatura, index) {
-                        return _c("asignatura-component", {
-                          key: asignatura.id,
-                          staticClass: "col l4",
-                          attrs: { asignatura: asignatura },
-                          on: {
-                            asignaturaBoton: function($event) {
-                              return _vm.seleccionAsignatura(index)
-                            }
+                      _vm._s(_vm.subjectPhase.semester) +
+                        "-" +
+                        _vm._s(_vm.subjectPhase.year)
+                    )
+                  ])
+                ]),
+                _vm._m(0),
+                _c(
+                  "div",
+                  { staticClass: "row card cardA" },
+                  [
+                    _c("h5", { staticClass: "titulointerno" }, [
+                      _vm._v("Ayudantias disponibles a postular:")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "lds-roller-container2" }, [
+                      _vm.spinner2
+                        ? _c("div", { staticClass: "lds-roller" }, [
+                            _c("div"),
+                            _c("div"),
+                            _c("div"),
+                            _c("div"),
+                            _c("div"),
+                            _c("div"),
+                            _c("div"),
+                            _c("div")
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.asignaturas, function(asignatura, index) {
+                      return _c("asignatura-component", {
+                        key: asignatura.id,
+                        staticClass: "col l4",
+                        attrs: {
+                          spinner2: _vm.spinner2,
+                          asignatura: asignatura
+                        },
+                        on: {
+                          asignaturaBoton: function($event) {
+                            return _vm.seleccionAsignatura(index)
                           }
-                        })
+                        }
                       })
-                    ],
-                    2
-                  )
-                ])
+                    })
+                  ],
+                  2
+                )
               ])
-        ],
-        1
-      )
+            ])
+      ])
     : _c(
         "div",
         { staticClass: "container home" },
@@ -40464,24 +40598,53 @@ var render = function() {
             _vm._v(" \n    que tengan activo este proceso, "),
             _c("span", { staticClass: "claves" }, [
               _vm._v("ingresa tu rut para comenzar:")
-            ]),
-            _vm._v(" .\n    ")
+            ])
           ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "lds-roller-container" }, [
+            _vm.spinner1
+              ? _c("div", { staticClass: "lds-roller" }, [
+                  _c("div"),
+                  _c("div"),
+                  _c("div"),
+                  _c("div"),
+                  _c("div"),
+                  _c("div"),
+                  _c("div"),
+                  _c("div")
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("br"),
           _vm._v(" "),
           _c("br"),
           _vm._v(" "),
           _c(
             "div",
             { staticClass: "container" },
-            [_c("ingreso-component", { on: { botonIngresar: _vm.logear } })],
+            [
+              _c("ingreso-component", {
+                attrs: { spinner1: _vm.spinner1 },
+                on: { botonIngresar: _vm.logear }
+              })
+            ],
             1
-          ),
-          _vm._v("\n    " + _vm._s(_vm.assistantFaculty) + "\n")
+          )
         ],
         1
       )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [_c("br"), _vm._v(" "), _c("br")])
+  }
+]
 render._withStripped = true
 
 
@@ -40508,7 +40671,7 @@ var render = function() {
       "form",
       {
         staticClass: "container",
-        attrs: { method: "post" },
+        attrs: { disabled: _vm.spinner1, method: "post" },
         on: {
           submit: function($event) {
             $event.preventDefault()
@@ -40569,7 +40732,7 @@ var render = function() {
             "a",
             {
               staticClass: "waves-effect orange btn boton",
-              attrs: { type: "submit" },
+              attrs: { disabled: _vm.spinner1, type: "submit" },
               on: {
                 click: function($event) {
                   return _vm.ingresar()

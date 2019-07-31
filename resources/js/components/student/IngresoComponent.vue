@@ -1,14 +1,14 @@
 <template>
 
     <div class="card cardB">
-      <form class="container" method="post" v-on:submit.prevent="ingresar()">      
+      <form v-bind:disabled="spinner1" class="container" method="post" v-on:submit.prevent="ingresar()">      
         <div class="input-field col s6 ">
           <p class = "parrafo" for ="rutt">Rut: <span class="suave"> (sin puntos ni guión)</span></p>
-          <input required id="rutt" type="text" class="validate" placeholder= "12345678k" v-model= "rut">
+          <input  required id="rutt" type="text" class="validate" placeholder= "12345678k" v-model= "rut">
           <span v-if="formato" class="helper-text formato" >Error en formato, recuerde no incluir puntos ni guión</span>
           <span v-if="valido"  class="helper-text formato" >Rut inválido</span>
           <span v-if="vacio"  class="helper-text formato" >Ingrese rut</span>
-          <a class="waves-effect orange btn boton" type="submit" v-on:click= "ingresar()">Ingresar</a>
+          <a v-bind:disabled="spinner1" class="waves-effect orange btn boton" type="submit" v-on:click= "ingresar()">Ingresar</a>
         </div>
       </form>
       
@@ -44,6 +44,7 @@
 
 <script>
     export default {
+      props: ['spinner1'],
         data(){
             return {
                 rut:'',
