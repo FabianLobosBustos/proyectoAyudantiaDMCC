@@ -2879,7 +2879,6 @@ __webpack_require__.r(__webpack_exports__);
         console.log("requisitos");
         console.log(response.data);
       });
-      console.log(this.assistant.id);
 
       if (this.assistant.id != null) {
         var urlNotas = "assistant/" + this.assistant.id + "/subject/" + this.asignaturaActual.id;
@@ -2909,6 +2908,9 @@ __webpack_require__.r(__webpack_exports__);
           _this3.proceso = true;
           _this3.spinner2 = false;
         });
+      } else {
+        this.proceso = true;
+        this.spinner2 = false;
       }
     },
     cambioProceso: function cambioProceso() {
@@ -53863,8 +53865,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/fabi/Escritorio/PROYECTO/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/fabi/Escritorio/PROYECTO/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

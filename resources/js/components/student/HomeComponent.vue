@@ -309,8 +309,7 @@
                     console.log("requisitos");
                     console.log(response.data);
                 });
-
-                console.log(this.assistant.id);
+                
                 if(this.assistant.id!=null){
                     const urlNotas = "assistant/"+this.assistant.id+"/subject/"+this.asignaturaActual.id;
                     console.log("pedi las notas del qlo ");
@@ -335,6 +334,10 @@
                         this.proceso = true;
                         this.spinner2 = false;
                     });
+                }
+                else{
+                    this.proceso = true;
+                    this.spinner2 = false;
                 }
             },
             cambioProceso(){
