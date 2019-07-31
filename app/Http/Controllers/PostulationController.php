@@ -9,8 +9,11 @@ use App\Assistant;
 use App\Faculty;
 use App\Career;
 use App\Subject;
+use App\Phase;
 use App\AssistantScore;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\postulationEmailSender;
 
 class PostulationController extends Controller
 {
@@ -176,6 +179,10 @@ class PostulationController extends Controller
                 $i++;
             }
             error_log("8");
+            $assistant = Assistant::where('rut', $assistantSend_rut)->first();
+            $subject = Subject::where('id',$postulationSend_subject_id)->first();
+            $phase = Phase::where('id',$postulationSend_phase_id)->first();
+            Mail::to($assistant->email)->send(new postulationEmailSender($postulation,$subject,$assistant,$phase));            
             DB::commit();  
             return 'CORRECTO';           
         } 

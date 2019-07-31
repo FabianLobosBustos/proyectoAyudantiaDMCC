@@ -19,7 +19,7 @@ class CreateAssistantTable extends Migration
             $table->string('lastNameMom');
             $table->string('lastNameDad');
             $table->integer('level');
-            $table->integer('fone');
+            $table->string('fone');
             $table->integer('rut');
             $table->string('verificatorDigit');
             $table->float('ppa');
