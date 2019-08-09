@@ -16,7 +16,11 @@
             </formulario-component>
         </div>
         <div v-else>
-            <div class="container cardA"> 
+            <div class="container cardA">
+                 <div class="row"> 
+                <p class = "nombre col s6" >Bienvenido {{assistant.name}} {{assistant.lastNameDad}} {{assistant.lastNameMom}}</p> 
+                <button class="waves-effect btn red darken-1 col s1 offset-s5" type="button" v-on:click= "relogear()">Atrás</button> 
+                </div>
                 <p class= "center-align presentacion">
                         FORMULARIO ÚNICO PARA CONCURSAR AL CARGO DE AYUDANTE ALUMNO PARA EL PERIODO <span class ="periodo">{{subjectPhase.semester}}-{{subjectPhase.year}}</span>
                 <p>
@@ -71,6 +75,11 @@
 }
 .periodo{
     color: orange;
+}
+.nombre{
+    color:orange;
+    font-size: 20px;
+    font-weight: 600;
 }
 .titulo{
     padding-top: 20px; 
@@ -371,6 +380,9 @@
             },
             actualizarEstado(){
                 this.proceso= false; 
+            },
+            relogear(){
+                this.login=false;
             }
             
         }

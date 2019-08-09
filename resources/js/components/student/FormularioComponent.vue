@@ -5,7 +5,7 @@
             <h4 class="center-align titulo">POSTULACIÓN DE AYUDANTE PARA LA ASIGNATURA <span class="nombreAsig">{{asignatura.name}}</span></h4>  
             <br>
             <br>
-            <form  class="col s12"  method="post" v-on:submit.prevent=enviar() >
+            <form  class="col s12"   v-on:submit.prevent=enviar() >
                 <div class="row card cardI ">
                     <h5 class="titulointerno"> Datos Personales:</h5> 
                     <div class="col s6">
@@ -73,7 +73,7 @@
                         <span class="helper-text" data-error="Error" > Correspode al nivel de la asignatura más baja</span>
                     </div>
                     <div class="col s6">
-                        <p class = "parrafo">PPA: <span class ="requerido" v-if="!estudiante.ppa">*</span></p>
+                        <p class = "parrafo">PPA: <span class ="requerido" v-if="!estudiante.ppa"></span></p>
                         <input step="0.1" required id="email_inline" type="number" class="validate" max="7" min="0" v-model="estudiante.ppa">
                         
                         <span  class="helper-text" placeholder="ej: 1.89" >Corresponde al Promedio Ponderado Acumulado</span>
@@ -97,14 +97,13 @@
                         <p class = "parrafo" for="Referencia">Profesor de Referencia: <span class ="requerido" v-if="!postulacion.reference">*</span></p>
                         <input  class="validate" required type="text" placeholder="Ingrese nombre del profesor" id="Referencia" v-model="postulacion.reference">
                     </div>
-                    <div class="col s6">
-                        <button v-bind:disabled="fin" class="waves-effect orange btn" type="button" v-on:click= "atras()">Atrás</button>    
-                    </div>
-                    <div class="col s6 right-align">
-                        <button v-bind:disabled="fin" class="waves-effect orange btn" type="button" v-on:click= "enviar()">Enviar</button>    
-                    </div>
+               
+                        <button v-bind:disabled="fin" class="col s2 offset-s1 waves-effect red darken-1 btn" type="button" v-on:click= "atras()">Atrás</button>    
+                   
+
+                        <button v-bind:disabled="fin"  class=" col s2 offset-s6 waves-effect green darken-1 btn" type="button" v-on:click= "enviar()">Enviar</button>    
+                    
                 </div>
-                
             </form>
         </div>
 
@@ -183,11 +182,12 @@
                 facultyStudent: null,
                 careers: null,
                 facultadSeleccionada: false,
-                fin:false
+                fin:false,
+                showDialog: false
             }
         },
         mounted() {
-            this.spinner3=true;
+         // this.spinner3=true;
             //este par de weas, mandarlas desde el home, por el problema del cargado.
             console.log('Component mounted.');
             console.log('facultad:');
@@ -236,13 +236,16 @@
                 }
             },
             enviar(){
-                this.fin = true;
+                console.log("dsfsdfaaaaaaaaaaa");
+                
                 var mensaje;
                 var opcion = confirm("Estas seguro de enviar este formulario? \nPosteriormente no podrás editarlo.");
                 if (opcion == true) {
                     mensaje = "Has clickado OK";
                 } else {
+                    console.log("cancele la wea")
                     mensaje = "Has clickado Cancelar";
+                    return false;
                 }
                 var i;
                 for (i = 0; i < this.notaAlumno.length; i++) {
@@ -280,13 +283,21 @@
 
               };
               console.log(params);
+              //this.fin = true;
               axios.post('postulations', params).then((response)=>{
+                  if(response.data==1){
                   window.alert("Se le ha enviado un comprobante de confirmación a su correo electrónico.");
                   this.$emit('botonEnviar');
                   this.fin=false;
                   console.log("lo envie");
                   console.log(response);
+                  }
+                  else if(response.data ==0){
+                      window.alert("Error en los datos enviados, intentelo denuevo");
+                      return false;
+                  }
               }); 
+              return false;
             },
             atras(){
                 this.$emit('botonAtras');

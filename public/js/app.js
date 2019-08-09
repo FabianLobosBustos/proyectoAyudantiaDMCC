@@ -2408,7 +2408,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['estudiante', 'asignatura', 'faculties', 'career', 'notaAlumno', 'requisitos', 'assistantFaculty', 'assistantCareer', 'subjectPeriod'],
   data: function data() {
@@ -2422,12 +2421,13 @@ __webpack_require__.r(__webpack_exports__);
       facultyStudent: null,
       careers: null,
       facultadSeleccionada: false,
-      fin: false
+      fin: false,
+      showDialog: false
     };
   },
   mounted: function mounted() {
-    this.spinner3 = true; //este par de weas, mandarlas desde el home, por el problema del cargado.
-
+    // this.spinner3=true;
+    //este par de weas, mandarlas desde el home, por el problema del cargado.
     console.log('Component mounted.');
     console.log('facultad:');
     console.log(this.assistantFaculty);
@@ -2482,14 +2482,16 @@ __webpack_require__.r(__webpack_exports__);
     enviar: function enviar() {
       var _this = this;
 
-      this.fin = true;
+      console.log("dsfsdfaaaaaaaaaaa");
       var mensaje;
       var opcion = confirm("Estas seguro de enviar este formulario? \nPosteriormente no podrás editarlo.");
 
       if (opcion == true) {
         mensaje = "Has clickado OK";
       } else {
+        console.log("cancele la wea");
         mensaje = "Has clickado Cancelar";
+        return false;
       }
 
       var i;
@@ -2534,16 +2536,23 @@ __webpack_require__.r(__webpack_exports__);
         requirement: this.requisitos,
         assistantScore: this.notaAlumno
       };
-      console.log(params);
+      console.log(params); //this.fin = true;
+
       axios.post('postulations', params).then(function (response) {
-        window.alert("Se le ha enviado un comprobante de confirmación a su correo electrónico.");
+        if (response.data == 1) {
+          window.alert("Se le ha enviado un comprobante de confirmación a su correo electrónico.");
 
-        _this.$emit('botonEnviar');
+          _this.$emit('botonEnviar');
 
-        _this.fin = false;
-        console.log("lo envie");
-        console.log(response);
+          _this.fin = false;
+          console.log("lo envie");
+          console.log(response);
+        } else if (response.data == 0) {
+          window.alert("Error en los datos enviados, intentelo denuevo");
+          return false;
+        }
       });
+      return false;
     },
     atras: function atras() {
       this.$emit('botonAtras');
@@ -2562,6 +2571,15 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2947,6 +2965,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     actualizarEstado: function actualizarEstado() {
       this.proceso = false;
+    },
+    relogear: function relogear() {
+      this.login = false;
     }
   }
 });
@@ -7664,7 +7685,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.texto[data-v-662b5faf]{\n    color:#333;\n    font-size: 20px;\n    line-height: 1.2;\n}\n.claves[data-v-662b5faf]{\n    color:rgb(46, 45, 45);\n    font-weight: 600;\n    font-size: 20px;\n    line-height: 1.2;\n}\n.periodo[data-v-662b5faf]{\n    color: orange;\n}\n.titulo[data-v-662b5faf]{\n    padding-top: 20px; \n    padding-bottom: 40px;\n    font-family: 'Merriweather', serif;\n    text-align: center;\n    font-weight: 500;\n}\n.titulointerno[data-v-662b5faf]{ \n        padding-bottom: 30px;\n        color:#333;\n        margin-left: 15px;\n        font-weight: 500;\n}\n.cardA[data-v-662b5faf]{\n\n        padding-top: 10px;\n        padding-bottom: 20px;\n        background-color: #ffffff;\n}\n.presentacion[data-v-662b5faf]{\n    line-height: 1.2;\n    font-weight: 500;\n    font-size: 40px;\n    padding-top: 10px;\n    color: #333;\n    font-family: 'Merriweather', serif;\n    text-align: center;\n}\n.lds-roller-container[data-v-662b5faf]{\n    position: absolute;\n    right: 50%;\n}\n.lds-roller-container2[data-v-662b5faf]{\n    position: absolute;\n    right: 50%;\n    top: -30%;\n}\n.lds-roller[data-v-662b5faf] {\n  display: inline-block;\n  position: relative;\n  width: 64px;\n  height: 64px;\n}\n.lds-roller div[data-v-662b5faf] {\n  -webkit-animation: lds-roller-data-v-662b5faf 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;\n          animation: lds-roller-data-v-662b5faf 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;\n  -webkit-transform-origin: 32px 32px;\n          transform-origin: 32px 32px;\n}\n.lds-roller div[data-v-662b5faf]:after {\n  content: \" \";\n  display: block;\n  position: absolute;\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background: rgb(62, 23, 206);\n  margin: -3px 0 0 -3px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(1) {\n  -webkit-animation-delay: -0.036s;\n          animation-delay: -0.036s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(1):after {\n  top: 50px;\n  left: 50px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(2) {\n  -webkit-animation-delay: -0.072s;\n          animation-delay: -0.072s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(2):after {\n  top: 54px;\n  left: 45px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(3) {\n  -webkit-animation-delay: -0.108s;\n          animation-delay: -0.108s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(3):after {\n  top: 57px;\n  left: 39px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(4) {\n  -webkit-animation-delay: -0.144s;\n          animation-delay: -0.144s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(4):after {\n  top: 58px;\n  left: 32px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(5) {\n  -webkit-animation-delay: -0.18s;\n          animation-delay: -0.18s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(5):after {\n  top: 57px;\n  left: 25px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(6) {\n  -webkit-animation-delay: -0.216s;\n          animation-delay: -0.216s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(6):after {\n  top: 54px;\n  left: 19px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(7) {\n  -webkit-animation-delay: -0.252s;\n          animation-delay: -0.252s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(7):after {\n  top: 50px;\n  left: 14px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(8) {\n  -webkit-animation-delay: -0.288s;\n          animation-delay: -0.288s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(8):after {\n  top: 45px;\n  left: 10px;\n}\n@-webkit-keyframes lds-roller-data-v-662b5faf {\n0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg);\n}\n}\n@keyframes lds-roller-data-v-662b5faf {\n0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg);\n}\n}\n\n\n", ""]);
+exports.push([module.i, "\n.texto[data-v-662b5faf]{\n    color:#333;\n    font-size: 20px;\n    line-height: 1.2;\n}\n.claves[data-v-662b5faf]{\n    color:rgb(46, 45, 45);\n    font-weight: 600;\n    font-size: 20px;\n    line-height: 1.2;\n}\n.periodo[data-v-662b5faf]{\n    color: orange;\n}\n.nombre[data-v-662b5faf]{\n    color:orange;\n    font-size: 20px;\n    font-weight: 600;\n}\n.titulo[data-v-662b5faf]{\n    padding-top: 20px; \n    padding-bottom: 40px;\n    font-family: 'Merriweather', serif;\n    text-align: center;\n    font-weight: 500;\n}\n.titulointerno[data-v-662b5faf]{ \n        padding-bottom: 30px;\n        color:#333;\n        margin-left: 15px;\n        font-weight: 500;\n}\n.cardA[data-v-662b5faf]{\n\n        padding-top: 10px;\n        padding-bottom: 20px;\n        background-color: #ffffff;\n}\n.presentacion[data-v-662b5faf]{\n    line-height: 1.2;\n    font-weight: 500;\n    font-size: 40px;\n    padding-top: 10px;\n    color: #333;\n    font-family: 'Merriweather', serif;\n    text-align: center;\n}\n.lds-roller-container[data-v-662b5faf]{\n    position: absolute;\n    right: 50%;\n}\n.lds-roller-container2[data-v-662b5faf]{\n    position: absolute;\n    right: 50%;\n    top: -30%;\n}\n.lds-roller[data-v-662b5faf] {\n  display: inline-block;\n  position: relative;\n  width: 64px;\n  height: 64px;\n}\n.lds-roller div[data-v-662b5faf] {\n  -webkit-animation: lds-roller-data-v-662b5faf 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;\n          animation: lds-roller-data-v-662b5faf 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;\n  -webkit-transform-origin: 32px 32px;\n          transform-origin: 32px 32px;\n}\n.lds-roller div[data-v-662b5faf]:after {\n  content: \" \";\n  display: block;\n  position: absolute;\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background: rgb(62, 23, 206);\n  margin: -3px 0 0 -3px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(1) {\n  -webkit-animation-delay: -0.036s;\n          animation-delay: -0.036s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(1):after {\n  top: 50px;\n  left: 50px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(2) {\n  -webkit-animation-delay: -0.072s;\n          animation-delay: -0.072s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(2):after {\n  top: 54px;\n  left: 45px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(3) {\n  -webkit-animation-delay: -0.108s;\n          animation-delay: -0.108s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(3):after {\n  top: 57px;\n  left: 39px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(4) {\n  -webkit-animation-delay: -0.144s;\n          animation-delay: -0.144s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(4):after {\n  top: 58px;\n  left: 32px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(5) {\n  -webkit-animation-delay: -0.18s;\n          animation-delay: -0.18s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(5):after {\n  top: 57px;\n  left: 25px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(6) {\n  -webkit-animation-delay: -0.216s;\n          animation-delay: -0.216s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(6):after {\n  top: 54px;\n  left: 19px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(7) {\n  -webkit-animation-delay: -0.252s;\n          animation-delay: -0.252s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(7):after {\n  top: 50px;\n  left: 14px;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(8) {\n  -webkit-animation-delay: -0.288s;\n          animation-delay: -0.288s;\n}\n.lds-roller div[data-v-662b5faf]:nth-child(8):after {\n  top: 45px;\n  left: 10px;\n}\n@-webkit-keyframes lds-roller-data-v-662b5faf {\n0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg);\n}\n}\n@keyframes lds-roller-data-v-662b5faf {\n0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg);\n}\n}\n\n\n", ""]);
 
 // exports
 
@@ -39800,7 +39821,6 @@ var render = function() {
         "form",
         {
           staticClass: "col s12",
-          attrs: { method: "post" },
           on: {
             submit: function($event) {
               $event.preventDefault()
@@ -40255,7 +40275,7 @@ var render = function() {
               _c("p", { staticClass: "parrafo" }, [
                 _vm._v("PPA: "),
                 !_vm.estudiante.ppa
-                  ? _c("span", { staticClass: "requerido" }, [_vm._v("*")])
+                  ? _c("span", { staticClass: "requerido" })
                   : _vm._e()
               ]),
               _vm._v(" "),
@@ -40438,37 +40458,34 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "waves-effect orange btn",
-                  attrs: { disabled: _vm.fin, type: "button" },
-                  on: {
-                    click: function($event) {
-                      return _vm.atras()
-                    }
+            _c(
+              "button",
+              {
+                staticClass: "col s2 offset-s1 waves-effect red darken-1 btn",
+                attrs: { disabled: _vm.fin, type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.atras()
                   }
-                },
-                [_vm._v("Atrás")]
-              )
-            ]),
+                }
+              },
+              [_vm._v("Atrás")]
+            ),
             _vm._v(" "),
-            _c("div", { staticClass: "col s6 right-align" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "waves-effect orange btn",
-                  attrs: { disabled: _vm.fin, type: "button" },
-                  on: {
-                    click: function($event) {
-                      return _vm.enviar()
-                    }
+            _c(
+              "button",
+              {
+                staticClass:
+                  " col s2 offset-s6 waves-effect green darken-1 btn",
+                attrs: { disabled: _vm.fin, type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.enviar()
                   }
-                },
-                [_vm._v("Enviar")]
-              )
-            ])
+                }
+              },
+              [_vm._v("Enviar")]
+            )
           ])
         ]
       )
@@ -40525,6 +40542,34 @@ var render = function() {
             )
           : _c("div", [
               _c("div", { staticClass: "container cardA" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("p", { staticClass: "nombre col s6" }, [
+                    _vm._v(
+                      "Bienvenido " +
+                        _vm._s(_vm.assistant.name) +
+                        " " +
+                        _vm._s(_vm.assistant.lastNameDad) +
+                        " " +
+                        _vm._s(_vm.assistant.lastNameMom)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "waves-effect btn red darken-1 col s1 offset-s5",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.relogear()
+                        }
+                      }
+                    },
+                    [_vm._v("Atrás")]
+                  )
+                ]),
+                _vm._v(" "),
                 _c("p", { staticClass: "center-align presentacion" }, [
                   _vm._v(
                     "\n                    FORMULARIO ÚNICO PARA CONCURSAR AL CARGO DE AYUDANTE ALUMNO PARA EL PERIODO "
@@ -53865,8 +53910,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/fabi/Escritorio/PROYECTO/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/fabi/Escritorio/PROYECTO/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/cristian/Documentos/proyectoAyudantiaDMCC/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
