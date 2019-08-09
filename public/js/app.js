@@ -2501,14 +2501,15 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       console.log("dsfsdfaaaaaaaaaaa");
+      this.fin = true;
       var mensaje;
       var opcion = confirm("Estas seguro de enviar este formulario? \nPosteriormente no podrás editarlo.");
 
       if (opcion == true) {
         mensaje = "Has clickado OK";
       } else {
-        console.log("cancele la wea");
         mensaje = "Has clickado Cancelar";
+        this.fin = false;
         return false;
       }
 
@@ -2570,6 +2571,7 @@ __webpack_require__.r(__webpack_exports__);
           console.log(response);
         } else if (response.data == 0) {
           window.alert("Error en los datos enviados, intentelo denuevo");
+          _this.fin = false;
           return false;
         }
       });
