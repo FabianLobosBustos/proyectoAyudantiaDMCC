@@ -6,7 +6,7 @@
             <br>
             <br>
             <form  class="col s12"   v-on:submit.prevent=enviar() >
-                <div class="row card cardI ">
+                <div class="row card cardI1 ">
                     <h5 class="titulointerno"> Datos Personales:</h5> 
                     <div class="col s6">
                         <p class = "parrafo" for="nombre">Nombre: <span class ="requerido" v-if="!estudiante.name">*</span></p>
@@ -34,7 +34,7 @@
                         <input class="validate" required type="text" placeholder="Ingresa tu dirección " id="direccion" v-model="estudiante.address">
                     </div>
                 </div>
-                <div class="row card cardI">
+                <div class="row card cardI2">
                     <h5 class="titulointerno"> Datos Curriculares:</h5> 
                     <div class="col s6">
                         <p class = "parrafo">Facultad: <span class ="requerido" v-if="!facultyStudent">*</span></p>
@@ -79,7 +79,7 @@
                         <span  class="helper-text" placeholder="ej: 1.89" >Corresponde al Promedio Ponderado Acumulado</span>
                     </div>
                 </div> 
-                <div class="row card cardI ">
+                <div class="row card cardI3 ">
                     <h5 class="titulointerno"> Datos sobre la asignatura:</h5>     
                     <div class="col s12">
                         <div class="col s4" v-for= "(requisito, index) in requisitos" :key= index>
@@ -120,7 +120,25 @@
         box-shadow: 8px 7px 13px 7px rgba(0,0,0,0.52);
         padding-bottom: 90px;
     }
-    .cardI{
+    .cardI1{
+        border: 2px solid;
+        border-color: #293462;
+        padding-left: 20px;
+        padding-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .cardI2{
+        border: 2px solid;
+        border-color: #a64942;
+        padding-left: 20px;
+        padding-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .cardI3{
+        border: 2px solid;
+        border-color: #fe5f55;
         padding-left: 20px;
         padding-bottom: 20px;
         margin-left: 10px;
@@ -157,7 +175,7 @@
         color:orange;
     }
     .titulo{
-        padding-top: 40px; 
+        padding-top: 60px; 
         font-family: 'Merriweather', serif;
         color:#333;
         font-weight: 500;
@@ -285,6 +303,8 @@
               console.log(params);
               //this.fin = true;
               axios.post('postulations', params).then((response)=>{
+                  console.log("response.data");
+                  console.log(response.data);
                   if(response.data==1){
                   window.alert("Se le ha enviado un comprobante de confirmación a su correo electrónico.");
                   this.$emit('botonEnviar');

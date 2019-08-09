@@ -2408,6 +2408,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['estudiante', 'asignatura', 'faculties', 'career', 'notaAlumno', 'requisitos', 'assistantFaculty', 'assistantCareer', 'subjectPeriod'],
   data: function data() {
@@ -2539,6 +2557,9 @@ __webpack_require__.r(__webpack_exports__);
       console.log(params); //this.fin = true;
 
       axios.post('postulations', params).then(function (response) {
+        console.log("response.data");
+        console.log(response.data);
+
         if (response.data == 1) {
           window.alert("Se le ha enviado un comprobante de confirmación a su correo electrónico.");
 
@@ -7666,7 +7687,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.requerido[data-v-1a8b36bc]{\n    color: red;\n}\n.tarjeta[data-v-1a8b36bc]{\n    background-color: #f3f3f3;\n    box-shadow: 8px 7px 13px 7px rgba(0,0,0,0.52);\n    padding-bottom: 90px;\n}\n.cardI[data-v-1a8b36bc]{\n    padding-left: 20px;\n    padding-bottom: 20px;\n    margin-left: 10px;\n    margin-right: 10px;\n}\n.veces[data-v-1a8b36bc]{\n    margin-top:24px;\n}\n.col[data-v-1a8b36bc]{\n    \n    line-height: 0.7;\n}\n.titulointerno[data-v-1a8b36bc]{\n    padding-top: 20px; \n    padding-bottom: 30px;\n    color:orange;\n    margin-top: 20px;\n    margin-left: 15px;\n}\n.btn[data-v-1a8b36bc]{\n    font-size:13px;\n    width: 220px;\n    height: 35px;\n    bottom: -100px;\n    font-weight: 500;\n}\n.parrafo[data-v-1a8b36bc]{\n    font-weight: 600;\n    font-size: 15px;\n    line-height: 1.0;\n}\n.nombreAsig[data-v-1a8b36bc]{   \n    font-family: 'Merriweather', serif;   \n    color:orange;\n}\n.titulo[data-v-1a8b36bc]{\n    padding-top: 40px; \n    font-family: 'Merriweather', serif;\n    color:#333;\n    font-weight: 500;\n}\n.helper-text[data-v-1a8b36bc]{\n    line-height: 1.0;\n}   \n", ""]);
+exports.push([module.i, "\n.requerido[data-v-1a8b36bc]{\n    color: red;\n}\n.tarjeta[data-v-1a8b36bc]{\n    background-color: #f3f3f3;\n    box-shadow: 8px 7px 13px 7px rgba(0,0,0,0.52);\n    padding-bottom: 90px;\n}\n.cardI1[data-v-1a8b36bc]{\n    border: 2px solid;\n    border-color: #293462;\n    padding-left: 20px;\n    padding-bottom: 20px;\n    margin-left: 10px;\n    margin-right: 10px;\n}\n.cardI2[data-v-1a8b36bc]{\n    border: 2px solid;\n    border-color: #a64942;\n    padding-left: 20px;\n    padding-bottom: 20px;\n    margin-left: 10px;\n    margin-right: 10px;\n}\n.cardI3[data-v-1a8b36bc]{\n    border: 2px solid;\n    border-color: #fe5f55;\n    padding-left: 20px;\n    padding-bottom: 20px;\n    margin-left: 10px;\n    margin-right: 10px;\n}\n.veces[data-v-1a8b36bc]{\n    margin-top:24px;\n}\n.col[data-v-1a8b36bc]{\n    \n    line-height: 0.7;\n}\n.titulointerno[data-v-1a8b36bc]{\n    padding-top: 20px; \n    padding-bottom: 30px;\n    color:orange;\n    margin-top: 20px;\n    margin-left: 15px;\n}\n.btn[data-v-1a8b36bc]{\n    font-size:13px;\n    width: 220px;\n    height: 35px;\n    bottom: -100px;\n    font-weight: 500;\n}\n.parrafo[data-v-1a8b36bc]{\n    font-weight: 600;\n    font-size: 15px;\n    line-height: 1.0;\n}\n.nombreAsig[data-v-1a8b36bc]{   \n    font-family: 'Merriweather', serif;   \n    color:orange;\n}\n.titulo[data-v-1a8b36bc]{\n    padding-top: 60px; \n    font-family: 'Merriweather', serif;\n    color:#333;\n    font-weight: 500;\n}\n.helper-text[data-v-1a8b36bc]{\n    line-height: 1.0;\n}   \n", ""]);
 
 // exports
 
@@ -39829,7 +39850,7 @@ var render = function() {
           }
         },
         [
-          _c("div", { staticClass: "row card cardI " }, [
+          _c("div", { staticClass: "row card cardI1 " }, [
             _c("h5", { staticClass: "titulointerno" }, [
               _vm._v(" Datos Personales:")
             ]),
@@ -40059,7 +40080,7 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "row card cardI" }, [
+          _c("div", { staticClass: "row card cardI2" }, [
             _c("h5", { staticClass: "titulointerno" }, [
               _vm._v(" Datos Curriculares:")
             ]),
@@ -40319,7 +40340,7 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "row card cardI " }, [
+          _c("div", { staticClass: "row card cardI3 " }, [
             _c("h5", { staticClass: "titulointerno" }, [
               _vm._v(" Datos sobre la asignatura:")
             ]),
