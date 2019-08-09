@@ -184,13 +184,13 @@ class PostulationController extends Controller
             $phase = Phase::where('id',$postulationSend_phase_id)->first();
             Mail::to($assistant->email)->send(new postulationEmailSender($postulation,$subject,$assistant,$phase,$assistantScoreSendArray,$requirementSendArray));            
             DB::commit();  
-            return 'CORRECTO';           
+            return 1;           
         } 
             
         catch (\Exception $e) {
             
             DB::rollback();
-            return $e;
+            return 0;
         }
                 
             
