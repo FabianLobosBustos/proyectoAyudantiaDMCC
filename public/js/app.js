@@ -2843,15 +2843,19 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     console.log('Component mounted.');
-    axios.get('/subjects').then(function (response) {
+    axios.get('/getActiveSubjects').then(function (response) {
       _this.asignaturas = response.data;
-    });
-    var urlPhase = "phaseBySubject/" + this.asignaturas[0].id;
-    axios.get(urlPhase).then(function (response) {
-      console.log("la respuesta:");
-      console.log(response.data);
-      _this.subjectPhase = response.data;
-      console.log("el id del periodo es " + _this.subjectPhase.id);
+      console.log(_this.asignaturas);
+      var urlPhase = "phaseBySubject/" + _this.asignaturas[0].id;
+      console.log("url : " + urlPhase);
+      console.log("la asignatura: ");
+      console.log(_this.asignaturas[0]);
+      axios.get(urlPhase).then(function (response) {
+        console.log("la respuesta:");
+        console.log(response.data);
+        _this.subjectPhase = response.data;
+        console.log("el id del periodo es " + _this.subjectPhase.id);
+      });
     });
   },
   methods: {

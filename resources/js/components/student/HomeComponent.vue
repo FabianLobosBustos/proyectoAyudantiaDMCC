@@ -245,16 +245,21 @@
         },
         mounted() {
             console.log('Component mounted.');
-            axios.get('/subjects').then((response)=>{
-                this.asignaturas = response.data; 
-             });
+            axios.get('/getActiveSubjects').then((response)=>{
+                this.asignaturas = response.data;
+                console.log(this.asignaturas); 
+             
             const urlPhase = "phaseBySubject/"+this.asignaturas[0].id;
+            console.log("url : "+ urlPhase);
+            console.log("la asignatura: ");
+            console.log(this.asignaturas[0]);
                 axios.get(urlPhase).then((response)=>{
                     console.log("la respuesta:");
                     console.log(response.data);
                     this.subjectPhase = response.data;
                     console.log("el id del periodo es "+this.subjectPhase.id);
                 });
+            });
         },
         methods:{
             logear(res){
