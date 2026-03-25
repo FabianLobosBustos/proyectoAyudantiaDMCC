@@ -13,7 +13,7 @@ class Postulation extends Model
 
     public function subject()
     {
-        return $this->belongsTo(Subjects::class);
+        return $this->belongsTo(Subject::class);
     }
 
     public function studentScores()
